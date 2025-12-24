@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kerna: Galaxy of Chads</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/styles/main.css">
+</head>
+
+<body>
+  <div id="app">
+    <!-- Background Image -->
+    <img id="background-image" src="/Assets/background.png" alt="Background">
+
+    <!-- HUD (Heads-up Display) -->
+    <div id="hud-container">
+      <button id="btn-home" class="btn-icon-circular" title="Back to Menu" style="display: none;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="hud-svg">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+      </button>
+
+      <!-- Inbox Button -->
+      <button id="btn-inbox" class="btn-icon-circular" title="Inbox">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="hud-svg">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+          <polyline points="22,6 12,13 2,6"></polyline>
+        </svg>
+        <span id="inbox-badge" class="badge-notification" style="display: none;"></span>
+      </button>
+
+      <!-- Friends Button -->
+      <button id="btn-friends" class="btn-icon-circular" title="Friends">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="hud-svg">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+        </svg>
+      </button>
+
+      <button id="btn-account" class="btn-icon-circular" title="Account Settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="hud-svg">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Account Modal -->
+    <div id="account-modal" class="modal-overlay">
+      <div class="modal-content glass-panel">
+        <div class="modal-header">
+          <h3>Account Manager</h3>
+          <button id="btn-close-account" class="btn-close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="profile-preview">
+            <h4 id="display-username">Chad</h4>
+          </div>
+
+          <div class="account-tabs">
+            <button class="tab-btn active" data-tab="info">General</button>
+            <button class="tab-btn" data-tab="password">Password</button>
+          </div>
+
+          <div id="tab-info" class="tab-content active">
+            <div class="info-row">
+              <span>Status:</span>
+              <span class="status-badge success">Active Chad</span>
+            </div>
+            <button id="btn-logout" class="btn btn-danger" style="width: 100%; margin-top: 1rem;">LOG OUT</button>
+          </div>
+
+          <div id="tab-password" class="tab-content">
+            <div class="input-group">
+              <label>Current Password</label>
+              <input type="password" id="old-password" placeholder="••••••••">
+            </div>
+            <div class="input-group">
+              <label>New Password</label>
+              <input type="password" id="new-password" placeholder="••••••••">
+            </div>
+            <button id="btn-save-password" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">CHANGE
+              PASSWORD</button>
+            <p id="account-action-message" class="auth-message"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Inbox Modal -->
+    <div id="inbox-modal" class="modal-overlay">
+      <div class="modal-content glass-panel">
+        <div class="modal-header">
+          <h3>Inbox</h3>
+          <button id="btn-close-inbox" class="btn-close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div id="inbox-list" class="inbox-list">
+            <!-- Inbox items go here -->
+            <p class="empty-state">No new messages.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3D Scene Container -->
+    <div id="scene-container"></div>
+
+    <!-- UI Overlay -->
+    <div id="ui-container">
+      <!-- Boot Screen -->
+      <div id="boot-screen" class="screen active">
+        <div class="boot-content">
+          <img src="/Assets/logo kerna.png" alt="Kerna: Galaxy of Chads" class="boot-logo">
+          <div class="loading-container">
+            <div id="loading-text" class="loading-text">Loading chads...</div>
+            <div class="loading-bar-wrapper">
+              <div id="loading-bar-fill" class="loading-bar-fill"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Login Screen -->
+      <div id="login-screen" class="screen">
+        <div class="auth-container glass-panel">
+          <div class="auth-logo-container">
+            <img src="/Assets/logo kerna.png" alt="Kerna" class="auth-logo">
+          </div>
+          <h2 class="auth-title">Welcome, Chad</h2>
+          <p class="auth-subtitle">Log in to continue your cosmic journey.</p>
+
+          <div class="auth-form">
+            <div class="input-group">
+              <label for="login-username">Username</label>
+              <input type="text" id="login-username" placeholder="Your chad name">
+            </div>
+            <div class="input-group">
+              <label for="login-password">Password</label>
+              <input type="password" id="login-password" placeholder="••••••••">
+            </div>
+
+            <div class="auth-actions">
+              <button id="btn-login" class="btn btn-success">LOG IN</button>
+              <p class="auth-footer">Need an account? <a href="#" id="link-to-register">Register here</a></p>
+            </div>
+
+            <p id="login-message" class="auth-message"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Registration Screen -->
+      <div id="register-screen" class="screen">
+        <div class="auth-container glass-panel">
+          <div class="auth-logo-container">
+            <img src="/Assets/logo kerna.png" alt="Kerna" class="auth-logo">
+          </div>
+          <h2 class="auth-title">Apply for Chadship</h2>
+          <p class="auth-subtitle">Create an account to save your progress on the server.</p>
+
+          <div class="auth-form">
+            <div class="input-group">
+              <label for="register-username">Username</label>
+              <input type="text" id="register-username" placeholder="Pick a chad name">
+            </div>
+            <div class="input-group">
+              <label for="register-password">Password</label>
+              <input type="password" id="register-password" placeholder="••••••••">
+            </div>
+
+            <div class="auth-actions">
+              <button id="btn-register" class="btn btn-primary">CREATE ACCOUNT</button>
+              <p class="auth-footer">Already a Chad? <a href="#" id="link-to-login">Back to Login</a></p>
+            </div>
+
+            <p id="register-message" class="auth-message"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Menu Screen -->
+      <div id="main-menu" class="screen">
+        <div class="menu-buttons">
+          <button id="btn-training" class="mode-button">
+            <img src="/Assets/Training.png" alt="Training" class="mode-icon">
+            <span class="mode-label">Training</span>
+          </button>
+          <button id="btn-pvp" class="mode-button pvp-premium">
+            <div style="position: relative;">
+              <img src="/Assets/PVP Arena.png" alt="PVP Arena" class="mode-icon">
+            </div>
+            <span class="mode-label">PVP Arena</span>
+          </button>
+          <button id="btn-manage" class="mode-button">
+            <img src="/Assets/Characters.png" alt="Characters" class="mode-icon">
+            <span class="mode-label">Characters</span>
+          </button>
+
+        </div>
+      </div>
+
+      <!-- Friends Screen -->
+      <div id="friends-screen" class="screen">
+        <div class="screen-header">
+          <h2 class="screen-title">Friends List</h2>
+        </div>
+
+        <div class="friends-container">
+          <div class="friends-search-box glass-panel">
+            <h3>Add Friend</h3>
+            <div class="search-input-wrapper">
+              <input type="text" id="friend-search-input" placeholder="Search by username...">
+              <button id="btn-search-users" class="btn btn-primary">Search</button>
+            </div>
+            <div id="user-search-results" class="search-results"></div>
+          </div>
+
+          <div class="friends-list-box glass-panel">
+            <h3>My Friends</h3>
+            <div id="friends-list" class="friends-list">
+              <!-- Friends go here -->
+              <p class="empty-state">You have no friends yet. Search to add some chads!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PVP Arena Screen -->
+      <div id="pvp-arena-screen" class="screen">
+        <div class="screen-header">
+          <h2 class="screen-title">PVP Arena</h2>
+        </div>
+
+        <div class="pvp-layout">
+          <div class="pvp-actions glass-panel">
+            <h3>Battle Options</h3>
+            <p>Choose your path to glory.</p>
+
+            <div class="pvp-buttons">
+              <button id="btn-find-match" class="btn btn-large btn-success">
+                <span class="icon">⚔️</span> FIND MATCH
+              </button>
+              <!-- Friends challenge is handled via Friends List or Inbox -->
+              <div class="pvp-info">
+                Go to <strong>Friends</strong> to challenge a specific player.
+              </div>
+            </div>
+
+            <div id="matchmaking-status" class="matchmaking-status" style="display: none;">
+              <div class="spinner"></div>
+              <p>Searching for opponent...</p>
+              <button id="btn-cancel-matchmaking" class="btn btn-danger btn-small">Cancel</button>
+            </div>
+          </div>
+
+          <div class="leaderboard-panel glass-panel">
+            <h3>Global Leaderboard</h3>
+            <div class="leaderboard-header">
+              <span>Rank</span>
+              <span>User</span>
+              <span>Wins</span>
+              <span>W/L</span>
+              <span>Avg Lvl</span>
+            </div>
+            <div id="leaderboard-list" class="leaderboard-list">
+              <!-- Leaderboard items -->
+              <div class="leaderboard-item loading">Loading...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Character Selection Screen (Training Mode) -->
+      <div id="selection-screen" class="screen">
+        <div class="screen-header">
+          <h2 class="screen-title">Training Mode</h2>
+
+        </div>
+
+        <div class="difficulty-selection-container" style="text-align: center; margin-bottom: 2rem;">
+          <h3>Select Difficulty</h3>
+          <div class="difficulty-controls">
+            <button id="btn-diff-easy" class="btn btn-secondary">Carebear</button>
+            <button id="btn-diff-normal" class="btn btn-primary active">Hard stuck plat</button>
+            <button id="btn-diff-hard" class="btn btn-secondary">Ultra Chad</button>
+          </div>
+        </div>
+
+        <div class="selection-area">
+          <!-- Your Team Selection -->
+          <div class="team-selection">
+            <h3>Your Team</h3>
+            <div id="your-team-grid" class="character-grid"></div>
+            <div class="selected-characters">
+              <h4>Selected:</h4>
+              <div id="your-selected" class="selected-list"></div>
+            </div>
+          </div>
+
+          <!-- Opponent Team Selection -->
+          <div class="team-selection">
+            <h3>Opponent Team</h3>
+            <div id="opponent-team-grid" class="character-grid"></div>
+            <div class="selected-characters">
+              <h4>Selected:</h4>
+              <div id="opponent-selected" class="selected-list"></div>
+            </div>
+          </div>
+        </div>
+
+        <button id="btn-start-battle" class="btn btn-large btn-success" disabled>Start Battle</button>
+      </div>
+
+      <!-- Network Team Selection Screen -->
+      <div id="network-team-select-screen" class="screen">
+        <div class="screen-header">
+          <h2 class="screen-title">Prepare for Battle</h2>
+        </div>
+        <div class="glass-panel" style="padding: 1rem; margin: 1rem;">
+          <div class="team-selection" style="width: 100%">
+            <h3>Select Your Squad (Max 5)</h3>
+            <div id="network-select-grid" class="character-grid"></div>
+          </div>
+          <div style="text-align: center; margin-top: 2rem;">
+            <p id="network-status-text" style="font-size: 1.2rem; margin-bottom: 1rem;">Select your champions...</p>
+            <button id="btn-network-ready" class="btn btn-large btn-success" disabled>Please wait...</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Battle Screen -->
+      <div id="battle-screen" class="screen">
+        <div class="screen-header">
+          <h2 class="screen-title">Battle Arena</h2>
+        </div>
+
+        <div class="battle-area-centered">
+          <!-- Top: Info / Turn Indicator -->
+          <div id="turn-indicator" class="glass-panel turn-indicator-centered">
+            Preparing battle...
+          </div>
+          <div id="action-banner" class="action-banner" style="display: none;"></div>
+
+          <!-- Auto Battle moved to top cluster -->
+          <!--
+          <button id="btn-auto-battle" class="control-btn auto-btn top-auto-btn">
+            <span class="icon">⚡</span> AUTO
+          </button>
+          -->
+
+          <div id="target-selection-msg" class="target-msg-centered" style="display: none;">Select a target to attack!
+          </div>
+
+          <!-- Middle: The Board -->
+          <div class="battle-board">
+
+            <!-- Your Team (Left side of board, but styled as tiles) -->
+            <div class="board-team player-team-board">
+              <div class="board-team-label">Your Team</div>
+              <div id="player-battle-grid" class="battle-grid"></div>
+            </div>
+
+            <!-- VS Divider (Optional visual) -->
+            <div class="board-divider">VS</div>
+
+            <!-- Enemy Team (Right side of board) -->
+            <div class="board-team enemy-team-board">
+              <div class="board-team-label">Opponent Team</div>
+              <div id="enemy-battle-grid" class="battle-grid"></div>
+            </div>
+
+          </div>
+
+          <!-- Bottom Container for Moves and Auto -->
+          <div class="battle-bottom-container">
+            <!-- Ability Selection Panel -->
+            <div id="ability-panel" class="ability-panel" style="display: none;"></div>
+
+            <!-- Auto Battle (Moved to bottom) -->
+            <div class="auto-btn-container">
+              <button id="btn-auto-battle" class="control-btn auto-btn">
+                <span class="icon">⚡</span> AUTO
+              </button>
+            </div>
+
+            <!-- Forfeit Button -->
+            <div class="auto-btn-container">
+              <button id="btn-back-from-battle" class="control-btn forfeit-btn">
+                <span class="icon">🏳️</span> FORFEIT
+              </button>
+            </div>
+          </div>
+
+
+          <!-- Bottom Controls (Removed Speed) -->
+          <!--
+          <div class="battle-controls-bottom">
+            <div class="speed-controls">
+              <button id="btn-speed-2x" class="speed-btn active">2x Speed</button>
+            </div>
+          </div>
+          -->
+        </div>
+
+        <!-- Ability Tooltip -->
+        <div id="ability-tooltip" class="ability-tooltip" style="display: none;"></div>
+      </div>
+
+      <!-- Results Screen -->
+      <div id="results-screen" class="screen">
+        <div class="results-container">
+          <h2 id="results-title" class="results-title">Victory!</h2>
+          <div id="results-xp" class="results-xp"></div>
+          <div id="results-levelups" class="results-levelups"></div>
+          <div id="results-loot" class="results-loot"></div>
+          <div class="results-buttons">
+            <button id="btn-allocate-stats" class="btn btn-primary">Allocate Stats</button>
+            <button id="btn-back-to-training" class="btn btn-success">Back to Keypad</button>
+            <!-- Context sensitive label update in logic -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Stat Allocation Screen -->
+      <div id="stats-screen" class="screen">
+        <div class="screen-header">
+          <h2 class="screen-title">Allocate Stat Points</h2>
+        </div>
+
+        <div class="stats-area">
+          <div class="character-selector">
+            <h3>Select Character:</h3>
+            <div id="character-selector-list"></div>
+          </div>
+
+          <div id="stat-allocation-panel" class="stat-allocation-panel">
+            <h3 id="selected-char-name">Select a character</h3>
+            <div class="stat-points-available">
+              Available Points: <span id="available-points">0</span>
+            </div>
+            <div id="stat-list" class="stat-list"></div>
+            <button id="btn-confirm-stats" class="btn btn-success"
+              style="margin-top: 1rem; width: 100%; display: none;">Confirm Changes</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Character Management Screen -->
+      <div id="manage-screen" class="screen">
+        <div class="screen-header">
+          <h2 class="screen-title">Characters</h2>
+        </div>
+        <div id="character-manage-grid" class="character-grid"></div>
+      </div>
+    </div>
+
+    <!-- FTUE Loot Box Overlay -->
+    <div id="ftue-overlay" class="ftue-overlay" style="display: none;">
+      <div class="loot-box-container">
+        <h2 class="loot-title">Welcome to Kerna: Galaxy of Chads</h2>
+        <p class="loot-subtitle">Open your first sleeping bag to reveal your starter Chad!</p>
+        <div id="loot-box" class="loot-box">
+          <div class="loot-icon">🎒</div>
+          <div class="loot-text">CLICK TO OPEN</div>
+        </div>
+        <div id="loot-reveal" class="loot-reveal" style="display: none;">
+          <!-- Revealed character content -->
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- Challenge Modal -->
+  <div id="challenge-modal" class="modal-overlay">
+    <div class="modal-content glass-panel" style="text-align: center;">
+      <h3 style="color: #ffcc00; font-size: 2rem;">⚔️ BATTLE CHALLENGE!</h3>
+      <p id="challenge-text" style="margin: 1.5rem 0; font-size: 1.2rem;">A player wants to battle you!</p>
+      <div style="display: flex; gap: 1rem; justify-content: center;">
+        <button id="btn-accept-challenge" class="btn btn-large btn-success">ACCEPT</button>
+        <button id="btn-decline-challenge" class="btn btn-large btn-danger">RUN AWAY</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>

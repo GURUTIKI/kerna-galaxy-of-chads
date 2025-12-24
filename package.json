@@ -1,0 +1,31 @@
+{
+  "name": "raid-galaxy-legends",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --strictPort",
+    "start": "node server/server.js",
+    "server": "node server/server.js",
+    "start-all": "concurrently \"npm run server\" \"npm run dev\"",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/socket.io-client": "^1.4.36",
+    "concurrently": "^9.2.1",
+    "typescript": "~5.9.3",
+    "vite": "^7.2.4"
+  },
+  "dependencies": {
+    "@types/three": "^0.181.0",
+    "cors": "^2.8.5",
+    "express": "^5.2.1",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
+    "three": "^0.181.2",
+    "three-stdlib": "^2.36.1"
+  }
+}

@@ -1,0 +1,4294 @@
+{
+  "users": [
+    {
+      "username": "tom",
+      "password": "tom",
+      "data": [
+        {
+          "id": "char_jatt",
+          "name": "Jatt",
+          "description": "The OG Sniper.",
+          "abilities": [
+            {
+              "id": "jatt_basic",
+              "name": "Quick Shot",
+              "description": "Fast single-target attack.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "jatt_special1",
+              "name": "Lock On",
+              "description": "Applies Marked to an enemy for 2 turns. This unit cannot dodge attacks and is easier to hit.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "marked",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "jatt_special2",
+              "name": "Flashbang",
+              "description": "Applies Stun to a single enemy. This unit skips its next turn.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "stun",
+                  "duration": 1
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 50,
+            "currentHealth": 50,
+            "attack": 15,
+            "defense": 5,
+            "speed": 12,
+            "healthSteal": 0,
+            "evasion": 5,
+            "accuracy": 90,
+            "critChance": 10,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#4facfe",
+            "modelType": "cube"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_pure",
+          "name": "Purezion1",
+          "description": "Sleek Cyborg.",
+          "abilities": [
+            {
+              "id": "pure_basic",
+              "name": "Clean Strike",
+              "description": "Precise single-target damage.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "pure_special1",
+              "name": "Focus Fire",
+              "description": "Applies Vulnerable to an enemy. This unit takes increased damage from all sources.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "vulnerable",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "pure_special2",
+              "name": "Overclock",
+              "description": "Grants Attack Up to self. This unit deals increased damage.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "attack_up",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 45,
+            "currentHealth": 45,
+            "attack": 12,
+            "defense": 2,
+            "speed": 15,
+            "healthSteal": 0,
+            "evasion": 10,
+            "accuracy": 95,
+            "critChance": 15,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#aaaaaa",
+            "modelType": "sphere"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_zdb",
+          "name": "ZDB",
+          "description": "Tactical Tech.",
+          "abilities": [
+            {
+              "id": "zdb_basic",
+              "name": "Disruptor Hit",
+              "description": "Deals damage with a chance to annoy.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "zdb_special1",
+              "name": "System Jam",
+              "description": "Applies Silenced to an enemy. This unit cannot use special abilities and can only perform basic attacks.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "silenced",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "zdb_special2",
+              "name": "EMP Pulse",
+              "description": "Applies Stun to all enemies (short duration). These units skip their next turn.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "all_enemies",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "stun",
+                  "duration": 1
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 40,
+            "currentHealth": 40,
+            "attack": 18,
+            "defense": 3,
+            "speed": 14,
+            "healthSteal": 0,
+            "evasion": 8,
+            "accuracy": 85,
+            "critChance": 25,
+            "critDamage": 75
+          },
+          "visual": {
+            "color": "#f5576c",
+            "modelType": "cylinder"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_kappy",
+          "name": "Kappyjjk",
+          "description": "Martial Artist.",
+          "abilities": [
+            {
+              "id": "kappy_basic",
+              "name": "Swift Jab",
+              "description": "Light damage, quick animation.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "kappy_special1",
+              "name": "Evasive Roll",
+              "description": "Grants Evasion Up to self. This unit has a higher chance to dodge attacks.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "evasion_up",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "kappy_special2",
+              "name": "Riposte",
+              "description": "Grants Counter for 2 turns. This unit automatically attacks back when hit.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "counter",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 75,
+            "currentHealth": 75,
+            "attack": 8,
+            "defense": 12,
+            "speed": 8,
+            "healthSteal": 5,
+            "evasion": 5,
+            "accuracy": 80,
+            "critChance": 5,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#43e97b",
+            "modelType": "cube"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_fazoid",
+          "name": "Fazoid",
+          "description": "Energy Being.",
+          "abilities": [
+            {
+              "id": "fazoid_basic",
+              "name": "Phase Strike",
+              "description": "Single-target damage.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "fazoid_special1",
+              "name": "Phase Shift",
+              "description": "Grants Evasion Up to self. This unit has a higher chance to dodge attacks.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "evasion_up",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "fazoid_special2",
+              "name": "Reality Burn",
+              "description": "Applies Damage Over Time to an enemy. This unit takes damage at the start of each turn.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "dot",
+                  "duration": 3,
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 35,
+            "currentHealth": 35,
+            "attack": 20,
+            "defense": 2,
+            "speed": 18,
+            "healthSteal": 0,
+            "evasion": 25,
+            "accuracy": 100,
+            "critChance": 30,
+            "critDamage": 60
+          },
+          "visual": {
+            "color": "#9932cc",
+            "modelType": "cube"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_mercy",
+          "name": "Mercymain",
+          "description": "Angelic Support.",
+          "abilities": [
+            {
+              "id": "mercy_basic",
+              "name": "Sidearm Shot",
+              "description": "Low damage attack.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "mercy_special1",
+              "name": "Healing Aura",
+              "description": "Grants Regen to all allies. These units recover health at the start of each turn.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "all_allies",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "regen",
+                  "duration": 3,
+                  "value": 15
+                }
+              ]
+            },
+            {
+              "id": "mercy_special2",
+              "name": "Protective Boost",
+              "description": "Grants Defence Up to all allies. These units take reduced damage from attacks.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "all_allies",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "defence_up",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 40,
+            "currentHealth": 40,
+            "attack": 10,
+            "defense": 5,
+            "speed": 13,
+            "healthSteal": 0,
+            "evasion": 5,
+            "accuracy": 90,
+            "critChance": 10,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#ffd700",
+            "modelType": "sphere"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_papa",
+          "name": "Papaklit",
+          "description": "The Dad.",
+          "abilities": [
+            {
+              "id": "papa_basic",
+              "name": "Dad Slap",
+              "description": "Surprisingly effective damage.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "papa_special1",
+              "name": "Tactical Advice",
+              "description": "Grants Attack Up to all allies. These units deal increased damage.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "all_allies",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "attack_up",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "papa_special2",
+              "name": "Hold the Line",
+              "description": "Grants Defence Up to all allies. These units take reduced damage from attacks.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "all_allies",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "defence_up",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 55,
+            "currentHealth": 55,
+            "attack": 16,
+            "defense": 8,
+            "speed": 10,
+            "healthSteal": 0,
+            "evasion": 5,
+            "accuracy": 90,
+            "critChance": 15,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#4169e1",
+            "modelType": "cube"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_guru",
+          "name": "Gurutiki",
+          "description": "Ancient Monk.",
+          "abilities": [
+            {
+              "id": "guru_basic",
+              "name": "Guiding Strike",
+              "description": "Balanced damage.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "guru_special1",
+              "name": "Inner Focus",
+              "description": "Grants Regen and Evasion Up to self. This unit recovers health and has higher dodge chance.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "regen",
+                  "duration": 3,
+                  "value": 12
+                },
+                {
+                  "type": "apply_status",
+                  "statusType": "evasion_up",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "guru_special2",
+              "name": "Enlighten",
+              "description": "Applies Vulnerable to all enemies. These units take increased damage from all sources.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "all_enemies",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "vulnerable",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 35,
+            "currentHealth": 35,
+            "attack": 14,
+            "defense": 4,
+            "speed": 15,
+            "healthSteal": 0,
+            "evasion": 10,
+            "accuracy": 95,
+            "critChance": 10,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#ff8c00",
+            "modelType": "cylinder"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_jb",
+          "name": "JB",
+          "description": "Secret Agent.",
+          "abilities": [
+            {
+              "id": "jb_basic",
+              "name": "Straight Punch",
+              "description": "Reliable single-target damage.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "jb_special1",
+              "name": "Crowd Control",
+              "description": "Applies Stun to an enemy. This unit skips its next turn.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "stun",
+                  "duration": 1
+                }
+              ]
+            },
+            {
+              "id": "jb_special2",
+              "name": "Pressure Play",
+              "description": "Applies Marked to an enemy. This unit cannot dodge attacks and is easier to hit.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "marked",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 45,
+            "currentHealth": 45,
+            "attack": 15,
+            "defense": 5,
+            "speed": 12,
+            "healthSteal": 0,
+            "evasion": 5,
+            "accuracy": 90,
+            "critChance": 15,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#000000",
+            "modelType": "cube"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_bru",
+          "name": "The Only Bru",
+          "description": "The Highlander.",
+          "abilities": [
+            {
+              "id": "bru_basic",
+              "name": "Heavy Swing",
+              "description": "Deals solid damage to a single enemy.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "bru_special1",
+              "name": "Bru Force",
+              "description": "Grants Attack Up to self for 2 turns.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "attack_up",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "bru_special2",
+              "name": "Shake It Off",
+              "description": "Grants Defence Up to self for 2 turns.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "defence_up",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 50,
+            "currentHealth": 50,
+            "attack": 15,
+            "defense": 6,
+            "speed": 11,
+            "healthSteal": 0,
+            "evasion": 5,
+            "accuracy": 90,
+            "critChance": 10,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#1e90ff",
+            "modelType": "cube"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_kappa",
+          "name": "Kappasaurus",
+          "description": "Prehistoric Beast.",
+          "abilities": [
+            {
+              "id": "kappa_basic",
+              "name": "Tail Whip",
+              "description": "Heavy damage to one enemy.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "kappa_special1",
+              "name": "Dino Roar",
+              "description": "Applies Vulnerable to all enemies. These units take increased damage from all sources.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "all_enemies",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "vulnerable",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "kappa_special2",
+              "name": "Thick Scales",
+              "description": "Grants Defence Up to self. This unit takes reduced damage from attacks.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "defence_up",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 80,
+            "currentHealth": 80,
+            "attack": 10,
+            "defense": 10,
+            "speed": 6,
+            "healthSteal": 0,
+            "evasion": 5,
+            "accuracy": 85,
+            "critChance": 5,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#228b22",
+            "modelType": "cube"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_suze",
+          "name": "Big Suze",
+          "description": "Heavy Wrestler.",
+          "abilities": [
+            {
+              "id": "suze_basic",
+              "name": "Big Hit",
+              "description": "High base damage attack.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "suze_special1",
+              "name": "No Dodging This",
+              "description": "Applies Marked to an enemy. This unit cannot dodge attacks and is easier to hit.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "marked",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "suze_special2",
+              "name": "Smash Back",
+              "description": "Grants Counter to self. This unit automatically attacks back when hit.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "counter",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 60,
+            "currentHealth": 60,
+            "attack": 14,
+            "defense": 8,
+            "speed": 9,
+            "healthSteal": 0,
+            "evasion": 5,
+            "accuracy": 90,
+            "critChance": 10,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#ff69b4",
+            "modelType": "sphere"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_toxo",
+          "name": "Toxoplasmosis",
+          "description": "Plague Doctor.",
+          "abilities": [
+            {
+              "id": "toxo_basic",
+              "name": "Toxic Scratch",
+              "description": "Applies light damage.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "toxo_special1",
+              "name": "Infection",
+              "description": "Applies Damage Over Time for 3 turns. This unit takes damage at the start of each turn.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "dot",
+                  "duration": 3,
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "id": "toxo_special2",
+              "name": "Weaken Immune System",
+              "description": "Applies Vulnerable. This unit takes increased damage from all sources.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "vulnerable",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 30,
+            "currentHealth": 30,
+            "attack": 18,
+            "defense": 2,
+            "speed": 16,
+            "healthSteal": 10,
+            "evasion": 15,
+            "accuracy": 90,
+            "critChance": 20,
+            "critDamage": 60
+          },
+          "visual": {
+            "color": "#adff2f",
+            "modelType": "sphere"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": true,
+          "fragments": 0
+        },
+        {
+          "id": "char_cuber",
+          "name": "Cuber",
+          "description": "Blocky Robot.",
+          "abilities": [
+            {
+              "id": "cuber_basic",
+              "name": "Precision Tap",
+              "description": "Accurate single-target damage.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "cuber_special1",
+              "name": "Perfect Lines",
+              "description": "Grants Attack Up to self. This unit deals increased damage.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "attack_up",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "cuber_special2",
+              "name": "Boxed In",
+              "description": "Applies Silenced to an enemy. This unit cannot use special abilities and can only perform basic attacks.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "silenced",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 50,
+            "currentHealth": 50,
+            "attack": 12,
+            "defense": 12,
+            "speed": 10,
+            "healthSteal": 0,
+            "evasion": 5,
+            "accuracy": 100,
+            "critChance": 5,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#4b0082",
+            "modelType": "cube"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_jdog",
+          "name": "J-Dog",
+          "description": "The Beast.",
+          "abilities": [
+            {
+              "id": "jdog_basic",
+              "name": "Bite",
+              "description": "Aggressive single-target damage.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "jdog_special1",
+              "name": "Ferocity",
+              "description": "Grants Attack Up and Evasion Up to self. This unit deals increased damage and has higher dodge chance.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "attack_up",
+                  "duration": 2
+                },
+                {
+                  "type": "apply_status",
+                  "statusType": "evasion_up",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "jdog_special2",
+              "name": "Intimidate",
+              "description": "Applies Marked to an enemy. This unit cannot dodge attacks and is easier to hit.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "marked",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 45,
+            "currentHealth": 45,
+            "attack": 16,
+            "defense": 4,
+            "speed": 14,
+            "healthSteal": 0,
+            "evasion": 10,
+            "accuracy": 90,
+            "critChance": 15,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#8b4513",
+            "modelType": "cylinder"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_thor",
+          "name": "Thordog",
+          "description": "Small God.",
+          "abilities": [
+            {
+              "id": "thor_basic",
+              "name": "Thunder Strike",
+              "description": "Heavy damage attack.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "thor_special1",
+              "name": "Lightning Stun",
+              "description": "Applies Stun to an enemy. This unit skips its next turn.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "stun",
+                  "duration": 1
+                }
+              ]
+            },
+            {
+              "id": "thor_special2",
+              "name": "Storm Rage",
+              "description": "Grants Attack Up to self. This unit deals increased damage.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "attack_up",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 55,
+            "currentHealth": 55,
+            "attack": 20,
+            "defense": 6,
+            "speed": 11,
+            "healthSteal": 0,
+            "evasion": 5,
+            "accuracy": 90,
+            "critChance": 25,
+            "critDamage": 80
+          },
+          "visual": {
+            "color": "#708090",
+            "modelType": "cube"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_elk",
+          "name": "El Kappitan",
+          "description": "Pirate Captain.",
+          "abilities": [
+            {
+              "id": "elk_basic",
+              "name": "Command Shot",
+              "description": "Moderate damage.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "elk_special1",
+              "name": "Rally the Squad",
+              "description": "Grants Attack Up to all allies. These units deal increased damage.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "all_allies",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "attack_up",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "elk_special2",
+              "name": "Tactical Mark",
+              "description": "Applies Marked to a priority enemy. This unit cannot dodge attacks and is easier to hit.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "marked",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 50,
+            "currentHealth": 50,
+            "attack": 15,
+            "defense": 8,
+            "speed": 12,
+            "healthSteal": 0,
+            "evasion": 5,
+            "accuracy": 95,
+            "critChance": 10,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#000080",
+            "modelType": "cube"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_zez",
+          "name": "Zezima",
+          "description": "Legendary Boss.",
+          "abilities": [
+            {
+              "id": "zez_basic",
+              "name": "Legacy Strike",
+              "description": "Balanced, dependable damage.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "zez_special1",
+              "name": "Old School Focus",
+              "description": "Grants Regen and Defence Up to self. This unit recovers health and takes reduced damage.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "regen",
+                  "duration": 3,
+                  "value": 20
+                },
+                {
+                  "type": "apply_status",
+                  "statusType": "defence_up",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "zez_special2",
+              "name": "Timeless Pressure",
+              "description": "Applies Vulnerable. This unit takes increased damage from all sources.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "vulnerable",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 100,
+            "currentHealth": 100,
+            "attack": 5,
+            "defense": 20,
+            "speed": 5,
+            "healthSteal": 0,
+            "evasion": 5,
+            "accuracy": 100,
+            "critChance": 5,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#ffffff",
+            "modelType": "cube"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_daf",
+          "name": "Dafran",
+          "description": "Pro Gamer.",
+          "abilities": [
+            {
+              "id": "dafran_basic",
+              "name": "Headshot",
+              "description": "High single-target damage.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "dafran_special1",
+              "name": "Aim God",
+              "description": "Grants Attack Up to self and applies Marked to the target. Increased damage and guaranteed hit.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "attack_up",
+                  "duration": 2,
+                  "target": "self"
+                },
+                {
+                  "type": "apply_status",
+                  "statusType": "marked",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "dafran_special2",
+              "name": "Zone Control",
+              "description": "Applies Stun to an enemy. This unit skips its next turn.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "stun",
+                  "duration": 1
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 35,
+            "currentHealth": 35,
+            "attack": 25,
+            "defense": 2,
+            "speed": 15,
+            "healthSteal": 10,
+            "evasion": 10,
+            "accuracy": 80,
+            "critChance": 30,
+            "critDamage": 100
+          },
+          "visual": {
+            "color": "#dc143c",
+            "modelType": "cylinder"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        }
+      ],
+      "friends": [],
+      "friendRequests": [],
+      "pvpStats": {
+        "wins": 0,
+        "losses": 0,
+        "matches": 0
+      }
+    },
+    {
+      "username": "tester_chad",
+      "password": "password123",
+      "data": [
+        {
+          "id": "char_jatt",
+          "name": "Jatt",
+          "description": "The OG.",
+          "abilities": [
+            {
+              "id": "jatt_basic",
+              "name": "Quick Shot",
+              "description": "Fast single-target attack.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "jatt_special1",
+              "name": "Lock On",
+              "description": "Applies Marked to an enemy for 2 turns. This unit cannot dodge attacks and is easier to hit.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "marked",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "jatt_special2",
+              "name": "Flashbang",
+              "description": "Applies Stun to a single enemy. This unit skips its next turn.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "stun",
+                  "duration": 1
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 50,
+            "currentHealth": 50,
+            "attack": 15,
+            "defense": 5,
+            "speed": 12,
+            "healthSteal": 0,
+            "evasion": 5,
+            "accuracy": 90,
+            "critChance": 10,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#4facfe",
+            "modelType": "cube"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_pure",
+          "name": "Purezion1",
+          "description": "Pure power.",
+          "abilities": [
+            {
+              "id": "pure_basic",
+              "name": "Clean Strike",
+              "description": "Precise single-target damage.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "pure_special1",
+              "name": "Focus Fire",
+              "description": "Applies Vulnerable to an enemy. This unit takes increased damage from all sources.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "vulnerable",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "pure_special2",
+              "name": "Overclock",
+              "description": "Grants Attack Up to self. This unit deals increased damage.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "attack_up",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 45,
+            "currentHealth": 45,
+            "attack": 12,
+            "defense": 2,
+            "speed": 15,
+            "healthSteal": 0,
+            "evasion": 10,
+            "accuracy": 95,
+            "critChance": 15,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#f093fb",
+            "modelType": "sphere"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_zdb",
+          "name": "ZDB",
+          "description": "Zero Doubt Bro.",
+          "abilities": [
+            {
+              "id": "zdb_basic",
+              "name": "Disruptor Hit",
+              "description": "Deals damage with a chance to annoy.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "zdb_special1",
+              "name": "System Jam",
+              "description": "Applies Silenced to an enemy. This unit cannot use special abilities and can only perform basic attacks.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "silenced",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "zdb_special2",
+              "name": "EMP Pulse",
+              "description": "Applies Stun to all enemies (short duration). These units skip their next turn.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "all_enemies",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "stun",
+                  "duration": 1
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 40,
+            "currentHealth": 40,
+            "attack": 18,
+            "defense": 3,
+            "speed": 14,
+            "healthSteal": 0,
+            "evasion": 8,
+            "accuracy": 85,
+            "critChance": 25,
+            "critDamage": 75
+          },
+          "visual": {
+            "color": "#f5576c",
+            "modelType": "cylinder"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_kappy",
+          "name": "Kappyjjk",
+          "description": "No cap.",
+          "abilities": [
+            {
+              "id": "kappy_basic",
+              "name": "Swift Jab",
+              "description": "Light damage, quick animation.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "kappy_special1",
+              "name": "Evasive Roll",
+              "description": "Grants Evasion Up to self. This unit has a higher chance to dodge attacks.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "evasion_up",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "kappy_special2",
+              "name": "Riposte",
+              "description": "Grants Counter for 2 turns. This unit automatically attacks back when hit.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "counter",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 75,
+            "currentHealth": 75,
+            "attack": 8,
+            "defense": 12,
+            "speed": 8,
+            "healthSteal": 5,
+            "evasion": 5,
+            "accuracy": 80,
+            "critChance": 5,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#43e97b",
+            "modelType": "cube"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_fazoid",
+          "name": "Fazoid",
+          "description": "Phased out.",
+          "abilities": [
+            {
+              "id": "fazoid_basic",
+              "name": "Phase Strike",
+              "description": "Single-target damage.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "fazoid_special1",
+              "name": "Phase Shift",
+              "description": "Grants Evasion Up to self. This unit has a higher chance to dodge attacks.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "evasion_up",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "fazoid_special2",
+              "name": "Reality Burn",
+              "description": "Applies Damage Over Time to an enemy. This unit takes damage at the start of each turn.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "dot",
+                  "duration": 3,
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 35,
+            "currentHealth": 35,
+            "attack": 20,
+            "defense": 2,
+            "speed": 18,
+            "healthSteal": 0,
+            "evasion": 25,
+            "accuracy": 100,
+            "critChance": 30,
+            "critDamage": 60
+          },
+          "visual": {
+            "color": "#333333",
+            "modelType": "cube"
+          },
+          "statusEffects": [],
+          "level": 3,
+          "experience": 0,
+          "availableStatPoints": 10,
+          "isOwned": true,
+          "fragments": 0
+        },
+        {
+          "id": "char_mercy",
+          "name": "Mercymain",
+          "description": "Heroes never die.",
+          "abilities": [
+            {
+              "id": "mercy_basic",
+              "name": "Sidearm Shot",
+              "description": "Low damage attack.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "mercy_special1",
+              "name": "Healing Aura",
+              "description": "Grants Regen to all allies. These units recover health at the start of each turn.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "all_allies",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "regen",
+                  "duration": 3,
+                  "value": 15
+                }
+              ]
+            },
+            {
+              "id": "mercy_special2",
+              "name": "Protective Boost",
+              "description": "Grants Defence Up to all allies. These units take reduced damage from attacks.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "all_allies",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "defence_up",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 40,
+            "currentHealth": 40,
+            "attack": 10,
+            "defense": 5,
+            "speed": 13,
+            "healthSteal": 0,
+            "evasion": 5,
+            "accuracy": 90,
+            "critChance": 10,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#ffd700",
+            "modelType": "sphere"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_papa",
+          "name": "Papaklit",
+          "description": "The father figure.",
+          "abilities": [
+            {
+              "id": "papa_basic",
+              "name": "Dad Slap",
+              "description": "Surprisingly effective damage.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "papa_special1",
+              "name": "Tactical Advice",
+              "description": "Grants Attack Up to all allies. These units deal increased damage.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "all_allies",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "attack_up",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "papa_special2",
+              "name": "Hold the Line",
+              "description": "Grants Defence Up to all allies. These units take reduced damage from attacks.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "all_allies",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "defence_up",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 55,
+            "currentHealth": 55,
+            "attack": 16,
+            "defense": 8,
+            "speed": 10,
+            "healthSteal": 0,
+            "evasion": 5,
+            "accuracy": 90,
+            "critChance": 15,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#800080",
+            "modelType": "cube"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_guru",
+          "name": "Gurutiki",
+          "description": "Wise words.",
+          "abilities": [
+            {
+              "id": "guru_basic",
+              "name": "Guiding Strike",
+              "description": "Balanced damage.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "guru_special1",
+              "name": "Inner Focus",
+              "description": "Grants Regen and Evasion Up to self. This unit recovers health and has higher dodge chance.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "regen",
+                  "duration": 3,
+                  "value": 12
+                },
+                {
+                  "type": "apply_status",
+                  "statusType": "evasion_up",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "guru_special2",
+              "name": "Enlighten",
+              "description": "Applies Vulnerable to all enemies. These units take increased damage from all sources.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "all_enemies",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "vulnerable",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 35,
+            "currentHealth": 35,
+            "attack": 14,
+            "defense": 4,
+            "speed": 15,
+            "healthSteal": 0,
+            "evasion": 10,
+            "accuracy": 95,
+            "critChance": 10,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#00ced1",
+            "modelType": "cylinder"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_jb",
+          "name": "JB",
+          "description": "Just Business.",
+          "abilities": [
+            {
+              "id": "jb_basic",
+              "name": "Straight Punch",
+              "description": "Reliable single-target damage.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "jb_special1",
+              "name": "Crowd Control",
+              "description": "Applies Stun to an enemy. This unit skips its next turn.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "stun",
+                  "duration": 1
+                }
+              ]
+            },
+            {
+              "id": "jb_special2",
+              "name": "Pressure Play",
+              "description": "Applies Marked to an enemy. This unit cannot dodge attacks and is easier to hit.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "marked",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 45,
+            "currentHealth": 45,
+            "attack": 15,
+            "defense": 5,
+            "speed": 12,
+            "healthSteal": 0,
+            "evasion": 5,
+            "accuracy": 90,
+            "critChance": 15,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#ff4500",
+            "modelType": "cube"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_bru",
+          "name": "The Only Bru",
+          "description": "One of a kind.",
+          "abilities": [
+            {
+              "id": "bru_basic",
+              "name": "Heavy Swing",
+              "description": "Deals solid damage to a single enemy.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "bru_special1",
+              "name": "Bru Force",
+              "description": "Grants Attack Up to self for 2 turns.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "attack_up",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "bru_special2",
+              "name": "Shake It Off",
+              "description": "Grants Defence Up to self for 2 turns.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "defence_up",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 50,
+            "currentHealth": 50,
+            "attack": 15,
+            "defense": 6,
+            "speed": 11,
+            "healthSteal": 0,
+            "evasion": 5,
+            "accuracy": 90,
+            "critChance": 10,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#1e90ff",
+            "modelType": "cube"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_kappa",
+          "name": "Kappasaurus",
+          "description": "Prehistoric meme.",
+          "abilities": [
+            {
+              "id": "kappa_basic",
+              "name": "Tail Whip",
+              "description": "Heavy damage to one enemy.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "kappa_special1",
+              "name": "Dino Roar",
+              "description": "Applies Vulnerable to all enemies. These units take increased damage from all sources.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "all_enemies",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "vulnerable",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "kappa_special2",
+              "name": "Thick Scales",
+              "description": "Grants Defence Up to self. This unit takes reduced damage from attacks.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "defence_up",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 80,
+            "currentHealth": 80,
+            "attack": 10,
+            "defense": 10,
+            "speed": 6,
+            "healthSteal": 0,
+            "evasion": 5,
+            "accuracy": 85,
+            "critChance": 5,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#228b22",
+            "modelType": "cube"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_suze",
+          "name": "Big Suze",
+          "description": "Larger than life.",
+          "abilities": [
+            {
+              "id": "suze_basic",
+              "name": "Big Hit",
+              "description": "High base damage attack.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "suze_special1",
+              "name": "No Dodging This",
+              "description": "Applies Marked to an enemy. This unit cannot dodge attacks and is easier to hit.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "marked",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "suze_special2",
+              "name": "Smash Back",
+              "description": "Grants Counter to self. This unit automatically attacks back when hit.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "counter",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 60,
+            "currentHealth": 60,
+            "attack": 14,
+            "defense": 8,
+            "speed": 9,
+            "healthSteal": 0,
+            "evasion": 5,
+            "accuracy": 90,
+            "critChance": 10,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#ff69b4",
+            "modelType": "sphere"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_toxo",
+          "name": "Toxoplasmosis",
+          "description": "Parasitic power.",
+          "abilities": [
+            {
+              "id": "toxo_basic",
+              "name": "Toxic Scratch",
+              "description": "Applies light damage.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "toxo_special1",
+              "name": "Infection",
+              "description": "Applies Damage Over Time for 3 turns. This unit takes damage at the start of each turn.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "dot",
+                  "duration": 3,
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "id": "toxo_special2",
+              "name": "Weaken Immune System",
+              "description": "Applies Vulnerable. This unit takes increased damage from all sources.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "vulnerable",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 30,
+            "currentHealth": 30,
+            "attack": 18,
+            "defense": 2,
+            "speed": 16,
+            "healthSteal": 10,
+            "evasion": 15,
+            "accuracy": 90,
+            "critChance": 20,
+            "critDamage": 60
+          },
+          "visual": {
+            "color": "#adff2f",
+            "modelType": "sphere"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 1
+        },
+        {
+          "id": "char_cuber",
+          "name": "Cuber",
+          "description": "It is hip to be square.",
+          "abilities": [
+            {
+              "id": "cuber_basic",
+              "name": "Precision Tap",
+              "description": "Accurate single-target damage.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "cuber_special1",
+              "name": "Perfect Lines",
+              "description": "Grants Attack Up to self. This unit deals increased damage.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "attack_up",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "cuber_special2",
+              "name": "Boxed In",
+              "description": "Applies Silenced to an enemy. This unit cannot use special abilities and can only perform basic attacks.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "silenced",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 50,
+            "currentHealth": 50,
+            "attack": 12,
+            "defense": 12,
+            "speed": 10,
+            "healthSteal": 0,
+            "evasion": 5,
+            "accuracy": 100,
+            "critChance": 5,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#4b0082",
+            "modelType": "cube"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_jdog",
+          "name": "J-Dog",
+          "description": "Top dog.",
+          "abilities": [
+            {
+              "id": "jdog_basic",
+              "name": "Bite",
+              "description": "Aggressive single-target damage.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "jdog_special1",
+              "name": "Ferocity",
+              "description": "Grants Attack Up and Evasion Up to self. This unit deals increased damage and has higher dodge chance.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "attack_up",
+                  "duration": 2
+                },
+                {
+                  "type": "apply_status",
+                  "statusType": "evasion_up",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "jdog_special2",
+              "name": "Intimidate",
+              "description": "Applies Marked to an enemy. This unit cannot dodge attacks and is easier to hit.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "marked",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 45,
+            "currentHealth": 45,
+            "attack": 16,
+            "defense": 4,
+            "speed": 14,
+            "healthSteal": 0,
+            "evasion": 10,
+            "accuracy": 90,
+            "critChance": 15,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#8b4513",
+            "modelType": "cylinder"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_thor",
+          "name": "Thordog",
+          "description": "God of thunder... dogs.",
+          "abilities": [
+            {
+              "id": "thor_basic",
+              "name": "Thunder Strike",
+              "description": "Heavy damage attack.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "thor_special1",
+              "name": "Lightning Stun",
+              "description": "Applies Stun to an enemy. This unit skips its next turn.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "stun",
+                  "duration": 1
+                }
+              ]
+            },
+            {
+              "id": "thor_special2",
+              "name": "Storm Rage",
+              "description": "Grants Attack Up to self. This unit deals increased damage.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "attack_up",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 55,
+            "currentHealth": 55,
+            "attack": 20,
+            "defense": 6,
+            "speed": 11,
+            "healthSteal": 0,
+            "evasion": 5,
+            "accuracy": 90,
+            "critChance": 25,
+            "critDamage": 80
+          },
+          "visual": {
+            "color": "#708090",
+            "modelType": "cube"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_elk",
+          "name": "El Kappitan",
+          "description": "Leader of the pack.",
+          "abilities": [
+            {
+              "id": "elk_basic",
+              "name": "Command Shot",
+              "description": "Moderate damage.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "elk_special1",
+              "name": "Rally the Squad",
+              "description": "Grants Attack Up to all allies. These units deal increased damage.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "all_allies",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "attack_up",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "elk_special2",
+              "name": "Tactical Mark",
+              "description": "Applies Marked to a priority enemy. This unit cannot dodge attacks and is easier to hit.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "marked",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 50,
+            "currentHealth": 50,
+            "attack": 15,
+            "defense": 8,
+            "speed": 12,
+            "healthSteal": 0,
+            "evasion": 5,
+            "accuracy": 95,
+            "critChance": 10,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#000080",
+            "modelType": "cube"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_zez",
+          "name": "Zezima",
+          "description": "Legendary grinder.",
+          "abilities": [
+            {
+              "id": "zez_basic",
+              "name": "Legacy Strike",
+              "description": "Balanced, dependable damage.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "zez_special1",
+              "name": "Old School Focus",
+              "description": "Grants Regen and Defence Up to self. This unit recovers health and takes reduced damage.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "regen",
+                  "duration": 3,
+                  "value": 20
+                },
+                {
+                  "type": "apply_status",
+                  "statusType": "defence_up",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "zez_special2",
+              "name": "Timeless Pressure",
+              "description": "Applies Vulnerable. This unit takes increased damage from all sources.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "vulnerable",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 100,
+            "currentHealth": 100,
+            "attack": 5,
+            "defense": 20,
+            "speed": 5,
+            "healthSteal": 0,
+            "evasion": 5,
+            "accuracy": 100,
+            "critChance": 5,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#ffffff",
+            "modelType": "cube"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_daf",
+          "name": "Dafran",
+          "description": "Let's go dude.",
+          "abilities": [
+            {
+              "id": "dafran_basic",
+              "name": "Headshot",
+              "description": "High single-target damage.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "dafran_special1",
+              "name": "Aim God",
+              "description": "Grants Attack Up to self and applies Marked to the target. Increased damage and guaranteed hit.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "attack_up",
+                  "duration": 2,
+                  "target": "self"
+                },
+                {
+                  "type": "apply_status",
+                  "statusType": "marked",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "dafran_special2",
+              "name": "Zone Control",
+              "description": "Applies Stun to an enemy. This unit skips its next turn.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "stun",
+                  "duration": 1
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 35,
+            "currentHealth": 35,
+            "attack": 25,
+            "defense": 2,
+            "speed": 15,
+            "healthSteal": 10,
+            "evasion": 10,
+            "accuracy": 80,
+            "critChance": 30,
+            "critDamage": 100
+          },
+          "visual": {
+            "color": "#dc143c",
+            "modelType": "cylinder"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        }
+      ],
+      "friends": [],
+      "friendRequests": [],
+      "pvpStats": {
+        "wins": 0,
+        "losses": 0,
+        "matches": 0
+      }
+    },
+    {
+      "username": "testuser",
+      "password": "testpassword",
+      "data": [
+        {
+          "id": "char_jatt",
+          "name": "Jatt",
+          "description": "The OG.",
+          "abilities": [
+            {
+              "id": "jatt_basic",
+              "name": "Quick Shot",
+              "description": "Fast single-target attack.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "jatt_special1",
+              "name": "Lock On",
+              "description": "Applies Marked to an enemy for 2 turns. This unit cannot dodge attacks and is easier to hit.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "marked",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "jatt_special2",
+              "name": "Flashbang",
+              "description": "Applies Stun to a single enemy. This unit skips its next turn.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "stun",
+                  "duration": 1
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 50,
+            "currentHealth": 50,
+            "attack": 15,
+            "defense": 5,
+            "speed": 12,
+            "healthSteal": 0,
+            "evasion": 5,
+            "accuracy": 90,
+            "critChance": 10,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#4facfe",
+            "modelType": "cube"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_pure",
+          "name": "Purezion1",
+          "description": "Pure power.",
+          "abilities": [
+            {
+              "id": "pure_basic",
+              "name": "Clean Strike",
+              "description": "Precise single-target damage.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "pure_special1",
+              "name": "Focus Fire",
+              "description": "Applies Vulnerable to an enemy. This unit takes increased damage from all sources.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "vulnerable",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "pure_special2",
+              "name": "Overclock",
+              "description": "Grants Attack Up to self. This unit deals increased damage.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "attack_up",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 45,
+            "currentHealth": 45,
+            "attack": 12,
+            "defense": 2,
+            "speed": 15,
+            "healthSteal": 0,
+            "evasion": 10,
+            "accuracy": 95,
+            "critChance": 15,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#f093fb",
+            "modelType": "sphere"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_zdb",
+          "name": "ZDB",
+          "description": "Zero Doubt Bro.",
+          "abilities": [
+            {
+              "id": "zdb_basic",
+              "name": "Disruptor Hit",
+              "description": "Deals damage with a chance to annoy.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "zdb_special1",
+              "name": "System Jam",
+              "description": "Applies Silenced to an enemy. This unit cannot use special abilities and can only perform basic attacks.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "silenced",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "zdb_special2",
+              "name": "EMP Pulse",
+              "description": "Applies Stun to all enemies (short duration). These units skip their next turn.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "all_enemies",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "stun",
+                  "duration": 1
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 40,
+            "currentHealth": 40,
+            "attack": 18,
+            "defense": 3,
+            "speed": 14,
+            "healthSteal": 0,
+            "evasion": 8,
+            "accuracy": 85,
+            "critChance": 25,
+            "critDamage": 75
+          },
+          "visual": {
+            "color": "#f5576c",
+            "modelType": "cylinder"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_kappy",
+          "name": "Kappyjjk",
+          "description": "No cap.",
+          "abilities": [
+            {
+              "id": "kappy_basic",
+              "name": "Swift Jab",
+              "description": "Light damage, quick animation.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "kappy_special1",
+              "name": "Evasive Roll",
+              "description": "Grants Evasion Up to self. This unit has a higher chance to dodge attacks.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "evasion_up",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "kappy_special2",
+              "name": "Riposte",
+              "description": "Grants Counter for 2 turns. This unit automatically attacks back when hit.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "counter",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 75,
+            "currentHealth": 75,
+            "attack": 8,
+            "defense": 12,
+            "speed": 8,
+            "healthSteal": 5,
+            "evasion": 5,
+            "accuracy": 80,
+            "critChance": 5,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#43e97b",
+            "modelType": "cube"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_fazoid",
+          "name": "Fazoid",
+          "description": "Phased out.",
+          "abilities": [
+            {
+              "id": "fazoid_basic",
+              "name": "Phase Strike",
+              "description": "Single-target damage.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "fazoid_special1",
+              "name": "Phase Shift",
+              "description": "Grants Evasion Up to self. This unit has a higher chance to dodge attacks.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "evasion_up",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "fazoid_special2",
+              "name": "Reality Burn",
+              "description": "Applies Damage Over Time to an enemy. This unit takes damage at the start of each turn.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "dot",
+                  "duration": 3,
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 40,
+            "currentHealth": 27,
+            "attack": 20,
+            "defense": 2,
+            "speed": 18,
+            "healthSteal": 0,
+            "evasion": 25,
+            "accuracy": 100,
+            "critChance": 30,
+            "critDamage": 60
+          },
+          "visual": {
+            "color": "#333333",
+            "modelType": "cube"
+          },
+          "statusEffects": [],
+          "level": 3,
+          "experience": 200,
+          "availableStatPoints": 5,
+          "isOwned": true,
+          "fragments": 0
+        },
+        {
+          "id": "char_mercy",
+          "name": "Mercymain",
+          "description": "Heroes never die.",
+          "abilities": [
+            {
+              "id": "mercy_basic",
+              "name": "Sidearm Shot",
+              "description": "Low damage attack.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "mercy_special1",
+              "name": "Healing Aura",
+              "description": "Grants Regen to all allies. These units recover health at the start of each turn.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "all_allies",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "regen",
+                  "duration": 3,
+                  "value": 15
+                }
+              ]
+            },
+            {
+              "id": "mercy_special2",
+              "name": "Protective Boost",
+              "description": "Grants Defence Up to all allies. These units take reduced damage from attacks.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "all_allies",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "defence_up",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 40,
+            "currentHealth": 40,
+            "attack": 10,
+            "defense": 5,
+            "speed": 13,
+            "healthSteal": 0,
+            "evasion": 5,
+            "accuracy": 90,
+            "critChance": 10,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#ffd700",
+            "modelType": "sphere"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_papa",
+          "name": "Papaklit",
+          "description": "The father figure.",
+          "abilities": [
+            {
+              "id": "papa_basic",
+              "name": "Dad Slap",
+              "description": "Surprisingly effective damage.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "papa_special1",
+              "name": "Tactical Advice",
+              "description": "Grants Attack Up to all allies. These units deal increased damage.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "all_allies",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "attack_up",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "papa_special2",
+              "name": "Hold the Line",
+              "description": "Grants Defence Up to all allies. These units take reduced damage from attacks.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "all_allies",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "defence_up",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 55,
+            "currentHealth": 55,
+            "attack": 16,
+            "defense": 8,
+            "speed": 10,
+            "healthSteal": 0,
+            "evasion": 5,
+            "accuracy": 90,
+            "critChance": 15,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#800080",
+            "modelType": "cube"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_guru",
+          "name": "Gurutiki",
+          "description": "Wise words.",
+          "abilities": [
+            {
+              "id": "guru_basic",
+              "name": "Guiding Strike",
+              "description": "Balanced damage.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "guru_special1",
+              "name": "Inner Focus",
+              "description": "Grants Regen and Evasion Up to self. This unit recovers health and has higher dodge chance.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "regen",
+                  "duration": 3,
+                  "value": 12
+                },
+                {
+                  "type": "apply_status",
+                  "statusType": "evasion_up",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "guru_special2",
+              "name": "Enlighten",
+              "description": "Applies Vulnerable to all enemies. These units take increased damage from all sources.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "all_enemies",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "vulnerable",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 35,
+            "currentHealth": 35,
+            "attack": 14,
+            "defense": 4,
+            "speed": 15,
+            "healthSteal": 0,
+            "evasion": 10,
+            "accuracy": 95,
+            "critChance": 10,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#00ced1",
+            "modelType": "cylinder"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_jb",
+          "name": "JB",
+          "description": "Just Business.",
+          "abilities": [
+            {
+              "id": "jb_basic",
+              "name": "Straight Punch",
+              "description": "Reliable single-target damage.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "jb_special1",
+              "name": "Crowd Control",
+              "description": "Applies Stun to an enemy. This unit skips its next turn.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "stun",
+                  "duration": 1
+                }
+              ]
+            },
+            {
+              "id": "jb_special2",
+              "name": "Pressure Play",
+              "description": "Applies Marked to an enemy. This unit cannot dodge attacks and is easier to hit.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "marked",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 45,
+            "currentHealth": 45,
+            "attack": 15,
+            "defense": 5,
+            "speed": 12,
+            "healthSteal": 0,
+            "evasion": 5,
+            "accuracy": 90,
+            "critChance": 15,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#ff4500",
+            "modelType": "cube"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_bru",
+          "name": "The Only Bru",
+          "description": "One of a kind.",
+          "abilities": [
+            {
+              "id": "bru_basic",
+              "name": "Heavy Swing",
+              "description": "Deals solid damage to a single enemy.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "bru_special1",
+              "name": "Bru Force",
+              "description": "Grants Attack Up to self for 2 turns.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "attack_up",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "bru_special2",
+              "name": "Shake It Off",
+              "description": "Grants Defence Up to self for 2 turns.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "defence_up",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 50,
+            "currentHealth": 50,
+            "attack": 15,
+            "defense": 6,
+            "speed": 11,
+            "healthSteal": 0,
+            "evasion": 5,
+            "accuracy": 90,
+            "critChance": 10,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#1e90ff",
+            "modelType": "cube"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_kappa",
+          "name": "Kappasaurus",
+          "description": "Prehistoric meme.",
+          "abilities": [
+            {
+              "id": "kappa_basic",
+              "name": "Tail Whip",
+              "description": "Heavy damage to one enemy.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "kappa_special1",
+              "name": "Dino Roar",
+              "description": "Applies Vulnerable to all enemies. These units take increased damage from all sources.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "all_enemies",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "vulnerable",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "kappa_special2",
+              "name": "Thick Scales",
+              "description": "Grants Defence Up to self. This unit takes reduced damage from attacks.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "defence_up",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 80,
+            "currentHealth": 80,
+            "attack": 10,
+            "defense": 10,
+            "speed": 6,
+            "healthSteal": 0,
+            "evasion": 5,
+            "accuracy": 85,
+            "critChance": 5,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#228b22",
+            "modelType": "cube"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_suze",
+          "name": "Big Suze",
+          "description": "Larger than life.",
+          "abilities": [
+            {
+              "id": "suze_basic",
+              "name": "Big Hit",
+              "description": "High base damage attack.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "suze_special1",
+              "name": "No Dodging This",
+              "description": "Applies Marked to an enemy. This unit cannot dodge attacks and is easier to hit.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "marked",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "suze_special2",
+              "name": "Smash Back",
+              "description": "Grants Counter to self. This unit automatically attacks back when hit.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "counter",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 60,
+            "currentHealth": 60,
+            "attack": 14,
+            "defense": 8,
+            "speed": 9,
+            "healthSteal": 0,
+            "evasion": 5,
+            "accuracy": 90,
+            "critChance": 10,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#ff69b4",
+            "modelType": "sphere"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_toxo",
+          "name": "Toxoplasmosis",
+          "description": "Parasitic power.",
+          "abilities": [
+            {
+              "id": "toxo_basic",
+              "name": "Toxic Scratch",
+              "description": "Applies light damage.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "toxo_special1",
+              "name": "Infection",
+              "description": "Applies Damage Over Time for 3 turns. This unit takes damage at the start of each turn.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "dot",
+                  "duration": 3,
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "id": "toxo_special2",
+              "name": "Weaken Immune System",
+              "description": "Applies Vulnerable. This unit takes increased damage from all sources.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "vulnerable",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 30,
+            "currentHealth": 30,
+            "attack": 18,
+            "defense": 2,
+            "speed": 16,
+            "healthSteal": 10,
+            "evasion": 15,
+            "accuracy": 90,
+            "critChance": 20,
+            "critDamage": 60
+          },
+          "visual": {
+            "color": "#adff2f",
+            "modelType": "sphere"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 1
+        },
+        {
+          "id": "char_cuber",
+          "name": "Cuber",
+          "description": "It is hip to be square.",
+          "abilities": [
+            {
+              "id": "cuber_basic",
+              "name": "Precision Tap",
+              "description": "Accurate single-target damage.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "cuber_special1",
+              "name": "Perfect Lines",
+              "description": "Grants Attack Up to self. This unit deals increased damage.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "attack_up",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "cuber_special2",
+              "name": "Boxed In",
+              "description": "Applies Silenced to an enemy. This unit cannot use special abilities and can only perform basic attacks.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "silenced",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 50,
+            "currentHealth": 50,
+            "attack": 12,
+            "defense": 12,
+            "speed": 10,
+            "healthSteal": 0,
+            "evasion": 5,
+            "accuracy": 100,
+            "critChance": 5,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#4b0082",
+            "modelType": "cube"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_jdog",
+          "name": "J-Dog",
+          "description": "Top dog.",
+          "abilities": [
+            {
+              "id": "jdog_basic",
+              "name": "Bite",
+              "description": "Aggressive single-target damage.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "jdog_special1",
+              "name": "Ferocity",
+              "description": "Grants Attack Up and Evasion Up to self. This unit deals increased damage and has higher dodge chance.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "attack_up",
+                  "duration": 2
+                },
+                {
+                  "type": "apply_status",
+                  "statusType": "evasion_up",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "jdog_special2",
+              "name": "Intimidate",
+              "description": "Applies Marked to an enemy. This unit cannot dodge attacks and is easier to hit.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "marked",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 45,
+            "currentHealth": 45,
+            "attack": 16,
+            "defense": 4,
+            "speed": 14,
+            "healthSteal": 0,
+            "evasion": 10,
+            "accuracy": 90,
+            "critChance": 15,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#8b4513",
+            "modelType": "cylinder"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_thor",
+          "name": "Thordog",
+          "description": "God of thunder... dogs.",
+          "abilities": [
+            {
+              "id": "thor_basic",
+              "name": "Thunder Strike",
+              "description": "Heavy damage attack.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "thor_special1",
+              "name": "Lightning Stun",
+              "description": "Applies Stun to an enemy. This unit skips its next turn.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "stun",
+                  "duration": 1
+                }
+              ]
+            },
+            {
+              "id": "thor_special2",
+              "name": "Storm Rage",
+              "description": "Grants Attack Up to self. This unit deals increased damage.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "attack_up",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 55,
+            "currentHealth": 55,
+            "attack": 20,
+            "defense": 6,
+            "speed": 11,
+            "healthSteal": 0,
+            "evasion": 5,
+            "accuracy": 90,
+            "critChance": 25,
+            "critDamage": 80
+          },
+          "visual": {
+            "color": "#708090",
+            "modelType": "cube"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_elk",
+          "name": "El Kappitan",
+          "description": "Leader of the pack.",
+          "abilities": [
+            {
+              "id": "elk_basic",
+              "name": "Command Shot",
+              "description": "Moderate damage.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "elk_special1",
+              "name": "Rally the Squad",
+              "description": "Grants Attack Up to all allies. These units deal increased damage.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "all_allies",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "attack_up",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "elk_special2",
+              "name": "Tactical Mark",
+              "description": "Applies Marked to a priority enemy. This unit cannot dodge attacks and is easier to hit.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "marked",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 50,
+            "currentHealth": 50,
+            "attack": 15,
+            "defense": 8,
+            "speed": 12,
+            "healthSteal": 0,
+            "evasion": 5,
+            "accuracy": 95,
+            "critChance": 10,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#000080",
+            "modelType": "cube"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_zez",
+          "name": "Zezima",
+          "description": "Legendary grinder.",
+          "abilities": [
+            {
+              "id": "zez_basic",
+              "name": "Legacy Strike",
+              "description": "Balanced, dependable damage.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "zez_special1",
+              "name": "Old School Focus",
+              "description": "Grants Regen and Defence Up to self. This unit recovers health and takes reduced damage.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "self",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "regen",
+                  "duration": 3,
+                  "value": 20
+                },
+                {
+                  "type": "apply_status",
+                  "statusType": "defence_up",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "zez_special2",
+              "name": "Timeless Pressure",
+              "description": "Applies Vulnerable. This unit takes increased damage from all sources.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "vulnerable",
+                  "duration": 2
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 100,
+            "currentHealth": 100,
+            "attack": 5,
+            "defense": 20,
+            "speed": 5,
+            "healthSteal": 0,
+            "evasion": 5,
+            "accuracy": 100,
+            "critChance": 5,
+            "critDamage": 50
+          },
+          "visual": {
+            "color": "#ffffff",
+            "modelType": "cube"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        },
+        {
+          "id": "char_daf",
+          "name": "Dafran",
+          "description": "Let's go dude.",
+          "abilities": [
+            {
+              "id": "dafran_basic",
+              "name": "Headshot",
+              "description": "High single-target damage.",
+              "type": "basic",
+              "cooldown": 0,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "damage"
+                }
+              ]
+            },
+            {
+              "id": "dafran_special1",
+              "name": "Aim God",
+              "description": "Grants Attack Up to self and applies Marked to the target. Increased damage and guaranteed hit.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "attack_up",
+                  "duration": 2,
+                  "target": "self"
+                },
+                {
+                  "type": "apply_status",
+                  "statusType": "marked",
+                  "duration": 2
+                }
+              ]
+            },
+            {
+              "id": "dafran_special2",
+              "name": "Zone Control",
+              "description": "Applies Stun to an enemy. This unit skips its next turn.",
+              "type": "special",
+              "cooldown": 2,
+              "target": "single_enemy",
+              "effects": [
+                {
+                  "type": "apply_status",
+                  "statusType": "stun",
+                  "duration": 1
+                }
+              ]
+            }
+          ],
+          "abilityCooldowns": {},
+          "stats": {
+            "maxHealth": 35,
+            "currentHealth": 35,
+            "attack": 25,
+            "defense": 2,
+            "speed": 15,
+            "healthSteal": 10,
+            "evasion": 10,
+            "accuracy": 80,
+            "critChance": 30,
+            "critDamage": 100
+          },
+          "visual": {
+            "color": "#dc143c",
+            "modelType": "cylinder"
+          },
+          "statusEffects": [],
+          "level": 1,
+          "experience": 0,
+          "availableStatPoints": 0,
+          "isOwned": false,
+          "fragments": 0
+        }
+      ],
+      "friends": [],
+      "friendRequests": [],
+      "pvpStats": {
+        "wins": 0,
+        "losses": 0,
+        "matches": 0
+      }
+    },
+    {
+      "username": "1234567890BCDEFGtestuser",
+      "password": "testpass",
+      "data": null,
+      "friends": [],
+      "friendRequests": [],
+      "pvpStats": {
+        "wins": 0,
+        "losses": 0,
+        "matches": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+# 🚀 Project Quick Start Guide - Alpha Build 2.0
+
+Use this guide to quickly access and run the **Kerna: Galaxy of Chads** project.
+
+## 📂 1. Navigating to the Project
+Open your Terminal and run the following command to "log into" the project folder:
+
+```bash
+cd "/Users/tomklitgaard/Raid galaxy of legends"
+```
+
+## 🎮 2. Starting the Game
+To start both the game (frontend) and the database (backend) at the same time:
+
+```bash
+npm run start-all
+```
+
+- **Game URL**: [http://localhost:5173](http://localhost:5173)
+- **Backend API**: `http://localhost:3001`
+
+---
+
+## 🛑 3. Troubleshooting
+If you see an error saying a **port is already in use**, run this command to clear everything:
+
+```bash
+killall node
+```
+
+Then run `npm run start-all` again.
+
+---
+
+## 📝 Reference Commands
+| Action | Command |
+| :--- | :--- |
+| **Full Start** | `npm run start-all` |
+| **Stop Server** | `Ctrl + C` |
+| **Clean Stop** | `killall node` |
+| **Install New Deps** | `npm install` |
