@@ -11,15 +11,13 @@
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
-  "devDependencies": {
+  "dependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/socket.io-client": "^1.4.36",
     "concurrently": "^9.2.1",
     "typescript": "~5.9.3",
-    "vite": "^7.2.4"
-  },
-  "dependencies": {
+    "vite": "^7.2.4",
     "@types/three": "^0.181.0",
     "cors": "^2.8.5",
     "express": "^5.2.1",
