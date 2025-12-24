@@ -2,9 +2,10 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import express from 'express';
 import cors from 'cors';
-import fs from 'fs';
+import mongoose from 'mongoose';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { User } from './models/User.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -13,16 +14,23 @@ const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
     cors: {
-        origin: "*", // Allow all for now to prevent connection issues on deployment
+        origin: "*",
         methods: ["GET", "POST"]
     }
 });
 
 const PORT = process.env.PORT || 3001;
-const DB_PATH = path.join(__dirname, 'database.json');
+
+// MongoDB Connection
+// Fallback to the user-provided string if env var key is missing (Eases deployment)
+const MONGO_URI = process.env.MONGODB_URI || "mongodb+srv://kerna:MUYak2Uc1R9OKFRS@kerna-users.g5ffujj.mongodb.net/?appName=kerna-users";
+
+mongoose.connect(MONGO_URI)
+    .then(() => console.log('✅ Connected to MongoDB Atlas'))
+    .catch(err => console.error('❌ MongoDB Connection Error:', err));
+
 
 // Get allowed origins from env or default to extensive list
-// In production, you should set CORS_ORIGIN to your Netlify URL
 const allowedOrigins = process.env.CORS_ORIGIN
     ? [process.env.CORS_ORIGIN, "http://localhost:5173", "http://localhost:4173"]
     : "*";
@@ -32,32 +40,15 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// Serve static files from the React/Vite app
-// Check if dist exists (it will in production)
-const distPath = path.join(__dirname, '../dist');
-if (fs.existsSync(distPath)) {
-    app.use(express.static(distPath));
-    console.log(`Serving static files from ${distPath}`);
-}
-
-// Initialize database if it doesn't exist
-if (!fs.existsSync(DB_PATH)) {
-    fs.writeFileSync(DB_PATH, JSON.stringify({ users: [] }, null, 2));
-}
-
-const getDb = () => JSON.parse(fs.readFileSync(DB_PATH, 'utf8'));
-const saveDb = (data) => fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2));
 
 // --- Socket.io Logic ---
-// We can move this to a separate file later if it grows too large, for now we keep it here for simplicity
-// or import it. Let's import for cleanliness as per plan.
 import { setupSocketHandlers } from './socketHandler.js';
-setupSocketHandlers(io, getDb, saveDb);
+// We don't pass getDb/saveDb anymore as socketHandler will use Mongoose directly
+setupSocketHandlers(io);
 
 // Auth Endpoints
-app.post('/auth/register', (req, res) => {
+app.post('/auth/register', async (req, res) => {
     const { username, password } = req.body;
-    const db = getDb();
 
     console.log(`[Auth] Registration attempt: ${username}`);
 
@@ -65,110 +56,121 @@ app.post('/auth/register', (req, res) => {
         return res.status(400).json({ error: 'Username and password are required' });
     }
 
-    if (db.users.find(u => u.username.toLowerCase() === username.toLowerCase())) {
-        console.log(`[Auth] Registration failed: Username "${username}" taken (case-insensitive)`);
-        return res.status(400).json({ error: 'Username already exists' });
+    try {
+        const existingUser = await User.findOne({ username }).collation({ locale: 'en', strength: 2 });
+        if (existingUser) {
+            return res.status(400).json({ error: 'Username already exists' });
+        }
+
+        const newUser = new User({
+            username,
+            password, // Note: In a real app, hash this with bcrypt!
+            data: null,
+            friends: [],
+            friendRequests: [],
+            pvpStats: { wins: 0, losses: 0, matches: 0 }
+        });
+
+        await newUser.save();
+
+        console.log(`[Auth] User registered successfully: ${username}`);
+        res.json({ success: true, username });
+    } catch (err) {
+        console.error('Registration Error:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
-
-    const newUser = {
-        username,
-        password,
-        data: null,
-        friends: [], // List of usernames
-        friendRequests: [], // List of { from: username, timestamp: number }
-        pvpStats: { wins: 0, losses: 0, matches: 0 }
-    };
-
-    db.users.push(newUser);
-    saveDb(db);
-
-    console.log(`[Auth] User registered successfully: ${username}`);
-    res.json({ success: true, username });
 });
 
-app.post('/auth/login', (req, res) => {
+app.post('/auth/login', async (req, res) => {
     const { username, password } = req.body;
-    const db = getDb();
 
-    console.log(`[Auth] Login attempt: ${username}`);
+    try {
+        // Case-insensitive lookup
+        const user = await User.findOne({ username }).collation({ locale: 'en', strength: 2 });
 
-    const user = db.users.find(u =>
-        u.username.toLowerCase() === username.toLowerCase() &&
-        u.password === password
-    );
+        if (!user || user.password !== password) {
+            console.log(`[Auth] Login failed for user: ${username}`);
+            return res.status(401).json({ error: 'Invalid username or password' });
+        }
 
-    if (!user) {
-        console.log(`[Auth] Login failed for user: ${username}`);
-        return res.status(401).json({ error: 'Invalid username or password' });
+        console.log(`[Auth] User logged in successfully: ${user.username}`);
+        res.json({ success: true, username: user.username, data: user.data });
+    } catch (err) {
+        console.error('Login Error:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
-
-    // Ensure new fields exist for old users
-    if (!user.friends) user.friends = [];
-    if (!user.friendRequests) user.friendRequests = [];
-    if (!user.pvpStats) user.pvpStats = { wins: 0, losses: 0, matches: 0 };
-    saveDb(db); // Save back any schema migrations
-
-    console.log(`[Auth] User logged in successfully: ${username}`);
-    res.json({ success: true, username: user.username, data: user.data });
 });
 
 // Data persistence Endpoints
-app.post('/player/save', (req, res) => {
+app.post('/player/save', async (req, res) => {
     const { username, data } = req.body;
-    const db = getDb();
 
-    const userIndex = db.users.findIndex(u => u.username === username);
-    if (userIndex === -1) {
-        return res.status(404).json({ error: 'User not found' });
+    try {
+        // We use username as key
+        await User.findOneAndUpdate({ username }, { data });
+        res.json({ success: true });
+    } catch (err) {
+        console.error('Save Error:', err);
+        res.status(500).json({ error: 'Save failed' });
     }
-
-    db.users[userIndex].data = data; // Actually save the data!
-    saveDb(db);
-
-    res.json({ success: true });
 });
 
-app.post('/player/load', (req, res) => {
+app.post('/player/load', async (req, res) => {
     const { username } = req.body;
-    const db = getDb();
 
-    const user = db.users.find(u => u.username.toLowerCase() === username.toLowerCase());
-    if (!user) {
-        return res.status(404).json({ error: 'User not found' });
+    try {
+        const user = await User.findOne({ username }).collation({ locale: 'en', strength: 2 });
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        res.json({ success: true, data: user.data });
+    } catch (err) {
+        console.error('Load Error:', err);
+        res.status(500).json({ error: 'Load failed' });
     }
-
-    res.json({ success: true, data: user.data });
 });
 
-app.post('/auth/change-password', (req, res) => {
+app.post('/auth/change-password', async (req, res) => {
     const { username, oldPassword, newPassword } = req.body;
-    const db = getDb();
 
-    const userIndex = db.users.findIndex(u => u.username === username && u.password === oldPassword);
-    if (userIndex === -1) {
-        return res.status(401).json({ error: 'Invalid current password' });
+    try {
+        const user = await User.findOne({ username });
+        if (!user || user.password !== oldPassword) {
+            return res.status(401).json({ error: 'Invalid current password' });
+        }
+
+        user.password = newPassword;
+        await user.save();
+
+        res.json({ success: true });
+    } catch (err) {
+        console.error('Password Change Error:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
-
-    db.users[userIndex].password = newPassword;
-    saveDb(db);
-
-    res.json({ success: true });
 });
 
 // Leaderboard Endpoint
-app.get('/api/leaderboard', (req, res) => {
-    const db = getDb();
-    const leaderboard = db.users
-        .map(u => ({
+app.get('/api/leaderboard', async (req, res) => {
+    try {
+        // Fetch top 50 by wins
+        const topUsers = await User.find({})
+            .sort({ 'pvpStats.wins': -1 })
+            .limit(50)
+            .select('username pvpStats');
+
+        const leaderboard = topUsers.map(u => ({
             username: u.username,
             wins: u.pvpStats?.wins || 0,
             matches: u.pvpStats?.matches || 0,
-            winRate: u.pvpStats?.matches ? ((u.pvpStats.wins / u.pvpStats.matches) * 100).toFixed(1) : 0
-        }))
-        .sort((a, b) => b.wins - a.wins)
-        .slice(0, 50); // Top 50
+            winRate: u.pvpStats?.matches ? ((u.pvpStats.wins / u.pvpStats.matches) * 100).toFixed(1) : 0,
+            avgLevel: u.pvpStats?.avgLevel || 0
+        }));
 
-    res.json(leaderboard);
+        res.json(leaderboard);
+    } catch (err) {
+        console.error('Leaderboard Error:', err);
+        res.status(500).json({ error: 'Failed to fetch leaderboard' });
+    }
 });
 
 // Serve index.html for any other requests (SPA support)
