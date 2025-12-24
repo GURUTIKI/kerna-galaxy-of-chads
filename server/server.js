@@ -172,7 +172,8 @@ app.get('/api/leaderboard', (req, res) => {
 });
 
 // Serve index.html for any other requests (SPA support)
-app.get('*', (req, res) => {
+// Note: Express 5 requires regex /.*/ instead of '*' for catch-all
+app.get(/.*/, (req, res) => {
     // Only serve index.html if we are not requesting an API endpoint
     if (!req.path.startsWith('/api') && !req.path.startsWith('/auth') && !req.path.startsWith('/player') && !req.path.startsWith('/socket.io')) {
         const indexPath = path.join(__dirname, '../dist/index.html');
