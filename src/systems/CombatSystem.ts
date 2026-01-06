@@ -60,8 +60,12 @@ export class CombatSystem {
         this.onEmitAction = onEmitAction;
         this.onBattleEnd = onBattleEnd;
         this.opponentUsername = opponentUsername;
-        // Reset all character health before battle
+        // Reset all character health before battle and assign instanceId
         [...playerTeam.characters, ...enemyTeam.characters].forEach(char => {
+            if (!char.instanceId) {
+                // Generate a simple unique ID for battle
+                char.instanceId = `${char.id}_${Math.random().toString(36).substring(2, 9)}`;
+            }
             resetHealth(char);
             initializeAbilityCooldowns(char);
         });
@@ -118,10 +122,12 @@ export class CombatSystem {
             ...this.state.enemyTeam.characters
         ].filter(isAlive);
 
-        // Sort by speed (highest speed goes first), then by ID for deterministic PVP sync
+        // Sort by speed (highest speed goes first), then by instanceId for deterministic PVP sync
         this.state.turnOrder = allCharacters.sort((a, b) => {
             if (b.stats.speed !== a.stats.speed) return b.stats.speed - a.stats.speed;
-            return a.id.localeCompare(b.id);
+            const idA = a.instanceId || a.id;
+            const idB = b.instanceId || b.id;
+            return idA.localeCompare(idB);
         });
     }
 
@@ -188,7 +194,11 @@ export class CombatSystem {
         if (!this.state.waitingForTargetSelection) return false;
 
         const targets = this.getAvailableTargets();
-        const target = targets.find(t => t.id === targetId);
+        // Check by instanceId first (if passed), then fallback to standard id
+        let target = targets.find(t => t.instanceId === targetId);
+        if (!target) {
+            target = targets.find(t => t.id === targetId);
+        }
 
         if (target) {
             this.state.waitingForTargetSelection = false;

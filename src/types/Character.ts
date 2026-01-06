@@ -51,7 +51,9 @@ export interface StatusEffect {
 // Main character interface - PVP focused
 export interface Character {
   // Basic Info
-  id: string;           // Unique ID (e.g., "char_001")
+  // Basic Info
+  id: string;           // Unique Template ID (e.g., "char_001")
+  instanceId?: string;  // Unique Instance ID for battle (e.g., "battle_char_guid_123")
   name: string;         // Character name (e.g., "Red Cube")
   description: string;  // Brief description
 

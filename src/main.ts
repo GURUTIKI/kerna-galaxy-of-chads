@@ -983,15 +983,16 @@ export class Game {
       const isDead = character.stats.currentHealth <= 0;
       const healthPercent = (character.stats.currentHealth / character.stats.maxHealth) * 100;
 
-      // Targetable if it's an enemy, we are waiting, and it's in the valid target list
-      const isTargetable = isEnemy && isWaiting && availableInputs.some(t => t.id === character.id);
-
-      // Is it this character's turn?
-      const isActing = currentChar?.id === character.id;
+      // Use instanceId for unique identification in battle, fallback to id
+      const uniqueId = character.instanceId || character.id;
+      // Targetable uses correct ID match
+      const isTargetable = isEnemy && isWaiting && availableInputs.some(t => (t.instanceId || t.id) === uniqueId);
+      // Acting check uses correct ID match
+      const isActing = (currentChar?.instanceId || currentChar?.id) === uniqueId;
 
       const tile = document.createElement('div');
       tile.className = `battle-tile ${isEnemy ? 'enemy-tile' : 'player-tile'} ${isDead ? 'dead' : ''} ${isTargetable ? 'targetable' : ''} ${isActing ? 'acting' : ''}`;
-      tile.setAttribute('data-character-id', character.id);
+      tile.setAttribute('data-character-id', uniqueId);
 
       // HP Bar Color class
       let hpClass = 'hp-high';
@@ -1064,7 +1065,7 @@ export class Game {
 
       if (isTargetable) {
         tile.addEventListener('click', () => {
-          this.combatSystem?.selectTarget(character.id);
+          this.combatSystem?.selectTarget(character.instanceId || character.id);
           this.updateBattleUI();
 
           // Trigger the turn execution immediately after selection
@@ -1585,6 +1586,9 @@ export class Game {
   private onAuthSuccess(userData: any): void {
     if (userData) {
       this.characterManager.setCharacters(userData);
+    } else {
+      // New user or reset request - clear local cache so we don't load previous user's characters
+      this.characterManager.reset();
     }
 
     // Setup sync to server
