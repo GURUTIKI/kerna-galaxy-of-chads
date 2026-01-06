@@ -188,7 +188,7 @@ app.get(/.*/, (req, res) => {
         if (fs.existsSync(indexPath)) {
             res.sendFile(indexPath);
         } else {
-            res.status(404).send('Frontend build not found. Did you run "npm run build"?');
+            res.send('✅ Kerna API Server is Online. (Frontend is hosted on Vercel)');
         }
     } else {
         res.status(404).json({ error: 'Endpoint not found' });
