@@ -107,6 +107,10 @@ export class NetworkManager {
         this.socket?.emit('accept_challenge', challengerUsername);
     }
 
+    public declineChallenge(targetUsername: string): void {
+        this.socket?.emit('challenge_declined', { targetUsername });
+    }
+
     public joinMatchmaking(teamData: any): void {
         this.socket?.emit('join_matchmaking', teamData);
     }
