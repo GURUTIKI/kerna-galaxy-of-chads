@@ -172,7 +172,8 @@ export class Game {
           //alert(`Searching for: ${query}`); // Removed debug alert
           this.networkManager.searchUsers(query);
         }
-      });
+      }
+    });
 
     // PVP
     document.getElementById('btn-find-match')?.addEventListener('click', () => {
