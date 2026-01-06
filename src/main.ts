@@ -1944,7 +1944,7 @@ export class Game {
           newBtn.disabled = true;
           newBtn.textContent = 'Select 1-5 Chads';
         }
-      };
+      });
       grid.appendChild(card);
     });
   }
