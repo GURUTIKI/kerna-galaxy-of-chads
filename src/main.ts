@@ -1913,13 +1913,13 @@ export class Game {
       if (!template) return;
 
       card.innerHTML = `
-    < div class= "card-inner" style = "border: 2px solid transparent;" >
-    <h4>${template.name} </h4>
-    < p > Lvl ${char.level} </p>
-    </div>
+        <div class="card-inner" style="border: 2px solid transparent; padding: 10px;">
+          <h4 style="margin: 0 0 5px 0;">${template.name}</h4>
+          <p style="margin: 0;">Lvl ${char.level}</p>
+        </div>
       `;
 
-      card.onclick = () => {
+      card.addEventListener('click', () => {
         const idx = this.selectedNetworkTeamIds.indexOf(char.id);
         if (idx >= 0) {
           this.selectedNetworkTeamIds.splice(idx, 1);
@@ -1927,7 +1927,8 @@ export class Game {
           (card.querySelector('.card-inner') as HTMLElement).style.background = '';
         } else {
           if (this.selectedNetworkTeamIds.length >= 5) {
-            alert("Max 5 Chads!");
+            // Removed Intrusive alert
+            // Visual feedback wiggle?
             return;
           }
           this.selectedNetworkTeamIds.push(char.id);
