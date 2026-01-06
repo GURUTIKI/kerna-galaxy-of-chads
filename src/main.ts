@@ -1609,8 +1609,6 @@ export class Game {
 
   private setupNetworkEventListeners(): void {
     this.networkManager.on('search_results', (results: any[]) => {
-      console.log("Received search results:", results);
-      alert(`Debug: Received ${results.length} results: ` + JSON.stringify(results));
       const container = document.getElementById('user-search-results')!;
       container.innerHTML = '';
 
@@ -1623,9 +1621,9 @@ export class Game {
         const div = document.createElement('div');
         div.className = 'user-result-item';
         div.innerHTML = `
-          < span > ${u.username} </span>
-            < button class="btn btn-small btn-success" > Add </button>
-              `;
+          <span>${u.username}</span>
+          <button class="btn btn-small btn-success">Add</button>
+        `;
         div.querySelector('button')!.onclick = () => {
           this.networkManager.sendFriendRequest(u.username);
           alert(`Request sent to ${u.username} `);
