@@ -168,10 +168,11 @@ export class Game {
           return;
         }
         const query = (document.getElementById('friend-search-input') as HTMLInputElement).value;
-        alert(`Searching for: ${query}`);
-        if (query) this.networkManager.searchUsers(query);
-      }
-    });
+        if (query) {
+          //alert(`Searching for: ${query}`); // Removed debug alert
+          this.networkManager.searchUsers(query);
+        }
+      });
 
     // PVP
     document.getElementById('btn-find-match')?.addEventListener('click', () => {
@@ -1823,15 +1824,15 @@ export class Game {
       const div = document.createElement('div');
       div.className = 'inbox-item';
       div.innerHTML = `
-          < div class="inbox-item-content" >
-            <span class="inbox-item-title" > Friend Request </span>
-              < span class="inbox-item-time" > From: ${req.from} </span>
-                </div>
-                < div class="inbox-actions" >
-                  <button class="btn btn-small btn-success accept-btn" > Accept </button>
-                    < button class="btn btn-small btn-danger reject-btn" > Reject </button>
-                      </div>
-                        `;
+          <div class="inbox-item-content">
+            <span class="inbox-item-title">Friend Request</span>
+            <span class="inbox-item-time">From: ${req.from}</span>
+          </div>
+          <div class="inbox-actions">
+            <button class="btn btn-small btn-success accept-btn">Accept</button>
+            <button class="btn btn-small btn-danger reject-btn">Reject</button>
+          </div>
+      `;
 
       div.querySelector('.accept-btn')!.addEventListener('click', () => {
         alert(`Accepting request from ${req.from}...`);
