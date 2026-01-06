@@ -3,6 +3,7 @@ import { Server } from 'socket.io';
 import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
+import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { User } from './models/User.js';
@@ -23,7 +24,12 @@ const PORT = process.env.PORT || 3001;
 
 // MongoDB Connection
 // Fallback to the user-provided string if env var key is missing (Eases deployment)
-const MONGO_URI = process.env.MONGODB_URI || "mongodb+srv://kerna:MUYak2Uc1R9OKFRS@kerna-users.g5ffujj.mongodb.net/?appName=kerna-users";
+const MONGO_URI = process.env.MONGODB_URI;
+
+if (!MONGO_URI) {
+    console.error("FATAL: MONGODB_URI environment variable is missing.");
+    process.exit(1);
+}
 
 mongoose.connect(MONGO_URI)
     .then(() => console.log('✅ Connected to MongoDB Atlas'))

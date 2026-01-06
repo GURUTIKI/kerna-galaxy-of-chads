@@ -1,9 +1,9 @@
 /**
  * Global Configuration
  * 
- * In the new "All-in-One" setup, the frontend is served *by* the backend.
- * This means the API is on the same URL as the website.
- * We can use an empty string "" to mean "current origin".
+ * Hybrid Setup (Vercel + Render):
+ * Frontend is on Vercel, Backend is on Render.
+ * We MUST set VITE_API_URL in Vercel to point to the Render backend URL.
  * 
  * Local Development:
  * If VITE_API_URL is set (in .env), use it.
