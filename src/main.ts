@@ -972,14 +972,7 @@ export class Game {
     }
   }
 
-  private showAction(message: string): void {
-    const banner = document.getElementById('action-banner')!;
-    banner.textContent = message;
-    banner.style.display = 'block';
 
-    // Auto-hide after some time if auto-battle is off or just to keep it clean
-    // Actually we keep it until next action usually.
-  }
 
   private renderBattleGrid(containerId: string, characters: Character[], isEnemy: boolean): void {
     const container = document.getElementById(containerId)!;
