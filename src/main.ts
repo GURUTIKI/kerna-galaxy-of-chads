@@ -1636,7 +1636,8 @@ export class Game {
 
     this.networkManager.on('new_friend_request', () => {
       this.updateInboxBadge(true);
-      // Optional: Toast notification
+      // Simple notification for now
+      alert("New Friend Request received! Check your Inbox.");
     });
 
     this.networkManager.on('friend_added', (friendName: string) => {
@@ -1655,13 +1656,13 @@ export class Game {
 
       friends.forEach(f => {
         const div = document.createElement('div');
-        div.className = `friend - item ${f.isOnline ? 'online' : 'offline'} `;
+        div.className = `friend-item ${f.isOnline ? 'online' : 'offline'}`;
         div.innerHTML = `
-          < div style = "display:flex; flex-direction:column;" >
-            <span style="font-weight:bold" > ${f.username} </span>
-              < span class="friend-status" > ${f.isOnline ? 'Online' : 'Offline'} </span>
-                </div>
-                ${f.isOnline ? `<button class="btn btn-small btn-primary btn-challenge">⚔️ Challenge</button>` : ''}
+          <div style="display:flex; flex-direction:column;">
+            <span style="font-weight:bold">${f.username}</span>
+            <span class="friend-status">${f.isOnline ? 'Online' : 'Offline'}</span>
+          </div>
+          ${f.isOnline ? `<button class="btn btn-small btn-primary btn-challenge">⚔️ Challenge</button>` : ''}
         `;
 
         if (f.isOnline) {
