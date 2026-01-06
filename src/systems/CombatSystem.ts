@@ -39,7 +39,7 @@ export class CombatSystem {
     public state: BattleState; // Public for UI access
     private availableLootIds: string[];
     private xpMultiplier: number;
-    private isPvP: boolean;
+    public isPvP: boolean; // Public for external logic checks
     private onEmitAction?: (action: any) => void;
     private onBattleEnd?: (result: any) => void;
     private opponentUsername?: string;  // Store opponent name for battle results
@@ -280,8 +280,8 @@ export class CombatSystem {
         if (this.isPlayerCharacter(attacker)) {
 
             // Should we run AI?
-            // Only if Auto Battle is ON AND not PVP (PVP is always manual for player)
-            const shouldRunAI = isAuto && !this.isPvP;
+            // Only if Auto Battle is ON (PVP allowed now)
+            const shouldRunAI = isAuto;
 
             if (shouldRunAI) {
                 return this.executeAILogic(attacker);

@@ -17,12 +17,17 @@ The backend manages player data and real-time battles.
 4.  **Settings**:
     *   **Runtime**: Node
     *   **Build Command**: `npm install`
-    *   **Start Command**: `npm start`
+    *   **Start Command**: `npm start` (CRITICAL: Do NOT use `npm run dev`)
 5.  **Environment Variables (Advanced)**:
     *   Add `MONGODB_URI`: Paste your MongoDB Connection String.
     *   *(Optional)* `CORS_ORIGIN`: Your eventually Vercel URL (e.g. `https://my-game.vercel.app`).
 6.  **Deploy**.
 7.  **Copy the Service URL** (e.g. `https://kerna-server.onrender.com`).
+
+> [!IMPORTANT]
+> **Troubleshooting "No open ports" error**:
+> If your deployment fails with "No open ports detected", verify that your **Start Command** is set to `npm start`.
+> If it was set to `npm run dev`, changing it in the Settings tab will fix it.
 
 ---
 

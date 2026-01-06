@@ -19,11 +19,11 @@ import { API_URL } from './config';
 /**
  * GAME APPLICATION CLASS
  */
-class Game {
+export class Game {
   private characterManager: CharacterManager;
-  private authManager: AuthManager;
   private sceneManager: SceneManager;
   private combatSystem: CombatSystem | null = null;
+  private authManager: AuthManager;
   private networkManager: NetworkManager;
   private currentRoomId: string | null = null;
   private selectedNetworkTeamIds: string[] = [];
@@ -199,12 +199,8 @@ class Game {
     });
 
     // Battle screen
-    document.getElementById('btn-back-from-battle')?.addEventListener('click', () => {
-      this.stopAutoBattle();
-      this.showScreen('main-menu');
-      this.sceneManager.clearAllCharacters();
-      this.combatSystem = null;
-    });
+    // Old listener removed to prevent conflict with PVP Forfeit logic
+
 
     document.getElementById('btn-auto-battle')?.addEventListener('click', () => {
       if (this.autoBattleInterval) {
@@ -255,12 +251,42 @@ class Game {
     // Battle controls
     // Speed buttons removed
 
+    document.getElementById('btn-back-from-battle')?.addEventListener('click', () => {
+      // Check if PVP
+      const isPvP = this.combatSystem?.isPvP;
+
+      if (isPvP && !this.combatSystem!.getState().isOver) {
+        if (confirm('Are you sure you want to forfeit this PVP battle? You will lose.')) {
+          // Forfeit logic
+          if (this.currentRoomId) {
+            console.log("Forfeit button clicked. Room ID:", this.currentRoomId);
+            this.networkManager.forfeitMatch(this.currentRoomId);
+
+            // Disable button to prevent spam
+            const btn = document.getElementById('btn-back-from-battle') as HTMLButtonElement;
+            if (btn) btn.disabled = true;
+            if (btn) btn.textContent = "Forfeiting...";
+          }
+        }
+      } else {
+        console.log("Exiting PVE/Training battle (isPvP check failed or false).");
+        // PVE or Training just exit
+        this.stopAutoBattle();
+        this.showScreen('main-menu');
+        this.sceneManager.clearAllCharacters();
+        this.combatSystem = null;
+      }
+    });
+
+    // Remove legacy Forfeit button listener if it exists separately
+    /*
     document.getElementById('btn-forfeit')?.addEventListener('click', () => {
       if (confirm('Are you sure you want to forfeit this battle?')) {
         this.combatSystem?.forfeit();
         this.updateBattleUI();
       }
     });
+    */
 
     // Handled in updateHealthBars
 
@@ -837,6 +863,68 @@ class Game {
     */
   }
 
+  private startAutoBattle(): void {
+    if (!this.combatSystem || this.combatSystem.getState().isOver) return;
+
+    // Check interval to avoid double start
+    if (this.autoBattleInterval) return;
+
+    this.autoBattleInterval = window.setInterval(() => {
+      if (!this.combatSystem || this.combatSystem.getState().isOver) {
+        this.stopAutoBattle();
+        return;
+      }
+
+      // Execute turn with isAuto = true
+      this.combatSystem.executeTurn(true);
+      this.updateBattleUI();
+
+    }, 1000); // 1-second delay between moves
+
+    // Update Button UI
+    const btn = document.getElementById('btn-auto-battle');
+    if (btn) {
+      btn.classList.add('active');
+      btn.innerHTML = '<span class="icon">⚡</span> STOP';
+    }
+  }
+
+  private stopAutoBattle(): void {
+    if (this.autoBattleInterval) {
+      clearInterval(this.autoBattleInterval);
+      this.autoBattleInterval = null;
+    }
+
+    // Update Button UI
+    const btn = document.getElementById('btn-auto-battle');
+    if (btn) {
+      btn.classList.remove('active');
+      btn.innerHTML = '<span class="icon">⚡</span> AUTO';
+    }
+  }
+
+  private executeNextTurn(): void {
+    if (!this.combatSystem) return;
+
+    if (this.combatSystem.getState().isOver) {
+      this.updateBattleUI();
+      return; // Battle over
+    }
+
+    // Try to execute. If it returns false, it means it's waiting for player input.
+    // isAuto=false for normal manual flow
+    const turnComplete = this.combatSystem.executeTurn(false);
+
+    if (turnComplete) {
+      this.updateBattleUI();
+      // If turn completed (e.g. skip turn, or AI turn), automatically trigger next
+      setTimeout(() => this.executeNextTurn(), 1000); // Delay for visual pacing
+    } else {
+      // Waiting for player. Update UI to show skills.
+      this.updateBattleUI();
+    }
+  }
+
   private updateBattleUI(): void {
     if (!this.combatSystem) return;
 
@@ -845,9 +933,8 @@ class Game {
 
     // Hide auto-battle button in PVP mode
     const autoBattleBtn = document.getElementById('btn-auto-battle');
-    const isPvP = (this.combatSystem as any).isPvP;
     if (autoBattleBtn) {
-      autoBattleBtn.style.display = isPvP ? 'none' : 'flex';
+      autoBattleBtn.style.display = 'flex'; // Always show
     }
 
     // Update turn indicator
@@ -1059,29 +1146,9 @@ class Game {
     }
   }
 
-  private executeNextTurn(): void {
-    this.processTurns();
-  }
 
-  private startAutoBattle(): void {
-    if (this.autoBattleInterval) return;
 
-    const btn = document.getElementById('btn-auto-battle');
-    btn?.classList.add('active');
 
-    this.executeNextTurn(); // Try immediately
-    this.autoBattleInterval = window.setInterval(() => {
-      this.executeNextTurn();
-    }, 1000 / this.combatSystem!.getBattleSpeed());
-  }
-
-  private stopAutoBattle(): void {
-    if (this.autoBattleInterval) {
-      clearInterval(this.autoBattleInterval);
-      this.autoBattleInterval = null;
-    }
-    document.getElementById('btn-auto-battle')?.classList.remove('active');
-  }
 
   private runAutoBattleLoop(): void {
     if (!this.autoBattleInterval || !this.combatSystem || this.combatSystem.state.isOver) {
@@ -1767,6 +1834,26 @@ class Game {
       }
     });
 
+    this.networkManager.on('battle_forfeited', (data: any) => {
+      // data: { winner: string, loser: string }
+      const myUsername = this.authManager.getUsername();
+      const isWinner = myUsername === data.winner;
+
+      this.stopAutoBattle();
+
+      if (this.combatSystem) {
+        // Force battle end state
+        const state = this.combatSystem.getState();
+        state.isOver = true;
+        state.winner = isWinner ? 'player' : 'enemy';
+        this.showResultsScreen();
+      } else {
+        // Fallback if system is already cleared (shouldn't happen with new logic, but safe)
+        alert(isWinner ? "Opponent Forfeited! You Win!" : "You Forfeited.");
+        this.showScreen('main-menu');
+      }
+    });
+
     this.networkManager.on('battle_matched', (data: any) => {
       console.log("Battle matched data:", data);
       // { roomId, opponent, opponentTeam, isHost }
@@ -1914,7 +2001,15 @@ class Game {
   }
 
   private startNetworkBattle(data: any): void {
+    this.currentRoomId = data.roomId; // Ensure roomId is synchronized
     this.showScreen('battle-screen');
+
+    // Reset Forfeit Button State
+    const forfeitBtn = document.getElementById('btn-back-from-battle') as HTMLButtonElement;
+    if (forfeitBtn) {
+      forfeitBtn.textContent = 'FORFEIT';
+      forfeitBtn.disabled = false;
+    }
 
     // Helper to hydrate character data
     const hydrate = (stored: any): Character => {

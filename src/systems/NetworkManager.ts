@@ -66,7 +66,8 @@ export class NetworkManager {
             'battle_commence',
             'battle_matched',
             'battle_action', // Ought to pass this to combat system
-            'opponent_action'
+            'opponent_action',
+            'battle_forfeited'
         ];
 
         events.forEach(event => {
@@ -108,6 +109,11 @@ export class NetworkManager {
 
     public joinMatchmaking(teamData: any): void {
         this.socket?.emit('join_matchmaking', teamData);
+    }
+
+    public forfeitMatch(roomId: string): void {
+        console.log(`[NetworkManager] Sending forfeit_match for room: ${roomId}`);
+        this.socket?.emit('forfeit_match', { roomId });
     }
 
     public sendBattleAction(roomId: string, action: any): void {
