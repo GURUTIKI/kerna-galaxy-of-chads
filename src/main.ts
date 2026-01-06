@@ -1087,61 +1087,37 @@ export class Game {
     });
   }
 
-  private async processTurns(): Promise<void> {
-    if (!this.combatSystem || this.combatSystem.state.isOver) return;
+  const isPlayer = this.combatSystem.isPlayerCharacter(nextChar);
 
-    const isAuto = !!this.autoBattleInterval;
+  // If it's player's turn, check if we need input
+  if(isPlayer) {
+    if (this.combatSystem.state.waitingForAbilitySelection || this.combatSystem.state.waitingForTargetSelection) {
+      break;
+    }
+  }
 
-    if (isAuto) {
-      // Execute one turn
-      const attacker = this.combatSystem.getCurrentCharacter();
-      if (attacker) {
-        this.combatSystem.executeTurn(true);
-        const state = this.combatSystem.getState();
-        const lastLog = state.battleLog[state.battleLog.length - 1];
-        if (lastLog && lastLog.includes('uses')) {
-          this.showAction(lastLog.replace('!', ''));
-        }
-      }
-      this.updateBattleUI();
-    } else {
-      // Manual mode: execute turns until we hit a player turn that needs input
-      let safeguard = 0;
-      while (safeguard < 100) {
-        const nextChar = this.combatSystem.getCurrentCharacter();
-        if (!nextChar) break;
+  // Execute turn
+  const turnFinished = this.combatSystem.executeTurn(false);
+  const state = this.combatSystem.getState();
+  const lastLog = state.battleLog[state.battleLog.length - 1];
 
-        const isPlayer = this.combatSystem.isPlayerCharacter(nextChar);
+  // Show action banner (especially important for opponent actions)
+  if(lastLog && lastLog.includes('uses')) {
+  this.showAction(lastLog.replace('!', ''));
+}
 
-        // If it's player's turn, check if we need input
-        if (isPlayer) {
-          if (this.combatSystem.state.waitingForAbilitySelection || this.combatSystem.state.waitingForTargetSelection) {
-            break;
-          }
-        }
+this.updateBattleUI();
 
-        // Execute turn
-        const turnFinished = this.combatSystem.executeTurn(false);
-        const state = this.combatSystem.getState();
-        const lastLog = state.battleLog[state.battleLog.length - 1];
+if (this.combatSystem.state.isOver || !turnFinished) {
+  break;
+}
 
-        // Show action banner (especially important for opponent actions)
-        if (lastLog && lastLog.includes('uses')) {
-          this.showAction(lastLog.replace('!', ''));
-        }
+// Add delay after ANY turn so the visual feedback (banner) is readable
+// We use a slight delay even in auto battle (handled in that branch)
+// Here we delay specifically for AI/Player actions in manual flow
+await new Promise(r => setTimeout(r, 1000 / this.combatSystem!.getBattleSpeed()));
 
-        this.updateBattleUI();
-
-        if (this.combatSystem.state.isOver || !turnFinished) {
-          break;
-        }
-
-        // Add delay after ANY turn so the visual feedback (banner) is readable
-        // We use a slight delay even in auto battle (handled in that branch)
-        // Here we delay specifically for AI/Player actions in manual flow
-        await new Promise(r => setTimeout(r, 1000 / this.combatSystem!.getBattleSpeed()));
-
-        safeguard++;
+safeguard++;
       }
     }
   }
@@ -1151,183 +1127,183 @@ export class Game {
 
 
   private runAutoBattleLoop(): void {
-    if (!this.autoBattleInterval || !this.combatSystem || this.combatSystem.state.isOver) {
-      return;
-    }
+  if(!this.autoBattleInterval || !this.combatSystem || this.combatSystem.state.isOver) {
+  return;
+}
 
-    const current = this.combatSystem.getCurrentCharacter();
-    if (!current) return;
+const current = this.combatSystem.getCurrentCharacter();
+if (!current) return;
 
-    // Execute turn with auto flag
-    const completed = this.combatSystem.executeTurn(true);
-    this.updateBattleUI();
+// Execute turn with auto flag
+const completed = this.combatSystem.executeTurn(true);
+this.updateBattleUI();
 
-    // Continue loop after a delay
-    if (completed && this.autoBattleInterval) {
-      setTimeout(() => this.runAutoBattleLoop(), 1000 / this.combatSystem.getBattleSpeed());
-    }
+// Continue loop after a delay
+if (completed && this.autoBattleInterval) {
+  setTimeout(() => this.runAutoBattleLoop(), 1000 / this.combatSystem.getBattleSpeed());
+}
   }
 
   private showResultsScreen(): void {
-    this.stopAutoBattle();
-    const state = this.combatSystem!.getState();
+  this.stopAutoBattle();
+  const state = this.combatSystem!.getState();
 
-    // Save ONLY player team characters back to manager (opponents are temporary)
-    state.playerTeam.characters.forEach(char => {
-      this.characterManager.updateCharacter(char);
-    });
+  // Save ONLY player team characters back to manager (opponents are temporary)
+  state.playerTeam.characters.forEach(char => {
+    this.characterManager.updateCharacter(char);
+  });
 
-    this.showScreen('results-screen');
+  this.showScreen('results-screen');
 
-    // Update results title
-    const title = document.getElementById('results-title')!;
-    title.textContent = state.winner === 'player' ? '🏆 Victory!' : '💀 Defeat!';
-    title.style.color = state.winner === 'player' ? '#4facfe' : '#f5576c';
+  // Update results title
+  const title = document.getElementById('results-title')!;
+  title.textContent = state.winner === 'player' ? '🏆 Victory!' : '💀 Defeat!';
+  title.style.color = state.winner === 'player' ? '#4facfe' : '#f5576c';
 
-    // Show XP gains for PLAYER TEAM ONLY
-    const xpContainer = document.getElementById('results-xp')!;
-    xpContainer.innerHTML = '<h3>XP Earned:</h3>';
+  // Show XP gains for PLAYER TEAM ONLY
+  const xpContainer = document.getElementById('results-xp')!;
+  xpContainer.innerHTML = '<h3>XP Earned:</h3>';
 
-    const xpGained = state.winner === 'player' ? 100 : 50;
-    state.playerTeam.characters.forEach(char => {
-      const div = document.createElement('div');
-      div.textContent = `${char.name}: +${xpGained} XP`;
-      xpContainer.appendChild(div);
-    });
+  const xpGained = state.winner === 'player' ? 100 : 50;
+  state.playerTeam.characters.forEach(char => {
+    const div = document.createElement('div');
+    div.textContent = `${char.name}: +${xpGained} XP`;
+    xpContainer.appendChild(div);
+  });
 
-    // Show level ups for PLAYER TEAM ONLY
-    const levelupContainer = document.getElementById('results-levelups')!;
-    const leveledUpChars = state.playerTeam.characters.filter(char => char.availableStatPoints > 0);
+  // Show level ups for PLAYER TEAM ONLY
+  const levelupContainer = document.getElementById('results-levelups')!;
+  const leveledUpChars = state.playerTeam.characters.filter(char => char.availableStatPoints > 0);
 
-    if (leveledUpChars.length > 0) {
-      levelupContainer.innerHTML = '<h3>🎉 Level Ups:</h3>';
-      leveledUpChars.forEach(char => {
-        const div = document.createElement('div');
-        div.className = 'levelup-entry';
-        div.style.marginBottom = '0.5rem';
+  if(leveledUpChars.length > 0) {
+  levelupContainer.innerHTML = '<h3>🎉 Level Ups:</h3>';
+  leveledUpChars.forEach(char => {
+    const div = document.createElement('div');
+    div.className = 'levelup-entry';
+    div.style.marginBottom = '0.5rem';
 
-        div.innerHTML = `
+    div.innerHTML = `
             <span>${char.name} reached Level ${char.level}! (+${char.availableStatPoints} points)</span>
             <button class="btn-upgrade-now" style="margin-left: 10px; padding: 2px 8px; font-size: 0.8rem; background: #4facfe; border: none; border-radius: 4px; color: white; cursor: pointer;">Upgrade Now</button>
         `;
 
-        div.querySelector('.btn-upgrade-now')?.addEventListener('click', () => {
-          this.showStatsScreen();
-          this.showStatAllocation(char.id, 'results-screen');
-        });
+    div.querySelector('.btn-upgrade-now')?.addEventListener('click', () => {
+      this.showStatsScreen();
+      this.showStatAllocation(char.id, 'results-screen');
+    });
 
-        levelupContainer.appendChild(div);
-      });
-    } else {
-      levelupContainer.innerHTML = '';
-    }
+    levelupContainer.appendChild(div);
+  });
+} else {
+  levelupContainer.innerHTML = '';
+}
 
-    // Handle Loot (Sleeping Bag) - TESTING: Give 5 fragments
-    const lootContainer = document.getElementById('results-loot')!;
-    lootContainer.innerHTML = ''; // Clear previous loot
+// Handle Loot (Sleeping Bag) - TESTING: Give 5 fragments
+const lootContainer = document.getElementById('results-loot')!;
+lootContainer.innerHTML = ''; // Clear previous loot
 
-    if (state.loot) {
-      const lootChar = this.characterManager.getCharacterById(state.loot.characterId)!;
+if (state.loot) {
+  const lootChar = this.characterManager.getCharacterById(state.loot.characterId)!;
 
-      // Add 1 fragment
-      const justUnlocked = this.characterManager.addFragment(lootChar.id);
+  // Add 1 fragment
+  const justUnlocked = this.characterManager.addFragment(lootChar.id);
 
-      const lootDiv = document.createElement('div');
-      lootDiv.style.marginTop = '1rem';
-      lootDiv.style.padding = '1rem';
-      lootDiv.style.background = 'rgba(255, 215, 0, 0.1)';
-      lootDiv.style.border = '2px solid #FFD700';
-      lootDiv.style.borderRadius = '8px';
+  const lootDiv = document.createElement('div');
+  lootDiv.style.marginTop = '1rem';
+  lootDiv.style.padding = '1rem';
+  lootDiv.style.background = 'rgba(255, 215, 0, 0.1)';
+  lootDiv.style.border = '2px solid #FFD700';
+  lootDiv.style.borderRadius = '8px';
 
-      const updatedChar = this.characterManager.getCharacterById(lootChar.id)!; // Get updated fragments
+  const updatedChar = this.characterManager.getCharacterById(lootChar.id)!; // Get updated fragments
 
-      lootDiv.innerHTML = `
+  lootDiv.innerHTML = `
         <h3 style="color: #FFD700">🎁 SLEEPING BAG FOUND!</h3>
         <p>You found a fragment for <strong>${lootChar.name}</strong>!</p>
         <p>Fragments: ${updatedChar.fragments}/5</p>
         ${justUnlocked ? `<p style="color: #4facfe; font-weight: bold; margin-top: 0.5rem">🎉 ${lootChar.name} UNLOCKED! You can now use them in battle!</p>` : ''}
       `;
-      lootContainer.appendChild(lootDiv);
-    }
+  lootContainer.appendChild(lootDiv);
+}
   }
 
   private showStatsScreen(): void {
-    this.showScreen('stats-screen');
-    this.renderCharacterSelector();
-  }
+  this.showScreen('stats-screen');
+  this.renderCharacterSelector();
+}
 
   private renderCharacterSelector(): void {
-    const container = document.getElementById('character-selector-list')!;
-    container.innerHTML = '';
+  const container = document.getElementById('character-selector-list')!;
+  container.innerHTML = '';
 
-    const characters = this.characterManager.getAllCharacters()
-      .filter(char => char.availableStatPoints > 0);
+  const characters = this.characterManager.getAllCharacters()
+    .filter(char => char.availableStatPoints > 0);
 
-    if (characters.length === 0) {
-      container.innerHTML = '<p>No characters have stat points to allocate</p>';
-      return;
-    }
+  if(characters.length === 0) {
+  container.innerHTML = '<p>No characters have stat points to allocate</p>';
+  return;
+}
 
-    characters.forEach(char => {
-      const button = document.createElement('button');
-      button.className = 'btn btn-secondary';
-      button.textContent = `${char.name} (${char.availableStatPoints} points)`;
-      button.addEventListener('click', () => {
-        this.showStatAllocation(char.id);
-      });
-      container.appendChild(button);
-    });
+characters.forEach(char => {
+  const button = document.createElement('button');
+  button.className = 'btn btn-secondary';
+  button.textContent = `${char.name} (${char.availableStatPoints} points)`;
+  button.addEventListener('click', () => {
+    this.showStatAllocation(char.id);
+  });
+  container.appendChild(button);
+});
 
-    // Auto-select first character
-    if (characters.length > 0) {
-      this.showStatAllocation(characters[0].id);
-    }
+// Auto-select first character
+if (characters.length > 0) {
+  this.showStatAllocation(characters[0].id);
+}
   }
 
   private showStatAllocation(characterId: string, returnScreen: string = 'results-screen'): void {
-    this.pendingStatReturnScreen = returnScreen;
-    const character = this.characterManager.getCharacterById(characterId);
-    if (!character) return;
+  this.pendingStatReturnScreen = returnScreen;
+  const character = this.characterManager.getCharacterById(characterId);
+  if(!character) return;
 
-    const nameEl = document.getElementById('selected-char-name')!;
-    nameEl.textContent = character.name;
-    nameEl.setAttribute('data-char-id', characterId); // Store ID for refresh
+  const nameEl = document.getElementById('selected-char-name')!;
+  nameEl.textContent = character.name;
+  nameEl.setAttribute('data-char-id', characterId); // Store ID for refresh
 
-    // Calculate effective available points (base - temp allocated)
-    const pendingStats = this.tempAllocatedPoints.get(characterId) || [];
-    const effectiveAvailable = character.availableStatPoints - pendingStats.length;
+  // Calculate effective available points (base - temp allocated)
+  const pendingStats = this.tempAllocatedPoints.get(characterId) || [];
+  const effectiveAvailable = character.availableStatPoints - pendingStats.length;
 
-    document.getElementById('available-points')!.textContent = effectiveAvailable.toString();
+  document.getElementById('available-points')!.textContent = effectiveAvailable.toString();
 
-    const statList = document.getElementById('stat-list')!;
-    statList.innerHTML = '';
+  const statList = document.getElementById('stat-list')!;
+  statList.innerHTML = '';
 
-    const stats: Array<{ key: keyof Character['stats'], label: string }> = [
-      { key: 'maxHealth', label: 'Max Health' },
-      { key: 'attack', label: 'Attack' },
-      { key: 'defense', label: 'Defense' },
-      { key: 'speed', label: 'Speed' },
-      { key: 'healthSteal', label: 'Health Steal (%)' },
-      { key: 'evasion', label: 'Evasion (%)' },
-      { key: 'accuracy', label: 'Accuracy (%)' },
-      { key: 'critChance', label: 'Crit Chance (%)' },
-      { key: 'critDamage', label: 'Crit Damage (%)' },
-    ];
+  const stats: Array<{ key: keyof Character['stats'], label: string }> =[
+    { key: 'maxHealth', label: 'Max Health' },
+    { key: 'attack', label: 'Attack' },
+    { key: 'defense', label: 'Defense' },
+    { key: 'speed', label: 'Speed' },
+    { key: 'healthSteal', label: 'Health Steal (%)' },
+    { key: 'evasion', label: 'Evasion (%)' },
+    { key: 'accuracy', label: 'Accuracy (%)' },
+    { key: 'critChance', label: 'Crit Chance (%)' },
+    { key: 'critDamage', label: 'Crit Damage (%)' },
+  ];
 
-    stats.forEach(({ key, label }) => {
-      const statRow = document.createElement('div');
-      statRow.className = 'stat-row';
+stats.forEach(({ key, label }) => {
+  const statRow = document.createElement('div');
+  statRow.className = 'stat-row';
 
-      const baseValue = character.stats[key];
-      const addedPoints = pendingStats.filter(s => s === key).length;
-      const displayValue = baseValue + addedPoints; // Simplified display (1 point = +1 visual, though logic differs)
+  const baseValue = character.stats[key];
+  const addedPoints = pendingStats.filter(s => s === key).length;
+  const displayValue = baseValue + addedPoints; // Simplified display (1 point = +1 visual, though logic differs)
 
-      const isPercentage = ['healthSteal', 'evasion', 'accuracy', 'critChance'].includes(key);
-      const isMaxed = isPercentage && displayValue >= 100;
-      const canAdd = effectiveAvailable > 0 && !isMaxed;
-      const canRemove = addedPoints > 0;
+  const isPercentage = ['healthSteal', 'evasion', 'accuracy', 'critChance'].includes(key);
+  const isMaxed = isPercentage && displayValue >= 100;
+  const canAdd = effectiveAvailable > 0 && !isMaxed;
+  const canRemove = addedPoints > 0;
 
-      statRow.innerHTML = `
+  statRow.innerHTML = `
         <span class="stat-label">${label}:</span>
         <span class="stat-value">${displayValue} ${addedPoints > 0 ? `<span style="color:#0f0">(+${addedPoints})</span>` : ''}</span>
         <div class="stat-buttons">
@@ -1336,79 +1312,79 @@ export class Game {
         </div>
       `;
 
-      statRow.querySelector('.add')?.addEventListener('click', () => {
-        this.handleStatAllocation(characterId, key, 'add');
-      });
+  statRow.querySelector('.add')?.addEventListener('click', () => {
+    this.handleStatAllocation(characterId, key, 'add');
+  });
 
-      statRow.querySelector('.remove')?.addEventListener('click', () => {
-        this.handleStatAllocation(characterId, key, 'remove');
-      });
+  statRow.querySelector('.remove')?.addEventListener('click', () => {
+    this.handleStatAllocation(characterId, key, 'remove');
+  });
 
-      statList.appendChild(statRow);
-    });
+  statList.appendChild(statRow);
+});
 
-    // Show confirm button if there are pending changes
-    const confirmBtn = document.getElementById('btn-confirm-stats')!;
-    confirmBtn.style.display = this.tempAllocatedPoints.size > 0 ? 'block' : 'none';
+// Show confirm button if there are pending changes
+const confirmBtn = document.getElementById('btn-confirm-stats')!;
+confirmBtn.style.display = this.tempAllocatedPoints.size > 0 ? 'block' : 'none';
   }
 
   private handleStatAllocation(characterId: string, stat: keyof Character['stats'], operation: 'add' | 'remove'): void {
-    if (!this.tempAllocatedPoints.has(characterId)) {
-      this.tempAllocatedPoints.set(characterId, []);
-    }
-    const pending = this.tempAllocatedPoints.get(characterId)!;
+  if(!this.tempAllocatedPoints.has(characterId)) {
+  this.tempAllocatedPoints.set(characterId, []);
+}
+const pending = this.tempAllocatedPoints.get(characterId)!;
 
-    if (operation === 'add') {
-      pending.push(stat);
-    } else {
-      const index = pending.lastIndexOf(stat);
-      if (index > -1) {
-        pending.splice(index, 1);
-      }
-    }
+if (operation === 'add') {
+  pending.push(stat);
+} else {
+  const index = pending.lastIndexOf(stat);
+  if (index > -1) {
+    pending.splice(index, 1);
+  }
+}
 
-    // Cleanup empty
-    if (pending.length === 0) {
-      this.tempAllocatedPoints.delete(characterId);
-    }
+// Cleanup empty
+if (pending.length === 0) {
+  this.tempAllocatedPoints.delete(characterId);
+}
 
-    this.showStatAllocation(characterId);
+this.showStatAllocation(characterId);
   }
 
   private showManageScreen(): void {
-    this.showScreen('manage-screen');
-    this.renderManageGrid();
-  }
+  this.showScreen('manage-screen');
+  this.renderManageGrid();
+}
 
   private renderManageGrid(): void {
-    const grid = document.getElementById('character-manage-grid')!;
+  const grid = document.getElementById('character-manage-grid')!;
 
 
 
-    grid.innerHTML = '';
-    grid.className = 'character-manage-grid';
+  grid.innerHTML = '';
+  grid.className = 'character-manage-grid';
 
-    const allCharacters = this.characterManager.getAllCharacters();
+  const allCharacters = this.characterManager.getAllCharacters();
 
-    // Sort: Owned first
-    allCharacters.sort((a, b) => {
-      if (a.isOwned && !b.isOwned) return -1;
-      if (!a.isOwned && b.isOwned) return 1;
-      return 0;
-    });
+  // Sort: Owned first
+  allCharacters.sort((a, b) => {
+    if (a.isOwned && !b.isOwned) return -1;
+    if (!a.isOwned && b.isOwned) return 1;
+    return 0;
+  });
 
-    allCharacters.forEach(character => {
-      const card = document.createElement('div');
-      card.className = `character-card-detailed ${character.isOwned ? 'owned' : 'unowned'}`;
+  allCharacters.forEach(character => {
+    const card = document.createElement('div');
+    card.className = `character-card-detailed ${character.isOwned ? 'owned' : 'unowned'}`;
 
-      let content = '';
+    let content = '';
 
-      if (character.isOwned) {
-        // Build abilities HTML
-        const abilitiesHtml = character.abilities.map(ability => {
-          const typeLabel = ability.type === 'basic' ? '⚡ Basic' : '✨ Special';
-          const typeClass = ability.type === 'basic' ? 'ability-basic' : 'ability-special';
-          return `
+    if (character.isOwned) {
+      // Build abilities HTML
+      const abilitiesHtml = character.abilities.map(ability => {
+        const typeLabel = ability.type === 'basic' ? '⚡ Basic' : '✨ Special';
+        const typeClass = ability.type === 'basic' ? 'ability-basic' : 'ability-special';
+        return `
             <div class="ability-item ${typeClass}">
               <div class="ability-header">
                 <span class="ability-type-label">${typeLabel}</span>
@@ -1417,9 +1393,9 @@ export class Game {
               <div class="ability-desc">${ability.description}</div>
             </div>
           `;
-        }).join('');
+      }).join('');
 
-        content = `
+      content = `
           <div class="character-info">
              <div class="character-name">${character.name}</div>
              <div class="character-level">Level ${character.level} | XP: ${character.experience}/${character.level * 100}</div>
@@ -1444,11 +1420,11 @@ export class Game {
           </div>
           ${character.availableStatPoints > 0 ? `<button class="btn btn-success btn-manage-upgrade" style="width: 100%; margin-top: 1rem;">Upgrade (+${character.availableStatPoints})</button>` : ''}
         `;
-      } else {
-        const fragments = character.fragments || 0;
-        const progressPercent = (fragments / 5) * 100;
+    } else {
+      const fragments = character.fragments || 0;
+      const progressPercent = (fragments / 5) * 100;
 
-        content = `
+      content = `
            <div class="character-info-unowned">
              <div class="character-name">${character.name}</div>
              <div class="locked-status">🔒 Locked</div>
@@ -1467,260 +1443,260 @@ export class Game {
               <div class="stat-detail-row"><span>Defense</span> <span>???</span></div>
             </div>
          `;
-      }
+    }
 
-      card.innerHTML = content;
+    card.innerHTML = content;
 
-      // Add listener for Upgrade button
-      const upgradeBtn = card.querySelector('.btn-manage-upgrade');
-      if (upgradeBtn) {
-        upgradeBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          this.showStatsScreen();
-          this.showStatAllocation(character.id, 'manage-screen');
-        });
-      }
+    // Add listener for Upgrade button
+    const upgradeBtn = card.querySelector('.btn-manage-upgrade');
+    if (upgradeBtn) {
+      upgradeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.showStatsScreen();
+        this.showStatAllocation(character.id, 'manage-screen');
+      });
+    }
 
-      grid.appendChild(card);
-    });
-  }
+    grid.appendChild(card);
+  });
+}
 
   private setupAuthEventListeners(): void {
-    let loginBtn = document.getElementById('btn-login');
-    let registerBtn = document.getElementById('btn-register');
+  let loginBtn = document.getElementById('btn-login');
+  let registerBtn = document.getElementById('btn-register');
 
-    // HMR Fix: Clone buttons to remove old listeners
-    if (loginBtn) {
-      const newLoginBtn = loginBtn.cloneNode(true) as HTMLElement;
-      loginBtn.parentNode?.replaceChild(newLoginBtn, loginBtn);
-      loginBtn = newLoginBtn;
-    }
-    if (registerBtn) {
-      const newRegisterBtn = registerBtn.cloneNode(true) as HTMLElement;
-      registerBtn.parentNode?.replaceChild(newRegisterBtn, registerBtn);
-      registerBtn = newRegisterBtn;
-    }
+  // HMR Fix: Clone buttons to remove old listeners
+  if(loginBtn) {
+    const newLoginBtn = loginBtn.cloneNode(true) as HTMLElement;
+    loginBtn.parentNode?.replaceChild(newLoginBtn, loginBtn);
+    loginBtn = newLoginBtn;
+  }
+    if(registerBtn) {
+    const newRegisterBtn = registerBtn.cloneNode(true) as HTMLElement;
+    registerBtn.parentNode?.replaceChild(newRegisterBtn, registerBtn);
+    registerBtn = newRegisterBtn;
+  }
     const loginUser = document.getElementById('login-username') as HTMLInputElement;
-    const loginPass = document.getElementById('login-password') as HTMLInputElement;
-    const registerUser = document.getElementById('register-username') as HTMLInputElement;
-    const registerPass = document.getElementById('register-password') as HTMLInputElement;
-    const loginMessage = document.getElementById('login-message');
-    const registerMessage = document.getElementById('register-message');
-    const toRegisterLink = document.getElementById('link-to-register');
-    const toLoginLink = document.getElementById('link-to-login');
+  const loginPass = document.getElementById('login-password') as HTMLInputElement;
+  const registerUser = document.getElementById('register-username') as HTMLInputElement;
+  const registerPass = document.getElementById('register-password') as HTMLInputElement;
+  const loginMessage = document.getElementById('login-message');
+  const registerMessage = document.getElementById('register-message');
+  const toRegisterLink = document.getElementById('link-to-register');
+  const toLoginLink = document.getElementById('link-to-login');
 
-    // Navigation
-    toRegisterLink?.addEventListener('click', (e) => {
-      e.preventDefault();
-      this.showScreen('register-screen');
-    });
+  // Navigation
+  toRegisterLink?.addEventListener('click', (e) => {
+  e.preventDefault();
+  this.showScreen('register-screen');
+});
 
-    toLoginLink?.addEventListener('click', (e) => {
-      e.preventDefault();
+toLoginLink?.addEventListener('click', (e) => {
+  e.preventDefault();
+  this.showScreen('login-screen');
+});
+
+loginBtn?.addEventListener('click', async () => {
+  const user = loginUser.value.trim();
+  const pass = loginPass.value.trim();
+  if (!user || !pass) return;
+
+  if (loginMessage) loginMessage.textContent = 'Logging in...';
+  const result = await this.authManager.login(user, pass);
+  if (result.success) {
+    this.onAuthSuccess(result.data);
+  } else {
+    if (loginMessage) {
+      loginMessage.textContent = result.error || 'Login failed';
+      loginMessage.className = 'auth-message error';
+    }
+  }
+});
+
+registerBtn?.addEventListener('click', async () => {
+  const user = registerUser.value.trim();
+  const pass = registerPass.value.trim();
+  if (!user || !pass) return;
+
+  if (registerMessage) {
+    registerMessage.textContent = 'Creating account...';
+    registerMessage.className = 'auth-message';
+  }
+  // Disable button to prevent double-clicks
+  if (registerBtn) (registerBtn as HTMLButtonElement).disabled = true;
+
+  const result = await this.authManager.register(user, pass);
+  if (result.success) {
+    if (registerMessage) {
+      registerMessage.textContent = 'Account created! Redirecting to login...';
+      registerMessage.className = 'auth-message success';
+    }
+
+    // Wait a bit then switch to login
+    setTimeout(() => {
       this.showScreen('login-screen');
-    });
-
-    loginBtn?.addEventListener('click', async () => {
-      const user = loginUser.value.trim();
-      const pass = loginPass.value.trim();
-      if (!user || !pass) return;
-
-      if (loginMessage) loginMessage.textContent = 'Logging in...';
-      const result = await this.authManager.login(user, pass);
-      if (result.success) {
-        this.onAuthSuccess(result.data);
-      } else {
-        if (loginMessage) {
-          loginMessage.textContent = result.error || 'Login failed';
-          loginMessage.className = 'auth-message error';
-        }
-      }
-    });
-
-    registerBtn?.addEventListener('click', async () => {
-      const user = registerUser.value.trim();
-      const pass = registerPass.value.trim();
-      if (!user || !pass) return;
-
-      if (registerMessage) {
-        registerMessage.textContent = 'Creating account...';
-        registerMessage.className = 'auth-message';
-      }
-      // Disable button to prevent double-clicks
-      if (registerBtn) (registerBtn as HTMLButtonElement).disabled = true;
-
-      const result = await this.authManager.register(user, pass);
-      if (result.success) {
-        if (registerMessage) {
-          registerMessage.textContent = 'Account created! Redirecting to login...';
-          registerMessage.className = 'auth-message success';
-        }
-
-        // Wait a bit then switch to login
-        setTimeout(() => {
-          this.showScreen('login-screen');
-          // Populate username for convenience
-          if (loginUser) loginUser.value = user;
-          // Clear register fields
-          if (registerUser) registerUser.value = '';
-          if (registerPass) registerPass.value = '';
-          if (registerMessage) registerMessage.textContent = '';
-          // Re-enable button
-          if (registerBtn) (registerBtn as HTMLButtonElement).disabled = false;
-        }, 1500);
-      } else {
-        if (registerBtn) (registerBtn as HTMLButtonElement).disabled = false;
-        if (registerMessage) {
-          registerMessage.textContent = result.error || 'Registration failed';
-          registerMessage.className = 'auth-message error';
-        }
-      }
-    });
+      // Populate username for convenience
+      if (loginUser) loginUser.value = user;
+      // Clear register fields
+      if (registerUser) registerUser.value = '';
+      if (registerPass) registerPass.value = '';
+      if (registerMessage) registerMessage.textContent = '';
+      // Re-enable button
+      if (registerBtn) (registerBtn as HTMLButtonElement).disabled = false;
+    }, 1500);
+  } else {
+    if (registerBtn) (registerBtn as HTMLButtonElement).disabled = false;
+    if (registerMessage) {
+      registerMessage.textContent = result.error || 'Registration failed';
+      registerMessage.className = 'auth-message error';
+    }
+  }
+});
   }
 
   private setupAccountEventListeners(): void {
-    const accountBtn = document.getElementById('btn-account');
-    const closeAccountBtn = document.getElementById('btn-close-account');
-    const accountModal = document.getElementById('account-modal');
-    const logoutBtn = document.getElementById('btn-logout');
-    const savePasswordBtn = document.getElementById('btn-save-password');
+  const accountBtn = document.getElementById('btn-account');
+  const closeAccountBtn = document.getElementById('btn-close-account');
+  const accountModal = document.getElementById('account-modal');
+  const logoutBtn = document.getElementById('btn-logout');
+  const savePasswordBtn = document.getElementById('btn-save-password');
 
-    // Tab switching
-    const tabs = document.querySelectorAll('.tab-btn');
-    const tabContents = document.querySelectorAll('.tab-content');
+  // Tab switching
+  const tabs = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
 
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        const target = tab.getAttribute('data-tab');
-        tabs.forEach(t => t.classList.remove('active'));
-        tabContents.forEach(c => c.classList.remove('active'));
-        tab.classList.add('active');
-        document.getElementById(`tab - ${target} `)?.classList.add('active');
-      });
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.getAttribute('data-tab');
+      tabs.forEach(t => t.classList.remove('active'));
+      tabContents.forEach(c => c.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(`tab - ${target} `)?.classList.add('active');
     });
+  });
 
-    accountBtn?.addEventListener('click', () => {
-      this.openAccountModal();
-    });
+  accountBtn?.addEventListener('click', () => {
+  this.openAccountModal();
+});
 
-    closeAccountBtn?.addEventListener('click', () => {
-      accountModal?.classList.remove('active');
-    });
+closeAccountBtn?.addEventListener('click', () => {
+  accountModal?.classList.remove('active');
+});
 
-    logoutBtn?.addEventListener('click', () => {
-      this.authManager.logout();
-      window.location.reload(); // Simplest way to reset state
-    });
+logoutBtn?.addEventListener('click', () => {
+  this.authManager.logout();
+  window.location.reload(); // Simplest way to reset state
+});
 
-    savePasswordBtn?.addEventListener('click', async () => {
-      const oldPass = (document.getElementById('old-password') as HTMLInputElement).value;
-      const newPass = (document.getElementById('new-password') as HTMLInputElement).value;
-      const message = document.getElementById('account-action-message');
+savePasswordBtn?.addEventListener('click', async () => {
+  const oldPass = (document.getElementById('old-password') as HTMLInputElement).value;
+  const newPass = (document.getElementById('new-password') as HTMLInputElement).value;
+  const message = document.getElementById('account-action-message');
 
-      if (!oldPass || !newPass) return;
+  if (!oldPass || !newPass) return;
 
-      if (message) message.textContent = 'Changing password...';
-      const result = await this.authManager.changePassword(oldPass, newPass);
+  if (message) message.textContent = 'Changing password...';
+  const result = await this.authManager.changePassword(oldPass, newPass);
 
-      if (message) {
-        message.textContent = result.success ? 'Password changed successfully!' : (result.error || 'Failed to change password');
-        message.className = result.success ? 'auth-message success' : 'auth-message error';
-      }
-    });
+  if (message) {
+    message.textContent = result.success ? 'Password changed successfully!' : (result.error || 'Failed to change password');
+    message.className = result.success ? 'auth-message success' : 'auth-message error';
+  }
+});
 
-    // Close on click outside
-    accountModal?.addEventListener('click', (e) => {
-      if (e.target === accountModal) {
-        accountModal.classList.remove('active');
-      }
-    });
+// Close on click outside
+accountModal?.addEventListener('click', (e) => {
+  if (e.target === accountModal) {
+    accountModal.classList.remove('active');
+  }
+});
   }
 
   private openAccountModal(): void {
-    const nameDisplay = document.getElementById('display-username');
-    if (nameDisplay) nameDisplay.textContent = this.authManager.getUsername() || 'Chad';
+  const nameDisplay = document.getElementById('display-username');
+  if(nameDisplay) nameDisplay.textContent = this.authManager.getUsername() || 'Chad';
 
-    document.getElementById('account-modal')?.classList.add('active');
+  document.getElementById('account-modal')?.classList.add('active');
 
-    // Reset message
-    const message = document.getElementById('account-action-message');
-    if (message) {
-      message.textContent = '';
-      message.className = 'auth-message';
-    }
+  // Reset message
+  const message = document.getElementById('account-action-message');
+  if(message) {
+    message.textContent = '';
+    message.className = 'auth-message';
   }
+}
 
   private onAuthSuccess(userData: any): void {
-    if (userData) {
-      this.characterManager.setCharacters(userData);
-    }
+  if(userData) {
+    this.characterManager.setCharacters(userData);
+  }
 
     // Setup sync to server
     this.characterManager.setSyncCallback((data) => {
-      this.authManager.savePlayerData(data);
-    });
+    this.authManager.savePlayerData(data);
+  });
 
-    this.showScreen('main-menu');
-    this.checkFirstTime();
+  this.showScreen('main-menu');
+  this.checkFirstTime();
 
-    // Show Account HUD
-    document.getElementById('hud-container')?.classList.add('active');
+  // Show Account HUD
+  document.getElementById('hud-container')?.classList.add('active');
 
-    // Connect to Network
-    this.networkManager.connect(this.authManager.getUsername()!);
-    this.setupNetworkEventListeners();
-  }
+  // Connect to Network
+  this.networkManager.connect(this.authManager.getUsername()!);
+  this.setupNetworkEventListeners();
+}
 
   private setupNetworkEventListeners(): void {
-    this.networkManager.on('search_results', (results: any[]) => {
-      console.log("Received search results:", results);
-      alert(`Debug: Received ${results.length} results: ` + JSON.stringify(results));
-      const container = document.getElementById('user-search-results')!;
-      container.innerHTML = '';
+  this.networkManager.on('search_results', (results: any[]) => {
+    console.log("Received search results:", results);
+    alert(`Debug: Received ${results.length} results: ` + JSON.stringify(results));
+    const container = document.getElementById('user-search-results')!;
+    container.innerHTML = '';
 
-      if (results.length === 0) {
-        container.innerHTML = '<div style="padding:0.5rem; opacity:0.7">No users found</div>';
-        return;
-      }
+    if (results.length === 0) {
+      container.innerHTML = '<div style="padding:0.5rem; opacity:0.7">No users found</div>';
+      return;
+    }
 
-      results.forEach(u => {
-        const div = document.createElement('div');
-        div.className = 'user-result-item';
-        div.innerHTML = `
+    results.forEach(u => {
+      const div = document.createElement('div');
+      div.className = 'user-result-item';
+      div.innerHTML = `
           < span > ${u.username} </span>
             < button class="btn btn-small btn-success" > Add </button>
               `;
-        div.querySelector('button')!.onclick = () => {
-          this.networkManager.sendFriendRequest(u.username);
-          alert(`Request sent to ${u.username} `);
-        };
-        container.appendChild(div);
-      });
+      div.querySelector('button')!.onclick = () => {
+        this.networkManager.sendFriendRequest(u.username);
+        alert(`Request sent to ${u.username} `);
+      };
+      container.appendChild(div);
     });
+  });
 
-    this.networkManager.on('new_friend_request', () => {
-      this.updateInboxBadge(true);
-      // Optional: Toast notification
-    });
+  this.networkManager.on('new_friend_request', () => {
+    this.updateInboxBadge(true);
+    // Optional: Toast notification
+  });
 
-    this.networkManager.on('friend_added', (friendName: string) => {
-      alert(`You are now friends with ${friendName} !`);
-      this.updateInboxBadge(false); // Rough logic, ideally check count
-      this.networkManager.getFriendsList(); // Refresh list
-    });
+  this.networkManager.on('friend_added', (friendName: string) => {
+    alert(`You are now friends with ${friendName} !`);
+    this.updateInboxBadge(false); // Rough logic, ideally check count
+    this.networkManager.getFriendsList(); // Refresh list
+  });
 
-    this.networkManager.on('friends_list_update', (friends: any[]) => {
-      const list = document.getElementById('friends-list')!;
-      list.innerHTML = '';
-      if (friends.length === 0) {
-        list.innerHTML = '<p class="empty-state">No friends yet.</p>';
-        return;
-      }
+  this.networkManager.on('friends_list_update', (friends: any[]) => {
+    const list = document.getElementById('friends-list')!;
+    list.innerHTML = '';
+    if (friends.length === 0) {
+      list.innerHTML = '<p class="empty-state">No friends yet.</p>';
+      return;
+    }
 
-      friends.forEach(f => {
-        const div = document.createElement('div');
-        div.className = `friend - item ${f.isOnline ? 'online' : 'offline'} `;
-        div.innerHTML = `
+    friends.forEach(f => {
+      const div = document.createElement('div');
+      div.className = `friend - item ${f.isOnline ? 'online' : 'offline'} `;
+      div.innerHTML = `
           < div style = "display:flex; flex-direction:column;" >
             <span style="font-weight:bold" > ${f.username} </span>
               < span class="friend-status" > ${f.isOnline ? 'Online' : 'Offline'} </span>
@@ -1728,167 +1704,167 @@ export class Game {
                 ${f.isOnline ? `<button class="btn btn-small btn-primary btn-challenge">⚔️ Challenge</button>` : ''}
         `;
 
-        if (f.isOnline) {
-          div.querySelector('.btn-challenge')!.addEventListener('click', () => {
-            if (confirm(`Challenge ${f.username} to a battle ? `)) {
-              this.networkManager.challengeFriend(f.username);
-              alert("Challenge sent!");
-            }
-          });
-        }
+      if (f.isOnline) {
+        div.querySelector('.btn-challenge')!.addEventListener('click', () => {
+          if (confirm(`Challenge ${f.username} to a battle ? `)) {
+            this.networkManager.challengeFriend(f.username);
+            alert("Challenge sent!");
+          }
+        });
+      }
 
-        list.appendChild(div);
+      list.appendChild(div);
+    });
+  });
+
+  this.networkManager.on('inbox_update', (data: any) => {
+    this.renderInbox(data.friendRequests || []);
+  });
+
+  this.networkManager.on('challenge_received', (data: any) => {
+    console.log('DEBUG: Challenge received payload:', data);
+
+    const modal = document.getElementById('challenge-modal');
+    const text = document.getElementById('challenge-text');
+
+    if (modal && text) {
+      text.textContent = `Player "${data.from}" wants to battle you!`;
+      modal.classList.add('active');
+
+      // Setup listeners (cloning to remove old listeners to prevent duplicates per session)
+      const acceptBtn = document.getElementById('btn-accept-challenge')!;
+      const declineBtn = document.getElementById('btn-decline-challenge')!;
+
+      const newAccept = acceptBtn.cloneNode(true);
+      const newDecline = declineBtn.cloneNode(true);
+      acceptBtn.parentNode!.replaceChild(newAccept, acceptBtn);
+      declineBtn.parentNode!.replaceChild(newDecline, declineBtn);
+
+      newAccept.addEventListener('click', () => {
+        this.networkManager.acceptChallenge(data.from);
+        modal.classList.remove('active');
       });
-    });
 
-    this.networkManager.on('inbox_update', (data: any) => {
-      this.renderInbox(data.friendRequests || []);
-    });
-
-    this.networkManager.on('challenge_received', (data: any) => {
-      console.log('DEBUG: Challenge received payload:', data);
-
-      const modal = document.getElementById('challenge-modal');
-      const text = document.getElementById('challenge-text');
-
-      if (modal && text) {
-        text.textContent = `Player "${data.from}" wants to battle you!`;
-        modal.classList.add('active');
-
-        // Setup listeners (cloning to remove old listeners to prevent duplicates per session)
-        const acceptBtn = document.getElementById('btn-accept-challenge')!;
-        const declineBtn = document.getElementById('btn-decline-challenge')!;
-
-        const newAccept = acceptBtn.cloneNode(true);
-        const newDecline = declineBtn.cloneNode(true);
-        acceptBtn.parentNode!.replaceChild(newAccept, acceptBtn);
-        declineBtn.parentNode!.replaceChild(newDecline, declineBtn);
-
-        newAccept.addEventListener('click', () => {
-          this.networkManager.acceptChallenge(data.from);
-          modal.classList.remove('active');
-        });
-
-        newDecline.addEventListener('click', () => {
-          modal.classList.remove('active');
-        });
-      } else {
-        // Fallback if modal missing
-        if (confirm(`${data.from} wants to battle! Accept ? `)) {
-          this.networkManager.acceptChallenge(data.from);
-        }
+      newDecline.addEventListener('click', () => {
+        modal.classList.remove('active');
+      });
+    } else {
+      // Fallback if modal missing
+      if (confirm(`${data.from} wants to battle! Accept ? `)) {
+        this.networkManager.acceptChallenge(data.from);
       }
-    });
+    }
+  });
 
-    this.networkManager.on('challenge_error', (msg: string) => {
-      alert(`Challenge Failed: ${msg} `);
-    });
+  this.networkManager.on('challenge_error', (msg: string) => {
+    alert(`Challenge Failed: ${msg} `);
+  });
 
-    this.networkManager.on('battle_start', (data: any) => {
-      // Phase 1: Go to Team Selection
-      this.currentRoomId = data.roomId;
-      this.showNetworkTeamSelect();
-    });
+  this.networkManager.on('battle_start', (data: any) => {
+    // Phase 1: Go to Team Selection
+    this.currentRoomId = data.roomId;
+    this.showNetworkTeamSelect();
+  });
 
-    this.networkManager.on('battle_commence', (data: any) => {
-      // Phase 2: Actual Battle
-      // data contains { p1, p2 } with teams.
-      // We need to map this to the format startNetworkBattle expects.
-      // startNetworkBattle expects { roomId, opponentTeam: [], isHost? }
+  this.networkManager.on('battle_commence', (data: any) => {
+    // Phase 2: Actual Battle
+    // data contains { p1, p2 } with teams.
+    // We need to map this to the format startNetworkBattle expects.
+    // startNetworkBattle expects { roomId, opponentTeam: [], isHost? }
 
-      const myUsername = this.authManager.getUsername();
-      const opponent = data.p1.username === myUsername ? data.p2 : data.p1;
+    const myUsername = this.authManager.getUsername();
+    const opponent = data.p1.username === myUsername ? data.p2 : data.p1;
 
-      // We need to pass the opponent team to startNetworkBattle
-      // and also set OUR team based on what we selected? 
-      // startNetworkBattle logic (lines 1714+) constructs "My Team" from "first 5 owned".
-      // We need to change that too.
+    // We need to pass the opponent team to startNetworkBattle
+    // and also set OUR team based on what we selected? 
+    // startNetworkBattle logic (lines 1714+) constructs "My Team" from "first 5 owned".
+    // We need to change that too.
 
-      // Let's refactor startNetworkBattle slightly or just hack the data it receives.
+    // Let's refactor startNetworkBattle slightly or just hack the data it receives.
 
-      const battleData = {
-        roomId: data.roomId,
-        opponent: opponent.username,
-        opponentTeam: opponent.team,
-        // We also need to know OUR selected team to pass to combat system?
-        // startNetworkBattle currently grabs 'getOwnedCharacters().slice(0,5)'.
-        // We should store our selected team in a class property 'selectedNetworkTeam'.
-      };
-      this.startNetworkBattle(battleData);
-    });
+    const battleData = {
+      roomId: data.roomId,
+      opponent: opponent.username,
+      opponentTeam: opponent.team,
+      // We also need to know OUR selected team to pass to combat system?
+      // startNetworkBattle currently grabs 'getOwnedCharacters().slice(0,5)'.
+      // We should store our selected team in a class property 'selectedNetworkTeam'.
+    };
+    this.startNetworkBattle(battleData);
+  });
 
-    this.networkManager.on('battle_action', (_data: any) => {
-      // Self-echo (usually ignored or used for confirmation)
-    });
+  this.networkManager.on('battle_action', (_data: any) => {
+    // Self-echo (usually ignored or used for confirmation)
+  });
 
-    this.networkManager.on('opponent_action', (action: any) => {
-      // Remote action from opponent
-      if (this.combatSystem && action) {
-        console.log("Applying opponent action:", action);
-        this.combatSystem.applyRemoteAction(action);
-        this.updateBattleUI();
+  this.networkManager.on('opponent_action', (action: any) => {
+    // Remote action from opponent
+    if (this.combatSystem && action) {
+      console.log("Applying opponent action:", action);
+      this.combatSystem.applyRemoteAction(action);
+      this.updateBattleUI();
 
-        // Execute the next turn to set up waiting state for current player
-        this.combatSystem.executeTurn();
-        this.updateBattleUI();
-      }
-    });
+      // Execute the next turn to set up waiting state for current player
+      this.combatSystem.executeTurn();
+      this.updateBattleUI();
+    }
+  });
 
-    this.networkManager.on('battle_forfeited', (data: any) => {
-      // data: { winner: string, loser: string }
-      const myUsername = this.authManager.getUsername();
-      const isWinner = myUsername === data.winner;
+  this.networkManager.on('battle_forfeited', (data: any) => {
+    // data: { winner: string, loser: string }
+    const myUsername = this.authManager.getUsername();
+    const isWinner = myUsername === data.winner;
 
-      this.stopAutoBattle();
+    this.stopAutoBattle();
 
-      if (this.combatSystem) {
-        // Force battle end state
-        const state = this.combatSystem.getState();
-        state.isOver = true;
-        state.winner = isWinner ? 'player' : 'enemy';
-        this.showResultsScreen();
-      } else {
-        // Fallback if system is already cleared (shouldn't happen with new logic, but safe)
-        alert(isWinner ? "Opponent Forfeited! You Win!" : "You Forfeited.");
-        this.showScreen('main-menu');
-      }
-    });
+    if (this.combatSystem) {
+      // Force battle end state
+      const state = this.combatSystem.getState();
+      state.isOver = true;
+      state.winner = isWinner ? 'player' : 'enemy';
+      this.showResultsScreen();
+    } else {
+      // Fallback if system is already cleared (shouldn't happen with new logic, but safe)
+      alert(isWinner ? "Opponent Forfeited! You Win!" : "You Forfeited.");
+      this.showScreen('main-menu');
+    }
+  });
 
-    this.networkManager.on('battle_matched', (data: any) => {
-      console.log("Battle matched data:", data);
-      // { roomId, opponent, opponentTeam, isHost }
-      document.getElementById('matchmaking-status')!.style.display = 'none';
+  this.networkManager.on('battle_matched', (data: any) => {
+    console.log("Battle matched data:", data);
+    // { roomId, opponent, opponentTeam, isHost }
+    document.getElementById('matchmaking-status')!.style.display = 'none';
 
-      // IMPORTANT: Start the battle system after displaying
-      console.log("Matched with:", data.opponent);
-      this.startNetworkBattle(data);
-    });
-  }
+    // IMPORTANT: Start the battle system after displaying
+    console.log("Matched with:", data.opponent);
+    this.startNetworkBattle(data);
+  });
+}
 
   private updateInboxBadge(show: boolean): void {
-    const badge = document.getElementById('inbox-badge')!;
-    badge.style.display = show ? 'flex' : 'none';
-    if (show) badge.textContent = '!';
-  }
+  const badge = document.getElementById('inbox-badge')!;
+  badge.style.display = show ? 'flex' : 'none';
+  if(show) badge.textContent = '!';
+}
 
   private showInbox(): void {
-    document.getElementById('inbox-modal')?.classList.add('active');
-    this.networkManager.getInbox();
-  }
+  document.getElementById('inbox-modal')?.classList.add('active');
+  this.networkManager.getInbox();
+}
 
   private renderInbox(requests: any[]): void {
-    const list = document.getElementById('inbox-list')!;
-    list.innerHTML = '';
+  const list = document.getElementById('inbox-list')!;
+  list.innerHTML = '';
 
-    if (requests.length === 0) {
-      list.innerHTML = '<p class="empty-state">No new messages.</p>';
-      return;
-    }
+  if(requests.length === 0) {
+  list.innerHTML = '<p class="empty-state">No new messages.</p>';
+  return;
+}
 
-    requests.forEach(req => {
-      const div = document.createElement('div');
-      div.className = 'inbox-item';
-      div.innerHTML = `
+requests.forEach(req => {
+  const div = document.createElement('div');
+  div.className = 'inbox-item';
+  div.innerHTML = `
           < div class="inbox-item-content" >
             <span class="inbox-item-title" > Friend Request </span>
               < span class="inbox-item-time" > From: ${req.from} </span>
@@ -1899,209 +1875,209 @@ export class Game {
                       </div>
                         `;
 
-      div.querySelector('.accept-btn')!.addEventListener('click', () => {
-        alert(`Accepting request from ${req.from}...`);
-        this.networkManager.acceptFriendRequest(req.from);
-        setTimeout(() => this.showInbox(), 500);
-      });
+  div.querySelector('.accept-btn')!.addEventListener('click', () => {
+    alert(`Accepting request from ${req.from}...`);
+    this.networkManager.acceptFriendRequest(req.from);
+    setTimeout(() => this.showInbox(), 500);
+  });
 
-      list.appendChild(div);
-    });
+  list.appendChild(div);
+});
   }
 
   private showFriendsScreen(): void {
-    this.showScreen('friends-screen');
-    this.networkManager.getFriendsList();
-  }
+  this.showScreen('friends-screen');
+  this.networkManager.getFriendsList();
+}
 
   private showNetworkTeamSelect(): void {
-    this.showScreen('network-team-select-screen');
-    const grid = document.getElementById('network-select-grid')!;
-    grid.innerHTML = '';
-    this.selectedNetworkTeamIds = [];
+  this.showScreen('network-team-select-screen');
+  const grid = document.getElementById('network-select-grid')!;
+  grid.innerHTML = '';
+  this.selectedNetworkTeamIds = [];
 
-    const readyBtn = document.getElementById('btn-network-ready') as HTMLButtonElement;
-    readyBtn.disabled = true;
-    readyBtn.textContent = 'Select 1-5 Chads';
-    // Clear old listeners
-    const newBtn = readyBtn.cloneNode(true) as HTMLButtonElement;
-    readyBtn.parentNode!.replaceChild(newBtn, readyBtn);
+  const readyBtn = document.getElementById('btn-network-ready') as HTMLButtonElement;
+  readyBtn.disabled = true;
+  readyBtn.textContent = 'Select 1-5 Chads';
+  // Clear old listeners
+  const newBtn = readyBtn.cloneNode(true) as HTMLButtonElement;
+  readyBtn.parentNode!.replaceChild(newBtn, readyBtn);
 
-    newBtn.addEventListener('click', () => {
-      if (!this.currentRoomId) return;
+  newBtn.addEventListener('click', () => {
+    if (!this.currentRoomId) return;
 
-      // Hydrate team before sending (Client-Authoritative for now)
-      const fullTeam = this.selectedNetworkTeamIds.map(id => {
-        const owned = this.characterManager.getOwnedCharacters().find(c => c.id === id);
-        const template = this.characterManager.getCharacterForBattle(id);
-        if (!owned || !template) return null;
+    // Hydrate team before sending (Client-Authoritative for now)
+    const fullTeam = this.selectedNetworkTeamIds.map(id => {
+      const owned = this.characterManager.getOwnedCharacters().find(c => c.id === id);
+      const template = this.characterManager.getCharacterForBattle(id);
+      if (!owned || !template) return null;
 
-        // Merge for network transmission
-        return {
-          ...template,
-          id: id,
-          stats: owned.stats || template.stats,
-          level: owned.level || 1,
-          visual: template.visual,
-          abilities: template.abilities, // Crucial!
-          // Reset runtime
-          statusEffects: [],
-          abilityCooldowns: {} // Map converts to object for JSON? No, Maps don't serialize.
-          // We'll init cooldowns on receiver side anyway.
-        };
-      }).filter(c => c !== null);
+      // Merge for network transmission
+      return {
+        ...template,
+        id: id,
+        stats: owned.stats || template.stats,
+        level: owned.level || 1,
+        visual: template.visual,
+        abilities: template.abilities, // Crucial!
+        // Reset runtime
+        statusEffects: [],
+        abilityCooldowns: {} // Map converts to object for JSON? No, Maps don't serialize.
+        // We'll init cooldowns on receiver side anyway.
+      };
+    }).filter(c => c !== null);
 
-      newBtn.disabled = true;
-      newBtn.textContent = 'Waiting for opponent...';
-      this.networkManager.emit('battle_ready', { roomId: this.currentRoomId, team: fullTeam });
-    });
+    newBtn.disabled = true;
+    newBtn.textContent = 'Waiting for opponent...';
+    this.networkManager.emit('battle_ready', { roomId: this.currentRoomId, team: fullTeam });
+  });
 
-    const owned = this.characterManager.getOwnedCharacters();
-    owned.forEach(char => {
-      const card = document.createElement('div');
-      card.className = 'character-card'; // Reuse style
-      // Add basic visual
-      const template = this.characterManager.getCharacterForBattle(char.id);
-      if (!template) return;
+  const owned = this.characterManager.getOwnedCharacters();
+  owned.forEach(char => {
+    const card = document.createElement('div');
+    card.className = 'character-card'; // Reuse style
+    // Add basic visual
+    const template = this.characterManager.getCharacterForBattle(char.id);
+    if (!template) return;
 
-      card.innerHTML = `
+    card.innerHTML = `
     < div class= "card-inner" style = "border: 2px solid transparent;" >
     <h4>${template.name} </h4>
     < p > Lvl ${char.level} </p>
     </div>
       `;
 
-      card.onclick = () => {
-        const idx = this.selectedNetworkTeamIds.indexOf(char.id);
-        if (idx >= 0) {
-          this.selectedNetworkTeamIds.splice(idx, 1);
-          (card.querySelector('.card-inner') as HTMLElement).style.border = '2px solid transparent';
-          (card.querySelector('.card-inner') as HTMLElement).style.background = '';
-        } else {
-          if (this.selectedNetworkTeamIds.length >= 5) {
-            alert("Max 5 Chads!");
-            return;
-          }
-          this.selectedNetworkTeamIds.push(char.id);
-          (card.querySelector('.card-inner') as HTMLElement).style.border = '2px solid #00ff00';
-          (card.querySelector('.card-inner') as HTMLElement).style.background = 'rgba(0, 255, 0, 0.2)';
+    card.onclick = () => {
+      const idx = this.selectedNetworkTeamIds.indexOf(char.id);
+      if (idx >= 0) {
+        this.selectedNetworkTeamIds.splice(idx, 1);
+        (card.querySelector('.card-inner') as HTMLElement).style.border = '2px solid transparent';
+        (card.querySelector('.card-inner') as HTMLElement).style.background = '';
+      } else {
+        if (this.selectedNetworkTeamIds.length >= 5) {
+          alert("Max 5 Chads!");
+          return;
         }
+        this.selectedNetworkTeamIds.push(char.id);
+        (card.querySelector('.card-inner') as HTMLElement).style.border = '2px solid #00ff00';
+        (card.querySelector('.card-inner') as HTMLElement).style.background = 'rgba(0, 255, 0, 0.2)';
+      }
 
-        // Update Button
-        if (this.selectedNetworkTeamIds.length > 0) {
-          newBtn.disabled = false;
-          newBtn.textContent = 'READY';
-        } else {
-          newBtn.disabled = true;
-          newBtn.textContent = 'Select 1-5 Chads';
-        }
-      };
-      grid.appendChild(card);
-    });
-  }
+      // Update Button
+      if (this.selectedNetworkTeamIds.length > 0) {
+        newBtn.disabled = false;
+        newBtn.textContent = 'READY';
+      } else {
+        newBtn.disabled = true;
+        newBtn.textContent = 'Select 1-5 Chads';
+      }
+    };
+    grid.appendChild(card);
+  });
+}
 
   private startNetworkBattle(data: any): void {
-    this.currentRoomId = data.roomId; // Ensure roomId is synchronized
-    this.showScreen('battle-screen');
+  this.currentRoomId = data.roomId; // Ensure roomId is synchronized
+  this.showScreen('battle-screen');
 
-    // Reset Forfeit Button State
-    const forfeitBtn = document.getElementById('btn-back-from-battle') as HTMLButtonElement;
-    if (forfeitBtn) {
-      forfeitBtn.textContent = 'FORFEIT';
-      forfeitBtn.disabled = false;
-    }
+  // Reset Forfeit Button State
+  const forfeitBtn = document.getElementById('btn-back-from-battle') as HTMLButtonElement;
+  if(forfeitBtn) {
+    forfeitBtn.textContent = 'FORFEIT';
+    forfeitBtn.disabled = false;
+  }
 
     // Helper to hydrate character data
     const hydrate = (stored: any): Character => {
-      const template = this.characterManager.getCharacterForBattle(stored.id);
-      if (!template) {
-        console.warn(`Template not found for ${stored.id}, returning raw`);
-        return stored;
-      }
+    const template = this.characterManager.getCharacterForBattle(stored.id);
+    if (!template) {
+      console.warn(`Template not found for ${stored.id}, returning raw`);
+      return stored;
+    }
 
-      // Merge Template (Abilities/Visuals) with Stored (Level/Stats)
-      return {
-        ...template,
-        id: stored.id, // Ensure ID matches
-        // Stats: Use stored stats if they exist (from leveling), else template defaults
-        stats: stored.stats ? { ...stored.stats } : { ...template.stats },
-        // Level/XP
-        level: stored.level || 1,
-        experience: stored.experience || 0,
-        availableStatPoints: stored.availableStatPoints || 0,
-        // Visuals: Stored might have overrides? Use template for now.
-        visual: template.visual,
-        // Abilities: ALWAYS use template abilities (DB doesn't store them usually)
-        abilities: template.abilities,
-        // Runtime: Reset Health/Cooldowns
-        statusEffects: [],
-        abilityCooldowns: new Map() // Fresh map
-      };
+    // Merge Template (Abilities/Visuals) with Stored (Level/Stats)
+    return {
+      ...template,
+      id: stored.id, // Ensure ID matches
+      // Stats: Use stored stats if they exist (from leveling), else template defaults
+      stats: stored.stats ? { ...stored.stats } : { ...template.stats },
+      // Level/XP
+      level: stored.level || 1,
+      experience: stored.experience || 0,
+      availableStatPoints: stored.availableStatPoints || 0,
+      // Visuals: Stored might have overrides? Use template for now.
+      visual: template.visual,
+      // Abilities: ALWAYS use template abilities (DB doesn't store them usually)
+      abilities: template.abilities,
+      // Runtime: Reset Health/Cooldowns
+      statusEffects: [],
+      abilityCooldowns: new Map() // Fresh map
     };
+  };
 
-    // Parse My Team (using SELECTED team)
-    const myOwned = this.characterManager.getOwnedCharacters();
-    // Filter by selected IDs
-    const selectedObjects = myOwned.filter(c => this.selectedNetworkTeamIds.includes(c.id));
-    // If empty (shouldn't happen), fallback to first 5
-    const finalSelection = selectedObjects.length > 0 ? selectedObjects : myOwned.slice(0, 5);
+  // Parse My Team (using SELECTED team)
+  const myOwned = this.characterManager.getOwnedCharacters();
+  // Filter by selected IDs
+  const selectedObjects = myOwned.filter(c => this.selectedNetworkTeamIds.includes(c.id));
+  // If empty (shouldn't happen), fallback to first 5
+  const finalSelection = selectedObjects.length > 0 ? selectedObjects : myOwned.slice(0, 5);
 
-    const myTeamChars = finalSelection.map(c => hydrate(c));
+  const myTeamChars = finalSelection.map(c => hydrate(c));
 
-    // Parse Opponent Team (from data)
-    const opponentChars: Character[] = data.opponentTeam.map((c: any) => hydrate(c));
+  // Parse Opponent Team (from data)
+  const opponentChars: Character[] = data.opponentTeam.map((c: any) => hydrate(c));
 
-    // Ensure Health is full
-    myTeamChars.forEach(c => c.stats.currentHealth = c.stats.maxHealth);
-    opponentChars.forEach(c => c.stats.currentHealth = c.stats.maxHealth);
+  // Ensure Health is full
+  myTeamChars.forEach(c => c.stats.currentHealth = c.stats.maxHealth);
+  opponentChars.forEach(c => c.stats.currentHealth = c.stats.maxHealth);
 
-    const yourTeam: Team = {
-      name: "Your Team",
-      characters: myTeamChars,
-      color: '#4a90e2'
-    };
+  const yourTeam: Team = {
+    name: "Your Team",
+    characters: myTeamChars,
+    color: '#4a90e2'
+  };
 
-    const enemyTeam: Team = {
-      name: data.opponent || "Opponent",
-      characters: opponentChars,
-      color: '#e74c3c'
-    };
+  const enemyTeam: Team = {
+    name: data.opponent || "Opponent",
+    characters: opponentChars,
+    color: '#e74c3c'
+  };
 
-    const lootIds = opponentChars.map(c => c.id); // Loot? 
+  const lootIds = opponentChars.map(c => c.id); // Loot? 
 
-    // Initialize Combat System
-    // isHost determines who calculates turns? For now, we run local simulation visually matching server?
-    // Actually, purely network driven? No, 'battle_action' suggests remote.
-    // So we just need to init.
-    // If data.isHost is missing, we might have issues with who goes first?
-    // CombatSystem handles 'startBattle' to determine order.
+  // Initialize Combat System
+  // isHost determines who calculates turns? For now, we run local simulation visually matching server?
+  // Actually, purely network driven? No, 'battle_action' suggests remote.
+  // So we just need to init.
+  // If data.isHost is missing, we might have issues with who goes first?
+  // CombatSystem handles 'startBattle' to determine order.
 
-    this.combatSystem = new CombatSystem(yourTeam, enemyTeam, lootIds, 1.0, true,
-      (action) => {
-        // Emit action to server
-        this.networkManager.sendBattleAction(data.roomId, action);
-      },
-      (result) => {
-        this.networkManager.notifyBattleEnd(data.roomId, result);
-        // Local cleanup
-        // alert("Battle Over! Winner: " + result.winner);
-      },
-      data.opponent  // Pass opponent username for leaderboard tracking
-    );
-    this.displayBattleIn3D();
-    this.updateBattleUI();
+  this.combatSystem = new CombatSystem(yourTeam, enemyTeam, lootIds, 1.0, true,
+    (action) => {
+      // Emit action to server
+      this.networkManager.sendBattleAction(data.roomId, action);
+    },
+    (result) => {
+      this.networkManager.notifyBattleEnd(data.roomId, result);
+      // Local cleanup
+      // alert("Battle Over! Winner: " + result.winner);
+    },
+    data.opponent  // Pass opponent username for leaderboard tracking
+  );
+  this.displayBattleIn3D();
+  this.updateBattleUI();
 
-    // Start the battle system (calculates turn order and executes first turn once)
-    this.combatSystem.startBattle();
+  // Start the battle system (calculates turn order and executes first turn once)
+  this.combatSystem.startBattle();
 
-    // Update UI to reflect initial turn state
-    this.updateBattleUI();
+  // Update UI to reflect initial turn state
+  this.updateBattleUI();
 
-    // We need to Override applyAbility to Send events instead of just executing, 
-    // OR hook into executeTurn. 
-    // This part is the "Networked Combat" complexity. 
-    // I will leave this as "Local simulation" for now to satisfy the UI requirement first.
-  }
+  // We need to Override applyAbility to Send events instead of just executing, 
+  // OR hook into executeTurn. 
+  // This part is the "Networked Combat" complexity. 
+  // I will leave this as "Local simulation" for now to satisfy the UI requirement first.
+}
 }
 
 // Initialize the game when page loads
