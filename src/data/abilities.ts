@@ -21,20 +21,20 @@ export const BRU_ABILITIES: Ability[] = [
     {
         id: 'bru_special1',
         name: 'Bru Force',
-        description: 'Grants Attack Up to self for 2 turns.',
+        description: 'Grants Attack Up to self for 4 turns.',
         type: 'special',
         cooldown: 2,
         target: 'self',
-        effects: [{ type: 'apply_status', statusType: 'attack_up', duration: 2 }]
+        effects: [{ type: 'apply_status', statusType: 'attack_up', duration: 4 }]
     },
     {
         id: 'bru_special2',
         name: 'Shake It Off',
-        description: 'Grants Defence Up to self for 2 turns.',
+        description: 'Grants Defence Up to self for 4 turns.',
         type: 'special',
         cooldown: 2,
         target: 'self',
-        effects: [{ type: 'apply_status', statusType: 'defence_up', duration: 2 }]
+        effects: [{ type: 'apply_status', statusType: 'defence_up', duration: 4 }]
     }
 ];
 
@@ -52,11 +52,11 @@ export const JATT_ABILITIES: Ability[] = [
     {
         id: 'jatt_special1',
         name: 'Lock On',
-        description: 'Applies Marked to an enemy for 2 turns. This unit cannot dodge attacks and is easier to hit.',
+        description: 'Applies Marked to an enemy for 4 turns. This unit cannot dodge attacks and is easier to hit.',
         type: 'special',
         cooldown: 2,
         target: 'single_enemy',
-        effects: [{ type: 'apply_status', statusType: 'marked', duration: 2 }]
+        effects: [{ type: 'apply_status', statusType: 'marked', duration: 4 }]
     },
     {
         id: 'jatt_special2',
@@ -65,7 +65,7 @@ export const JATT_ABILITIES: Ability[] = [
         type: 'special',
         cooldown: 2,
         target: 'single_enemy',
-        effects: [{ type: 'apply_status', statusType: 'stun', duration: 1 }]
+        effects: [{ type: 'apply_status', statusType: 'stun', duration: 4 }]
     }
 ];
 
@@ -87,7 +87,7 @@ export const PURE_ABILITIES: Ability[] = [
         type: 'special',
         cooldown: 2,
         target: 'single_enemy',
-        effects: [{ type: 'apply_status', statusType: 'vulnerable', duration: 2 }]
+        effects: [{ type: 'apply_status', statusType: 'vulnerable', duration: 4 }]
     },
     {
         id: 'pure_special2',
@@ -96,7 +96,7 @@ export const PURE_ABILITIES: Ability[] = [
         type: 'special',
         cooldown: 2,
         target: 'self',
-        effects: [{ type: 'apply_status', statusType: 'attack_up', duration: 2 }]
+        effects: [{ type: 'apply_status', statusType: 'attack_up', duration: 4 }]
     }
 ];
 
@@ -118,7 +118,7 @@ export const ZDB_ABILITIES: Ability[] = [
         type: 'special',
         cooldown: 2,
         target: 'single_enemy',
-        effects: [{ type: 'apply_status', statusType: 'silenced', duration: 2 }]
+        effects: [{ type: 'apply_status', statusType: 'silenced', duration: 4 }]
     },
     {
         id: 'zdb_special2',
@@ -127,7 +127,7 @@ export const ZDB_ABILITIES: Ability[] = [
         type: 'special',
         cooldown: 2,
         target: 'all_enemies',
-        effects: [{ type: 'apply_status', statusType: 'stun', duration: 1 }]
+        effects: [{ type: 'apply_status', statusType: 'stun', duration: 4 }]
     }
 ];
 
@@ -149,7 +149,7 @@ export const KAPPY_ABILITIES: Ability[] = [
         type: 'special',
         cooldown: 2,
         target: 'self',
-        effects: [{ type: 'apply_status', statusType: 'evasion_up', duration: 2 }]
+        effects: [{ type: 'apply_status', statusType: 'evasion_up', duration: 4 }]
     },
     {
         id: 'kappy_special2',
@@ -158,7 +158,7 @@ export const KAPPY_ABILITIES: Ability[] = [
         type: 'special',
         cooldown: 2,
         target: 'self',
-        effects: [{ type: 'apply_status', statusType: 'counter', duration: 2 }]
+        effects: [{ type: 'apply_status', statusType: 'counter', duration: 4 }]
     }
 ];
 
@@ -180,7 +180,7 @@ export const FAZOID_ABILITIES: Ability[] = [
         type: 'special',
         cooldown: 2,
         target: 'self',
-        effects: [{ type: 'apply_status', statusType: 'evasion_up', duration: 2 }]
+        effects: [{ type: 'apply_status', statusType: 'evasion_up', duration: 4 }]
     },
     {
         id: 'fazoid_special2',
@@ -189,7 +189,7 @@ export const FAZOID_ABILITIES: Ability[] = [
         type: 'special',
         cooldown: 2,
         target: 'single_enemy',
-        effects: [{ type: 'apply_status', statusType: 'dot', duration: 3, value: 10 }]
+        effects: [{ type: 'apply_status', statusType: 'dot', duration: 6, value: 10 }]
     }
 ];
 
@@ -211,7 +211,7 @@ export const MERCY_ABILITIES: Ability[] = [
         type: 'special',
         cooldown: 2,
         target: 'all_allies',
-        effects: [{ type: 'apply_status', statusType: 'regen', duration: 3, value: 15 }]
+        effects: [{ type: 'apply_status', statusType: 'regen', duration: 6, value: 15 }]
     },
     {
         id: 'mercy_special2',
@@ -220,7 +220,7 @@ export const MERCY_ABILITIES: Ability[] = [
         type: 'special',
         cooldown: 2,
         target: 'all_allies',
-        effects: [{ type: 'apply_status', statusType: 'defence_up', duration: 2 }]
+        effects: [{ type: 'apply_status', statusType: 'defence_up', duration: 4 }]
     }
 ];
 
@@ -242,7 +242,7 @@ export const PAPA_ABILITIES: Ability[] = [
         type: 'special',
         cooldown: 2,
         target: 'all_allies',
-        effects: [{ type: 'apply_status', statusType: 'attack_up', duration: 2 }]
+        effects: [{ type: 'apply_status', statusType: 'attack_up', duration: 4 }]
     },
     {
         id: 'papa_special2',
@@ -251,7 +251,7 @@ export const PAPA_ABILITIES: Ability[] = [
         type: 'special',
         cooldown: 2,
         target: 'all_allies',
-        effects: [{ type: 'apply_status', statusType: 'defence_up', duration: 2 }]
+        effects: [{ type: 'apply_status', statusType: 'defence_up', duration: 4 }]
     }
 ];
 
@@ -274,8 +274,8 @@ export const GURU_ABILITIES: Ability[] = [
         cooldown: 2,
         target: 'self',
         effects: [
-            { type: 'apply_status', statusType: 'regen', duration: 3, value: 12 },
-            { type: 'apply_status', statusType: 'evasion_up', duration: 2 }
+            { type: 'apply_status', statusType: 'regen', duration: 6, value: 12 },
+            { type: 'apply_status', statusType: 'evasion_up', duration: 4 }
         ]
     },
     {
@@ -285,7 +285,7 @@ export const GURU_ABILITIES: Ability[] = [
         type: 'special',
         cooldown: 2,
         target: 'all_enemies',
-        effects: [{ type: 'apply_status', statusType: 'vulnerable', duration: 2 }]
+        effects: [{ type: 'apply_status', statusType: 'vulnerable', duration: 4 }]
     }
 ];
 
@@ -307,7 +307,7 @@ export const JB_ABILITIES: Ability[] = [
         type: 'special',
         cooldown: 2,
         target: 'single_enemy',
-        effects: [{ type: 'apply_status', statusType: 'stun', duration: 1 }]
+        effects: [{ type: 'apply_status', statusType: 'stun', duration: 4 }]
     },
     {
         id: 'jb_special2',
@@ -316,7 +316,7 @@ export const JB_ABILITIES: Ability[] = [
         type: 'special',
         cooldown: 2,
         target: 'single_enemy',
-        effects: [{ type: 'apply_status', statusType: 'marked', duration: 2 }]
+        effects: [{ type: 'apply_status', statusType: 'marked', duration: 4 }]
     }
 ];
 
@@ -338,7 +338,7 @@ export const KAPPA_ABILITIES: Ability[] = [
         type: 'special',
         cooldown: 2,
         target: 'all_enemies',
-        effects: [{ type: 'apply_status', statusType: 'vulnerable', duration: 2 }]
+        effects: [{ type: 'apply_status', statusType: 'vulnerable', duration: 4 }]
     },
     {
         id: 'kappa_special2',
@@ -347,7 +347,7 @@ export const KAPPA_ABILITIES: Ability[] = [
         type: 'special',
         cooldown: 2,
         target: 'self',
-        effects: [{ type: 'apply_status', statusType: 'defence_up', duration: 2 }]
+        effects: [{ type: 'apply_status', statusType: 'defence_up', duration: 4 }]
     }
 ];
 
@@ -369,7 +369,7 @@ export const SUZE_ABILITIES: Ability[] = [
         type: 'special',
         cooldown: 2,
         target: 'single_enemy',
-        effects: [{ type: 'apply_status', statusType: 'marked', duration: 2 }]
+        effects: [{ type: 'apply_status', statusType: 'marked', duration: 4 }]
     },
     {
         id: 'suze_special2',
@@ -378,7 +378,7 @@ export const SUZE_ABILITIES: Ability[] = [
         type: 'special',
         cooldown: 2,
         target: 'self',
-        effects: [{ type: 'apply_status', statusType: 'counter', duration: 2 }]
+        effects: [{ type: 'apply_status', statusType: 'counter', duration: 4 }]
     }
 ];
 
@@ -396,11 +396,11 @@ export const TOXO_ABILITIES: Ability[] = [
     {
         id: 'toxo_special1',
         name: 'Infection',
-        description: 'Applies Damage Over Time for 3 turns. This unit takes damage at the start of each turn.',
+        description: 'Applies Damage Over Time for 6 turns. This unit takes damage at the start of each turn.',
         type: 'special',
         cooldown: 2,
         target: 'single_enemy',
-        effects: [{ type: 'apply_status', statusType: 'dot', duration: 3, value: 12 }]
+        effects: [{ type: 'apply_status', statusType: 'dot', duration: 6, value: 12 }]
     },
     {
         id: 'toxo_special2',
@@ -409,7 +409,7 @@ export const TOXO_ABILITIES: Ability[] = [
         type: 'special',
         cooldown: 2,
         target: 'single_enemy',
-        effects: [{ type: 'apply_status', statusType: 'vulnerable', duration: 2 }]
+        effects: [{ type: 'apply_status', statusType: 'vulnerable', duration: 4 }]
     }
 ];
 
@@ -431,7 +431,7 @@ export const CUBER_ABILITIES: Ability[] = [
         type: 'special',
         cooldown: 2,
         target: 'self',
-        effects: [{ type: 'apply_status', statusType: 'attack_up', duration: 2 }]
+        effects: [{ type: 'apply_status', statusType: 'attack_up', duration: 4 }]
     },
     {
         id: 'cuber_special2',
@@ -440,7 +440,7 @@ export const CUBER_ABILITIES: Ability[] = [
         type: 'special',
         cooldown: 2,
         target: 'single_enemy',
-        effects: [{ type: 'apply_status', statusType: 'silenced', duration: 2 }]
+        effects: [{ type: 'apply_status', statusType: 'silenced', duration: 4 }]
     }
 ];
 
@@ -463,8 +463,8 @@ export const JDOG_ABILITIES: Ability[] = [
         cooldown: 2,
         target: 'self',
         effects: [
-            { type: 'apply_status', statusType: 'attack_up', duration: 2 },
-            { type: 'apply_status', statusType: 'evasion_up', duration: 2 }
+            { type: 'apply_status', statusType: 'attack_up', duration: 4 },
+            { type: 'apply_status', statusType: 'evasion_up', duration: 4 }
         ]
     },
     {
@@ -474,7 +474,7 @@ export const JDOG_ABILITIES: Ability[] = [
         type: 'special',
         cooldown: 2,
         target: 'single_enemy',
-        effects: [{ type: 'apply_status', statusType: 'marked', duration: 2 }]
+        effects: [{ type: 'apply_status', statusType: 'marked', duration: 4 }]
     }
 ];
 
@@ -496,7 +496,7 @@ export const THOR_ABILITIES: Ability[] = [
         type: 'special',
         cooldown: 2,
         target: 'single_enemy',
-        effects: [{ type: 'apply_status', statusType: 'stun', duration: 1 }]
+        effects: [{ type: 'apply_status', statusType: 'stun', duration: 4 }]
     },
     {
         id: 'thor_special2',
@@ -505,7 +505,7 @@ export const THOR_ABILITIES: Ability[] = [
         type: 'special',
         cooldown: 2,
         target: 'self',
-        effects: [{ type: 'apply_status', statusType: 'attack_up', duration: 2 }]
+        effects: [{ type: 'apply_status', statusType: 'attack_up', duration: 4 }]
     }
 ];
 
@@ -527,7 +527,7 @@ export const ELK_ABILITIES: Ability[] = [
         type: 'special',
         cooldown: 2,
         target: 'all_allies',
-        effects: [{ type: 'apply_status', statusType: 'attack_up', duration: 2 }]
+        effects: [{ type: 'apply_status', statusType: 'attack_up', duration: 4 }]
     },
     {
         id: 'elk_special2',
@@ -536,7 +536,7 @@ export const ELK_ABILITIES: Ability[] = [
         type: 'special',
         cooldown: 2,
         target: 'single_enemy',
-        effects: [{ type: 'apply_status', statusType: 'marked', duration: 2 }]
+        effects: [{ type: 'apply_status', statusType: 'marked', duration: 4 }]
     }
 ];
 
@@ -559,8 +559,8 @@ export const ZEZ_ABILITIES: Ability[] = [
         cooldown: 2,
         target: 'self',
         effects: [
-            { type: 'apply_status', statusType: 'regen', duration: 3, value: 20 },
-            { type: 'apply_status', statusType: 'defence_up', duration: 2 }
+            { type: 'apply_status', statusType: 'regen', duration: 6, value: 20 },
+            { type: 'apply_status', statusType: 'defence_up', duration: 4 }
         ]
     },
     {
@@ -570,7 +570,7 @@ export const ZEZ_ABILITIES: Ability[] = [
         type: 'special',
         cooldown: 2,
         target: 'single_enemy',
-        effects: [{ type: 'apply_status', statusType: 'vulnerable', duration: 2 }]
+        effects: [{ type: 'apply_status', statusType: 'vulnerable', duration: 4 }]
     }
 ];
 
@@ -593,8 +593,8 @@ export const DAFRAN_ABILITIES: Ability[] = [
         cooldown: 2,
         target: 'single_enemy',
         effects: [
-            { type: 'apply_status', statusType: 'attack_up', duration: 2, target: 'self' },
-            { type: 'apply_status', statusType: 'marked', duration: 2 }
+            { type: 'apply_status', statusType: 'attack_up', duration: 4, target: 'self' },
+            { type: 'apply_status', statusType: 'marked', duration: 4 }
         ]
     },
     {
@@ -604,7 +604,7 @@ export const DAFRAN_ABILITIES: Ability[] = [
         type: 'special',
         cooldown: 2,
         target: 'single_enemy',
-        effects: [{ type: 'apply_status', statusType: 'stun', duration: 1 }]
+        effects: [{ type: 'apply_status', statusType: 'stun', duration: 4 }]
     }
 ];
 
@@ -626,7 +626,7 @@ export const NEXUS_ABILITIES: Ability[] = [
         type: 'special',
         cooldown: 2,
         target: 'self',
-        effects: [{ type: 'apply_status', statusType: 'defence_up', duration: 2 }]
+        effects: [{ type: 'apply_status', statusType: 'defence_up', duration: 4 }]
     },
     {
         id: 'nexus_special2',
@@ -635,7 +635,7 @@ export const NEXUS_ABILITIES: Ability[] = [
         type: 'special',
         cooldown: 2,
         target: 'single_enemy',
-        effects: [{ type: 'apply_status', statusType: 'silenced', duration: 2 }]
+        effects: [{ type: 'apply_status', statusType: 'silenced', duration: 4 }]
     }
 ];
 
