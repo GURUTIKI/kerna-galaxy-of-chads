@@ -798,41 +798,43 @@ export class Game {
         ${!isAvailable ? `<div class="cooldown-badge">${cooldown}</div>` : ''}
       `;
 
-      // Click to select ability
-      if (isAvailable || isSelected) { // Allow clicking selected ability even if on cooldown for confirmation
-        btn.onclick = () => {
-          if (isSelected) {
-            // ALREADY SELECTED -> CONFIRMATION ACTION
-            // Check if we can auto-apply
-            const targetType = ability.target;
-            if (targetType === 'self' || targetType === 'all_enemies' || targetType === 'all_allies') {
-              // Auto-select valid target to trigger execution
-              // For self: attacker ID. For all: any valid ID helps validation, but usually just needs 1.
-              const validTargets = this.combatSystem?.getAvailableTargets();
-              if (validTargets && validTargets.length > 0) {
-                // Prefer self if self-target, else first avail
-                let targetId = validTargets[0].instanceId || validTargets[0].id;
-                if (targetType === 'self') {
-                  targetId = attacker!.instanceId || attacker!.id;
-                }
+      // Selection and execution logic
+      const handleTrigger = (e: Event) => {
+        // Prevent double trigger (click + touch)
+        if (e.type === 'touchend') {
+          e.preventDefault();
+        }
 
-                this.combatSystem?.selectTarget(targetId);
-                this.updateBattleUI();
-                // Execute turn
-                this.executeNextTurn();
-                return;
+        if (isSelected) {
+          // ALREADY SELECTED -> CONFIRMATION ACTION
+          const targetType = ability.target;
+          if (targetType === 'self' || targetType === 'all_enemies' || targetType === 'all_allies') {
+            const validTargets = this.combatSystem?.getAvailableTargets();
+            if (validTargets && validTargets.length > 0) {
+              let targetId = validTargets[0].instanceId || validTargets[0].id;
+              if (targetType === 'self') {
+                targetId = attacker!.instanceId || attacker!.id;
               }
+              this.combatSystem?.selectTarget(targetId);
+              this.updateBattleUI();
+              this.executeNextTurn();
+              return;
             }
           }
+        }
 
-          // Normal Select Logic
-          const turnFinishedByAbility = this.combatSystem?.selectAbility(ability.id);
-          this.updateBattleUI();
+        // Normal Select Logic
+        const turnFinishedByAbility = this.combatSystem?.selectAbility(ability.id);
+        this.updateBattleUI();
 
-          if (turnFinishedByAbility) {
-            this.executeNextTurn();
-          }
-        };
+        if (turnFinishedByAbility) {
+          this.executeNextTurn();
+        }
+      };
+
+      if (isAvailable || isSelected) {
+        btn.addEventListener('click', (e) => handleTrigger(e));
+        btn.addEventListener('touchend', (e) => handleTrigger(e), { passive: false });
       }
 
       // Long-press for tooltip
