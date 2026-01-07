@@ -2567,8 +2567,13 @@ body {
     height: 100vh;
     overflow: hidden;
     /* Prevent body scroll */
-    display: flex;
+    display: none;
+    /* Changed from flex to allow hiding */
     flex-direction: column;
+  }
+
+  .screen.active {
+    display: flex;
   }
 
   .screen-header {
