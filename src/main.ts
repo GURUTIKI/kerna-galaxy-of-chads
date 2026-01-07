@@ -1504,6 +1504,16 @@ export class Game {
     const registerMessage = document.getElementById('register-message');
     const toRegisterLink = document.getElementById('link-to-register');
     const toLoginLink = document.getElementById('link-to-login');
+    const rememberMeCheck = document.getElementById('remember-me') as HTMLInputElement;
+
+    // Check for remembered credentials on startup
+    const rememberedUser = localStorage.getItem('remembered_user');
+    const rememberedPass = localStorage.getItem('remembered_pass');
+    if (rememberedUser && rememberedPass) {
+      if (loginUser) loginUser.value = rememberedUser;
+      if (loginPass) loginPass.value = rememberedPass;
+      if (rememberMeCheck) rememberMeCheck.checked = true;
+    }
 
     // Navigation
     toRegisterLink?.addEventListener('click', (e) => {
@@ -1522,6 +1532,16 @@ export class Game {
       if (!user || !pass) return;
 
       if (loginMessage) loginMessage.textContent = 'Logging in...';
+      // Remember Me Feature
+      const rememberMe = (document.getElementById('remember-me') as HTMLInputElement).checked;
+      if (rememberMe) {
+        localStorage.setItem('remembered_user', user);
+        localStorage.setItem('remembered_pass', pass);
+      } else {
+        localStorage.removeItem('remembered_user');
+        localStorage.removeItem('remembered_pass');
+      }
+
       const result = await this.authManager.login(user, pass);
       if (result.success) {
         this.onAuthSuccess(result.data, result.friendRequests);
