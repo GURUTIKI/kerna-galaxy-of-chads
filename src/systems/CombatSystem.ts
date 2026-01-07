@@ -180,6 +180,12 @@ export class CombatSystem {
                 return allyTeam.characters.filter(isAlive);
             } else if (targetType === 'self') {
                 return [attacker];
+            } else if (targetType === 'all_enemies') {
+                const enemyTeam = this.getEnemyTeam(attacker);
+                return enemyTeam.characters.filter(isAlive);
+            } else if (targetType === 'all_allies') {
+                const allyTeam = this.isPlayerCharacter(attacker) ? this.state.playerTeam : this.state.enemyTeam;
+                return allyTeam.characters.filter(isAlive);
             }
         }
 
@@ -233,14 +239,21 @@ export class CombatSystem {
         this.state.selectedAbility = ability;
         this.state.waitingForAbilitySelection = false;
 
-        // If ability targets self or all, no need for target selection
+        // If ability targets self or all, we used to execute immediately.
+        // User Request: "have the moves on screen at all times so i can cjhange my mind"
+        // So we now REQUIRE target selection (confirmation) even for these.
+        // For 'self', user clicks self. For 'all', user clicks any valid target.
+
+        /* 
+        PREVIOUS AUTO-EXECUTE REMOVED
         if (ability.target === 'self' || ability.target === 'all_enemies' || ability.target === 'all_allies') {
-            const target = attacker; // Doesn't matter for 'all' types, getTargetsForAbility handles it
+            const target = attacker; 
             this.executeAttack(attacker, target, ability);
             return true;
         }
+        */
 
-        // Now wait for target selection
+        // Now wait for target selection for ALL ability types
         this.state.waitingForTargetSelection = true;
         this.state.availableTargets = this.getAvailableTargets();
 

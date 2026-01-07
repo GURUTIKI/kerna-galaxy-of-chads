@@ -35,3 +35,9 @@ You can paste the final string here, or add it to Render yourself:
 2.  Add Variable:
     *   Key: `MONGODB_URI`
     *   Value: (Your connection string)
+
+
+
+mongodb+srv://kerna:<db_password>@kerna-users.g5ffujj.mongodb.net/?appName=kerna-users
+
+mongodb+srv://kerna:MUYak2Uc1R9OKFRS@kerna-users.g5ffujj.mongodb.net/?appName=kerna-users

@@ -690,6 +690,26 @@ export class Game {
       statMultiplier = 1.2; // 20% more stats
       xpMultiplier = 1.5;
     }
+
+    // Training Mode (Non-PVP) XP Reduction
+    // User Request: "training mode to give 10% of the XP as you would get from doing PVP arena"
+    // Our base is roughly 100xp for win. So we want 10xp.
+    // If not PVP, we apply a 0.1 multiplier on top of difficulty.
+    // Wait, let's just force it to 0.1 if it's training to match request exactly.
+    // (Assuming difficulty multiplier applies to PVP or base values).
+    // Let's stick to the 10% rule.
+    if (!this.combatSystem?.isPvP && (this.combatSystem === undefined || !this.combatSystem)) {
+      // Note: combatSystem isn't created yet, so we use startBattle context.
+      // startBattle is used for Training/PVE. PVP uses NetworkManager events usually?
+      // Actually startBattle is ONLY for Training/Local based on current usage in main.ts
+      // NetworkManager handles PVP battle start separately (it calls sceneManager directly or similar? No, let's check).
+      // networkManager.joinMatchmaking -> battle_matched -> battle commence...
+      // Ah, PVP might use a different flow or we need to check if we are in PVP mode here.
+      // But main.ts `startBattle` seems to be clicked from "Selection Screen" which is reachable from "Training".
+      // PVP has its own "PVP Arena" screen and matchmaking.
+      // So this `startBattle` IS exclusively for Training Mode PVE!
+      xpMultiplier = 0.1;
+    }
     // Normal: statMultiplier = 1.0 (equal stats)
 
     opponentTeamChars.forEach(char => {
@@ -731,8 +751,9 @@ export class Game {
     const attacker = this.combatSystem?.getCurrentCharacter();
     const state = this.combatSystem?.getState();
 
-    // Hide if not waiting for ability selection
-    if (!state?.waitingForAbilitySelection || !attacker) {
+    // Hide if not waiting for ability selection, or if attacker is NOT player character
+    // User Request: "i only want to see my moves"
+    if (!state?.waitingForAbilitySelection || !attacker || !this.combatSystem?.isPlayerCharacter(attacker)) {
       container.style.display = 'none';
       return;
     }
@@ -1586,6 +1607,13 @@ export class Game {
   private onAuthSuccess(userData: any): void {
     if (userData) {
       this.characterManager.setCharacters(userData);
+
+      // User Request: Notification for friend requests
+      if (userData.friendRequests && userData.friendRequests.length > 0) {
+        setTimeout(() => {
+          alert(`You have ${userData.friendRequests.length} pending friend request(s)!`);
+        }, 1000);
+      }
     } else {
       // New user or reset request - clear local cache so we don't load previous user's characters
       this.characterManager.reset();

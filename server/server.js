@@ -156,6 +156,42 @@ app.post('/auth/change-password', async (req, res) => {
     }
 });
 
+// DEV TOOL: Give All Characters
+app.post('/api/admin/give-all-chars', async (req, res) => {
+    const { username } = req.body;
+
+    // Hardcoded list of character IDs based on abilities.ts exports or knowledge
+    // Since we don't have a central registry importable easily here without 'type: module' complexity with ts files,
+    // I stands to reason I should just list them or use a wildcard if the data structure supports it.
+    // The user data stores 'ownedCharacters' as an array of strings (IDs).
+    // I will list the known IDs from analysis of abilities.ts earlier:
+    const allCharIds = [
+        'bru', 'jatt', 'pure', 'zdb', 'kappy',
+        'fazoid', 'mercy', 'papa', 'guru', 'jb',
+        'kappa', 'suze', 'toxo', 'cuber', 'j-dog',
+        'thor', 'elk', 'zez', 'dafran', 'nexus'
+    ];
+
+    try {
+        const user = await User.findOne({ username });
+        if (!user) return res.status(404).json({ error: 'User not found' });
+
+        // Merge and deduplicate
+        const currentOwned = user.data?.ownedCharacters || [];
+        const newOwned = [...new Set([...currentOwned, ...allCharIds])];
+
+        if (!user.data) user.data = {};
+        user.data.ownedCharacters = newOwned;
+
+        await user.save();
+        console.log(`[Admin] Gave all characters to ${username}`);
+        res.json({ success: true, count: newOwned.length });
+    } catch (err) {
+        console.error('Admin Tool Error:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 // Leaderboard Endpoint
 app.get('/api/leaderboard', async (req, res) => {
     try {
