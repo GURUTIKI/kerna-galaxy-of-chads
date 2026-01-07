@@ -348,6 +348,9 @@ export class Game {
       screen.classList.remove('active');
     });
 
+    // Explicitly hide main menu to prevent overlay issues
+    document.getElementById('main-menu')?.classList.remove('active');
+
     const screen = document.getElementById(screenId);
     if (screen) {
       screen.classList.add('active');
