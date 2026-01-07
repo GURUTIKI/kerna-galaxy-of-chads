@@ -30,13 +30,13 @@
 .auto-btn-container {
   display: flex;
   align-items: center;
-  background: rgba(20, 20, 30, 0.95);
+  background: none;
   border-radius: 20px;
-  border: 2px solid rgba(79, 172, 254, 0.3);
-  backdrop-filter: blur(15px);
-  padding: 1rem;
+  border: none;
+  backdrop-filter: none;
+  padding: 0;
   /* Match ability panel padding approximately */
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  box-shadow: none;
 }
 
 .control-btn.auto-btn {
@@ -2588,8 +2588,8 @@ body {
   /* --- HUD --- */
   #hud-container {
     top: auto;
-    bottom: 45px;
-    /* Moved higher up for better clearance */
+    bottom: 55px;
+    /* Moved even higher for better clearance */
     right: 50%;
     transform: translateX(50%);
     flex-direction: row;
@@ -2617,10 +2617,10 @@ body {
   /* --- MAIN MENU (Request 1: Fit to screen) --- */
   .menu-buttons {
     flex-direction: column;
-    gap: 0.2rem;
-    /* Tighter gap to avoid overlap */
+    gap: 0.8rem;
+    /* Increased spacing to prevent overlap */
     padding-top: 10px;
-    padding-bottom: 120px;
+    padding-bottom: 140px;
     /* Space for HUD */
     height: 90vh;
     /* Take up most of screen */
@@ -2633,10 +2633,9 @@ body {
   .mode-button {
     transform: none;
     /* Disable scale */
-    width: 120px;
-    /* Uniform width */
-    height: 120px;
-    /* Uniform height */
+    width: 132px;
+    /* 10% bigger than 120px */
+    height: 132px;
     flex: none;
     /* Disable flexing for fixed size */
     margin: 0 auto;
@@ -2658,9 +2657,9 @@ body {
   }
 
   .mode-button.pvp-premium {
-    width: 140px;
-    /* ~15% bigger than 120px */
-    height: 140px;
+    width: 154px;
+    /* ~15% bigger than 132px */
+    height: 154px;
   }
 
   .mode-label {
@@ -2673,7 +2672,7 @@ body {
   }
 
   .mode-icon {
-    height: 80%;
+    height: 85%;
     /* Fill more of the button */
     width: auto;
     max-width: 100%;
@@ -2774,13 +2773,19 @@ body {
 
   .battle-grid {
     gap: 0.4rem;
-    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
   }
 
   /* Battle Tiles */
   .battle-tile {
     padding: 0.3rem;
     min-width: 60px;
+    flex: 0 1 30%;
+    /* Ensure max 3 per row */
+    box-sizing: border-box;
   }
 
   .battle-tile-avatar {
@@ -2797,7 +2802,7 @@ body {
 
   /* Battle Controls */
   .battle-bottom-container {
-    bottom: 80px;
+    bottom: 90px;
     /* Sit slightly higher or relative to menu bar */
     width: 98%;
     gap: 0.2rem;
@@ -2827,6 +2832,11 @@ body {
   .auto-btn-container {
     transform: scale(0.85);
     /* Shrink buttons further */
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
   }
 
   /* --- VICTORY SCREEN --- */
