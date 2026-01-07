@@ -588,12 +588,18 @@ body {
 }
 
 /* Main Menu */
+/* Main Menu */
 #main-menu {
   justify-content: center;
   /* Centered vertically */
   align-items: center;
   gap: 2rem;
   padding: 0;
+  /* display: flex; REMOVED to allow .screen to control visibility */
+}
+
+#main-menu.active {
+  display: flex;
 }
 
 .game-logo {
