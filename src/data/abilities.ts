@@ -63,9 +63,9 @@ export const JATT_ABILITIES: Ability[] = [
         name: 'Flashbang',
         description: 'Applies Stun to a single enemy. This unit skips its next turn.',
         type: 'special',
-        cooldown: 2,
+        cooldown: 5,
         target: 'single_enemy',
-        effects: [{ type: 'apply_status', statusType: 'stun', duration: 4 }]
+        effects: [{ type: 'apply_status', statusType: 'stun', duration: 2 }]
     }
 ];
 
@@ -125,9 +125,9 @@ export const ZDB_ABILITIES: Ability[] = [
         name: 'EMP Pulse',
         description: 'Applies Stun to all enemies (short duration). These units skip their next turn.',
         type: 'special',
-        cooldown: 2,
+        cooldown: 5,
         target: 'all_enemies',
-        effects: [{ type: 'apply_status', statusType: 'stun', duration: 4 }]
+        effects: [{ type: 'apply_status', statusType: 'stun', duration: 2 }]
     }
 ];
 
@@ -305,9 +305,9 @@ export const JB_ABILITIES: Ability[] = [
         name: 'Crowd Control',
         description: 'Applies Stun to an enemy. This unit skips its next turn.',
         type: 'special',
-        cooldown: 2,
+        cooldown: 5,
         target: 'single_enemy',
-        effects: [{ type: 'apply_status', statusType: 'stun', duration: 4 }]
+        effects: [{ type: 'apply_status', statusType: 'stun', duration: 2 }]
     },
     {
         id: 'jb_special2',
@@ -494,9 +494,9 @@ export const THOR_ABILITIES: Ability[] = [
         name: 'Lightning Stun',
         description: 'Applies Stun to an enemy. This unit skips its next turn.',
         type: 'special',
-        cooldown: 2,
+        cooldown: 5,
         target: 'single_enemy',
-        effects: [{ type: 'apply_status', statusType: 'stun', duration: 4 }]
+        effects: [{ type: 'apply_status', statusType: 'stun', duration: 2 }]
     },
     {
         id: 'thor_special2',
@@ -602,9 +602,9 @@ export const DAFRAN_ABILITIES: Ability[] = [
         name: 'Zone Control',
         description: 'Applies Stun to an enemy. This unit skips its next turn.',
         type: 'special',
-        cooldown: 2,
+        cooldown: 5,
         target: 'single_enemy',
-        effects: [{ type: 'apply_status', statusType: 'stun', duration: 4 }]
+        effects: [{ type: 'apply_status', statusType: 'stun', duration: 2 }]
     }
 ];
 
