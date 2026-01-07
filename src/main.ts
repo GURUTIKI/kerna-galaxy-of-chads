@@ -1524,7 +1524,7 @@ export class Game {
       if (loginMessage) loginMessage.textContent = 'Logging in...';
       const result = await this.authManager.login(user, pass);
       if (result.success) {
-        this.onAuthSuccess(result.data);
+        this.onAuthSuccess(result.data, result.friendRequests);
       } else {
         if (loginMessage) {
           loginMessage.textContent = result.error || 'Login failed';
@@ -1669,12 +1669,12 @@ export class Game {
     }
   }
 
-  private onAuthSuccess(userData: any): void {
+  private onAuthSuccess(userData: any, friendRequests: any[] = []): void {
     if (userData) {
       this.characterManager.setCharacters(userData);
 
       // User Request: Notification for friend requests
-      if (userData.friendRequests && userData.friendRequests.length > 0) {
+      if (friendRequests && friendRequests.length > 0) {
         this.updateInboxBadge(true);
       }
     } else {

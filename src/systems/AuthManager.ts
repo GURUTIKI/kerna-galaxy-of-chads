@@ -37,7 +37,7 @@ export class AuthManager {
         }
     }
 
-    public async login(username: string, password: string): Promise<{ success: boolean; data?: any; error?: string }> {
+    public async login(username: string, password: string): Promise<{ success: boolean; data?: any; friendRequests?: any[]; error?: string }> {
         try {
             const response = await fetch(`${this.apiUrl}/auth/login`, {
                 method: 'POST',
@@ -48,9 +48,11 @@ export class AuthManager {
             const result = await response.json();
             if (result.success) {
                 this.setSession(username);
-                // Merge friendRequests into the data object so main.ts can access it
-                const combinedData = { ...result.data, friendRequests: result.friendRequests };
-                return { success: true, data: combinedData };
+                return {
+                    success: true,
+                    data: result.data,
+                    friendRequests: result.friendRequests
+                };
             } else {
                 return { success: false, error: result.error };
             }

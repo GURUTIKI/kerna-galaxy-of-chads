@@ -219,7 +219,8 @@ export class CombatSystem {
      * Select an ability for the current player character
      */
     public selectAbility(abilityId: string): boolean {
-        if (!this.state.waitingForAbilitySelection) return false;
+        // Allow selection if we are waiting for ability OR waiting for target (switching abilities)
+        if (!this.state.waitingForAbilitySelection && !this.state.waitingForTargetSelection) return false;
 
         const attacker = this.getCurrentCharacter();
         if (!attacker) return false;

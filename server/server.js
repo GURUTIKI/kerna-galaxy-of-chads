@@ -171,26 +171,30 @@ app.post('/api/admin/give-all-chars', async (req, res) => {
     // The user data stores 'ownedCharacters' as an array of strings (IDs).
     // I will list the known IDs from analysis of abilities.ts earlier:
     const allCharIds = [
-        'bru', 'jatt', 'pure', 'zdb', 'kappy',
-        'fazoid', 'mercy', 'papa', 'guru', 'jb',
-        'kappa', 'suze', 'toxo', 'cuber', 'j-dog',
-        'thor', 'elk', 'zez', 'dafran', 'nexus'
+        'char_bru', 'char_jatt', 'char_pure', 'char_zdb', 'char_kappy',
+        'char_fazoid', 'char_mercy', 'char_papa', 'char_guru', 'char_jb',
+        'char_kappa', 'char_suze', 'char_toxo', 'char_cuber', 'char_jdog',
+        'char_thor', 'char_elk', 'char_zez', 'char_daf', 'char_nexus'
     ];
 
     try {
         const user = await User.findOne({ username });
         if (!user) return res.status(404).json({ error: 'User not found' });
 
-        // Merge and deduplicate
-        const currentOwned = user.data?.ownedCharacters || [];
-        const newOwned = [...new Set([...currentOwned, ...allCharIds])];
+        // Construct a fresh array of all characters as owned
+        // This resets their data for this user to ensure clean state, 
+        // effectively fixing any corrupt data from previous bug.
+        const allCharsData = allCharIds.map(id => ({
+            id: id,
+            isOwned: true
+        }));
 
-        if (!user.data) user.data = {};
-        user.data.ownedCharacters = newOwned;
+        user.data = allCharsData;
+        user.markModified('data'); // Critical for Mongoose Mixed type
 
         await user.save();
         console.log(`[Admin] Gave all characters to ${username}`);
-        res.json({ success: true, count: newOwned.length });
+        res.json({ success: true, count: allCharsData.length });
     } catch (err) {
         console.error('Admin Tool Error:', err);
         res.status(500).json({ error: 'Internal Server Error' });
