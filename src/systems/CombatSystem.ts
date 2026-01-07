@@ -67,6 +67,7 @@ export class CombatSystem {
                 char.instanceId = `${char.id}_${Math.random().toString(36).substring(2, 9)}`;
             }
             resetHealth(char);
+            char.statusEffects = []; // Clear any residual status effects
             initializeAbilityCooldowns(char);
         });
 

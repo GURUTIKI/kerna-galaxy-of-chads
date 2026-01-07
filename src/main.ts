@@ -751,9 +751,19 @@ export class Game {
     const attacker = this.combatSystem?.getCurrentCharacter();
     const state = this.combatSystem?.getState();
 
-    // Hide if not waiting for ability selection, or if attacker is NOT player character
-    // User Request: "i only want to see my moves"
-    if (!state?.waitingForAbilitySelection || !attacker || !this.combatSystem?.isPlayerCharacter(attacker)) {
+    // Check availability even if we modify visibility rules:
+    // If waiting for target selection, we KEEP showing buttons so user can see what they selected
+    // or select a DIFFERENT ability.
+    // Logic: 
+    // - If waitingForAbilitySelection: Show all avail.
+    // - If waitingForTargetSelection: Show all avail, highlight selected.
+
+    // User Request: "i only want to see my moves" -> implies only show when player is acting.
+    // Combined logic: Show if player is acting AND (waiting for ability OR waiting for target).
+    const isPlayerTurn = attacker && this.combatSystem?.isPlayerCharacter(attacker);
+    const showPanel = isPlayerTurn && (state?.waitingForAbilitySelection || state?.waitingForTargetSelection);
+
+    if (!showPanel) {
       container.style.display = 'none';
       return;
     }
@@ -762,27 +772,61 @@ export class Game {
     container.innerHTML = '';
 
     // Render each ability as a button
-    attacker.abilities.forEach(ability => {
-      const cooldown = attacker.abilityCooldowns.get(ability.id) || 0;
+    attacker!.abilities.forEach(ability => {
+      const cooldown = attacker!.abilityCooldowns.get(ability.id) || 0;
       const isAvailable = cooldown === 0;
       const isBasic = ability.type === 'basic';
+      const isSelected = state?.selectedAbility?.id === ability.id;
 
       const btn = document.createElement('button');
-      btn.className = `ability-btn ${isBasic ? 'basic' : 'special'} ${!isAvailable ? 'on-cooldown' : ''}`;
+      btn.className = `ability-btn ${isBasic ? 'basic' : 'special'} ${!isAvailable ? 'on-cooldown' : ''} ${isSelected ? 'selected' : ''}`;
       btn.disabled = !isAvailable;
 
+      // UX: If selected and target is self/all, change text to "Confirm"
+      let btnText = ability.name;
+      if (isSelected) {
+        if (['self', 'all_enemies', 'all_allies'].includes(ability.target)) {
+          btnText += ' (Confirm)';
+          btn.classList.add('confirm-mode');
+        }
+      }
+
       btn.innerHTML = `
-        <div class="ability-name">${ability.name}</div>
+        <div class="ability-name">${btnText}</div>
         ${!isAvailable ? `<div class="cooldown-badge">${cooldown}</div>` : ''}
       `;
 
       // Click to select ability
       if (isAvailable) {
         btn.onclick = () => {
+          if (isSelected) {
+            // ALREADY SELECTED -> CONFIRMATION ACTION
+            // Check if we can auto-apply
+            const targetType = ability.target;
+            if (targetType === 'self' || targetType === 'all_enemies' || targetType === 'all_allies') {
+              // Auto-select valid target to trigger execution
+              // For self: attacker ID. For all: any valid ID helps validation, but usually just needs 1.
+              const validTargets = this.combatSystem?.getAvailableTargets();
+              if (validTargets && validTargets.length > 0) {
+                // Prefer self if self-target, else first avail
+                let targetId = validTargets[0].instanceId || validTargets[0].id;
+                if (targetType === 'self') {
+                  targetId = attacker!.instanceId || attacker!.id;
+                }
+
+                this.combatSystem?.selectTarget(targetId);
+                this.updateBattleUI();
+                // Execute turn
+                this.executeNextTurn();
+                return;
+              }
+            }
+          }
+
+          // Normal Select Logic
           const turnFinishedByAbility = this.combatSystem?.selectAbility(ability.id);
           this.updateBattleUI();
 
-          // If the ability was executed immediately (e.g., self or all target), trigger turn processing
           if (turnFinishedByAbility) {
             this.executeNextTurn();
           }
@@ -963,6 +1007,11 @@ export class Game {
         : 'linear-gradient(135deg, #f5576c 0%, #f093fb 100%)';
       this.stopAutoBattle();
       this.showResultsScreen();
+    } else if (state.waitingForTargetSelection) {
+      const ability = state.selectedAbility;
+      const isAttack = ability?.type === 'special' && (ability.target?.includes('enemy') || false) || ability?.type === 'basic';
+      turnIndicator.textContent = isAttack ? 'Select a Target to ATTACK!' : 'Select a Target';
+      turnIndicator.style.background = 'rgba(255, 87, 108, 0.5)'; // Reddish for action
     } else if (state.waitingForAbilitySelection) {
       turnIndicator.textContent = `${currentChar?.name}'s Turn - Select an Ability`;
       turnIndicator.style.background = 'rgba(79, 172, 254, 0.3)';
@@ -1007,7 +1056,8 @@ export class Game {
       // Use instanceId for unique identification in battle, fallback to id
       const uniqueId = character.instanceId || character.id;
       // Targetable uses correct ID match
-      const isTargetable = isEnemy && isWaiting && availableInputs.some(t => (t.instanceId || t.id) === uniqueId);
+      // FIX: Removed 'isEnemy' check to allow selecting self/allies if they are in availableInputs
+      const isTargetable = isWaiting && availableInputs.some(t => (t.instanceId || t.id) === uniqueId);
       // Acting check uses correct ID match
       const isActing = (currentChar?.instanceId || currentChar?.id) === uniqueId;
 
@@ -1128,6 +1178,7 @@ export class Game {
 
     // Save ONLY player team characters back to manager (opponents are temporary)
     state.playerTeam.characters.forEach(char => {
+      char.statusEffects = []; // Clean up status effects before saving state
       this.characterManager.updateCharacter(char);
     });
 

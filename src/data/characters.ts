@@ -412,7 +412,7 @@ export function cloneCharacter(character: Character): Character {
         ...character,
         stats: { ...character.stats },
         visual: { ...character.visual },
-        statusEffects: character.statusEffects ? [...character.statusEffects] : [],
+        statusEffects: [], // Start fresh for battle clone
         abilities: character.abilities ? [...character.abilities] : [],
         abilityCooldowns: cooldownsMap,
     };
