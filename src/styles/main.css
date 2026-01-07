@@ -2631,6 +2631,10 @@ body {
     /* Force overlay on top */
     pointer-events: auto;
     /* Force clickability */
+    touch-action: manipulation;
+    /* Disable double-tap zoom for fast clicks */
+    -webkit-tap-highlight-color: transparent;
+    /* Remove highlight */
   }
 
   .mode-button.pvp-premium {

@@ -133,20 +133,32 @@ export class Game {
     requestAnimationFrame(updateLoading);
   }
 
+  /**
+   * Helper to bind fast clicks for mobile compatibility
+   */
+  private bindButton(id: string, action: () => void): void {
+    const btn = document.getElementById(id);
+    if (!btn) return;
+
+    // Handle touch end (fast click) - Prevents ghost clicks
+    btn.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      action();
+    }, { passive: false });
+
+    // Handle standard click (desktop)
+    btn.addEventListener('click', () => {
+      action();
+    });
+  }
+
   private setupEventListeners(): void {
-    // Main menu
-    document.getElementById('btn-training')?.addEventListener('click', () => {
-      this.showSelectionScreen();
-    });
+    // Main menu - Updated to use fast binding
+    this.bindButton('btn-training', () => this.showSelectionScreen());
+    this.bindButton('btn-manage', () => this.showManageScreen());
+    this.bindButton('btn-pvp', () => this.showPvpArena());
 
-    document.getElementById('btn-manage')?.addEventListener('click', () => {
-      this.showManageScreen();
-    });
-
-    document.getElementById('btn-pvp')?.addEventListener('click', () => {
-      this.showPvpArena();
-    });
-
+    // Friends needs standard listener as it's less critical for nav speed
     document.getElementById('btn-friends')?.addEventListener('click', () => {
       this.showFriendsScreen();
     });
