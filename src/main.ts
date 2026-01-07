@@ -1137,14 +1137,21 @@ export class Game {
       });
 
       if (isTargetable) {
-        tile.addEventListener('click', () => {
+        const selectTarget = () => {
           this.combatSystem?.selectTarget(character.instanceId || character.id);
           this.updateBattleUI();
 
           // Trigger the turn execution immediately after selection
           // This will execute the player's attack and then run enemy turns via processTurns
           this.executeNextTurn();
-        });
+        };
+
+        tile.addEventListener('click', selectTarget);
+
+        tile.addEventListener('touchend', (e) => {
+          e.preventDefault();
+          selectTarget();
+        }, { passive: false });
       }
       container.appendChild(tile);
     });
