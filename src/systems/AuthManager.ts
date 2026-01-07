@@ -48,7 +48,9 @@ export class AuthManager {
             const result = await response.json();
             if (result.success) {
                 this.setSession(username);
-                return { success: true, data: result.data };
+                // Merge friendRequests into the data object so main.ts can access it
+                const combinedData = { ...result.data, friendRequests: result.friendRequests };
+                return { success: true, data: combinedData };
             } else {
                 return { success: false, error: result.error };
             }

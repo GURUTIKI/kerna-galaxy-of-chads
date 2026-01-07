@@ -693,23 +693,9 @@ export class Game {
 
     // Training Mode (Non-PVP) XP Reduction
     // User Request: "training mode to give 10% of the XP as you would get from doing PVP arena"
-    // Our base is roughly 100xp for win. So we want 10xp.
-    // If not PVP, we apply a 0.1 multiplier on top of difficulty.
-    // Wait, let's just force it to 0.1 if it's training to match request exactly.
-    // (Assuming difficulty multiplier applies to PVP or base values).
-    // Let's stick to the 10% rule.
-    if (!this.combatSystem?.isPvP && (this.combatSystem === undefined || !this.combatSystem)) {
-      // Note: combatSystem isn't created yet, so we use startBattle context.
-      // startBattle is used for Training/PVE. PVP uses NetworkManager events usually?
-      // Actually startBattle is ONLY for Training/Local based on current usage in main.ts
-      // NetworkManager handles PVP battle start separately (it calls sceneManager directly or similar? No, let's check).
-      // networkManager.joinMatchmaking -> battle_matched -> battle commence...
-      // Ah, PVP might use a different flow or we need to check if we are in PVP mode here.
-      // But main.ts `startBattle` seems to be clicked from "Selection Screen" which is reachable from "Training".
-      // PVP has its own "PVP Arena" screen and matchmaking.
-      // So this `startBattle` IS exclusively for Training Mode PVE!
-      xpMultiplier = 0.1;
-    }
+    // Since startBattle is exclusively for Training/Local PVE, we enforce 0.1 multiplier.
+    xpMultiplier = 0.1;
+
     // Normal: statMultiplier = 1.0 (equal stats)
 
     opponentTeamChars.forEach(char => {
@@ -780,7 +766,8 @@ export class Game {
 
       const btn = document.createElement('button');
       btn.className = `ability-btn ${isBasic ? 'basic' : 'special'} ${!isAvailable ? 'on-cooldown' : ''} ${isSelected ? 'selected' : ''}`;
-      btn.disabled = !isAvailable;
+      // Fix: Don't disable button if selected, so we can click again to confirm
+      btn.disabled = !isAvailable && !isSelected;
 
       // UX: If selected and target is self/all, change text to "Confirm"
       let btnText = ability.name;
@@ -797,7 +784,7 @@ export class Game {
       `;
 
       // Click to select ability
-      if (isAvailable) {
+      if (isAvailable || isSelected) { // Allow clicking selected ability even if on cooldown for confirmation
         btn.onclick = () => {
           if (isSelected) {
             // ALREADY SELECTED -> CONFIRMATION ACTION
@@ -1193,7 +1180,11 @@ export class Game {
     const xpContainer = document.getElementById('results-xp')!;
     xpContainer.innerHTML = '<h3>XP Earned:</h3>';
 
-    const xpGained = state.winner === 'player' ? 100 : 50;
+    const baseWinXP = 100;
+    const baseLoseXP = 50;
+    const multiplier = this.combatSystem?.xpMultiplier || 1.0;
+
+    const xpGained = Math.floor((state.winner === 'player' ? baseWinXP : baseLoseXP) * multiplier);
     state.playerTeam.characters.forEach(char => {
       const div = document.createElement('div');
       div.textContent = `${char.name}: +${xpGained} XP`;
@@ -1647,11 +1638,34 @@ export class Game {
 
     document.getElementById('account-modal')?.classList.add('active');
 
-    // Reset message
     const message = document.getElementById('account-action-message');
     if (message) {
       message.textContent = '';
       message.className = 'auth-message';
+    }
+
+    // DEV TOOL: Unlock All Characters (Only for 'tom')
+    const username = this.authManager.getUsername();
+    const modalBody = document.querySelector('.modal-body');
+    const existingDevBtn = document.getElementById('btn-dev-unlock');
+
+    if (username === 'tom' && modalBody && !existingDevBtn) {
+      const devBtn = document.createElement('button');
+      devBtn.id = 'btn-dev-unlock';
+      devBtn.className = 'btn btn-primary';
+      devBtn.style.marginTop = '1rem';
+      devBtn.style.width = '100%';
+      devBtn.style.background = '#ff00ff'; // Distinct color
+      devBtn.innerHTML = '⚡ DEV: Unlock All Characters';
+
+      devBtn.onclick = () => {
+        if (confirm('Unlock all characters?')) {
+          this.networkManager.unlockAllCharacters();
+        }
+      };
+
+      // Append at the end of modal
+      modalBody.appendChild(devBtn);
     }
   }
 
@@ -1661,9 +1675,7 @@ export class Game {
 
       // User Request: Notification for friend requests
       if (userData.friendRequests && userData.friendRequests.length > 0) {
-        setTimeout(() => {
-          alert(`You have ${userData.friendRequests.length} pending friend request(s)!`);
-        }, 1000);
+        this.updateInboxBadge(true);
       }
     } else {
       // New user or reset request - clear local cache so we don't load previous user's characters
@@ -1713,14 +1725,16 @@ export class Game {
       });
     });
 
-    this.networkManager.on('new_friend_request', () => {
+    this.networkManager.on('new_friend_request', (data: any) => {
       this.updateInboxBadge(true);
-      // Removed alert
+      const fromUser = data?.from || 'Someone';
+      this.showNotification(`New friend request from ${fromUser}!`);
     });
 
-    this.networkManager.on('friend_added', (_friendName: string) => {
-      this.updateInboxBadge(false); // Rough logic, ideally check count
-      this.networkManager.getFriendsList(); // Refresh list
+    this.networkManager.on('friend_added', (friendName: string) => {
+      this.updateInboxBadge(false);
+      this.networkManager.getFriendsList();
+      this.showNotification(`You are now friends with ${friendName}!`);
     });
 
     this.networkManager.on('friends_list_update', (friends: any[]) => {
@@ -1930,14 +1944,87 @@ export class Game {
           </div>
       `;
 
-      div.querySelector('.accept-btn')!.addEventListener('click', () => {
-        // alert(`Accepting request from ${req.from}...`); // Removed
-        this.networkManager.acceptFriendRequest(req.from);
-        setTimeout(() => this.showInbox(), 500);
-      });
+      // Explicitly attach listeners to the newly created elements
+      const acceptBtn = div.querySelector('.accept-btn');
+      const rejectBtn = div.querySelector('.reject-btn');
+
+      if (acceptBtn) {
+        acceptBtn.addEventListener('click', () => {
+          // Disable button immediately to prevent double-clicks
+          (acceptBtn as HTMLButtonElement).disabled = true;
+          (acceptBtn as HTMLButtonElement).innerText = '...';
+
+          console.log(`Accepting friend request from: ${req.from}`);
+          this.networkManager.acceptFriendRequest(req.from);
+
+          // Optimistic UI update
+          setTimeout(() => {
+            this.networkManager.getInbox(); // Refresh inbox to clear item
+          }, 500);
+        });
+      }
+
+      if (rejectBtn) {
+        rejectBtn.addEventListener('click', () => {
+          // For now, no reject API? Just hide it or we need a reject endpoint?
+          // Assuming no reject endpoint exists yet based on review, so just locally hide or implement if API exists.
+          // Looking at server.js, there is NO reject_friend_request... 
+          // We'll just ignore it for now or assume implementation later.
+          div.remove();
+        });
+      }
 
       list.appendChild(div);
     });
+  }
+
+  // Helper for non-intrusive notifications
+  private showNotification(message: string, duration: number = 3000): void {
+    let container = document.getElementById('notification-container');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'notification-container';
+      container.style.position = 'fixed';
+      container.style.top = '20px';
+      container.style.right = '20px';
+      container.style.zIndex = '9999';
+      container.style.display = 'flex';
+      container.style.flexDirection = 'column';
+      container.style.gap = '10px';
+      document.body.appendChild(container);
+    }
+
+    const toast = document.createElement('div');
+    toast.className = 'toast-notification';
+    toast.style.background = 'rgba(20, 20, 30, 0.95)';
+    toast.style.border = '1px solid #4facfe';
+    toast.style.color = '#fff';
+    toast.style.padding = '12px 20px';
+    toast.style.borderRadius = '8px';
+    toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.5)';
+    toast.style.minWidth = '250px';
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(20px)';
+    toast.style.transition = 'all 0.3s ease';
+
+    toast.innerHTML = `<span style="font-weight:bold; color: #4facfe">Notice</span><div style="margin-top:4px">${message}</div>`;
+
+    container.appendChild(toast);
+
+    // Animate in
+    requestAnimationFrame(() => {
+      toast.style.opacity = '1';
+      toast.style.transform = 'translateX(0)';
+    });
+
+    // Remove after duration
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateX(20px)';
+      setTimeout(() => {
+        if (toast.parentNode) toast.parentNode.removeChild(toast);
+      }, 300);
+    }, duration);
   }
 
   private showFriendsScreen(): void {

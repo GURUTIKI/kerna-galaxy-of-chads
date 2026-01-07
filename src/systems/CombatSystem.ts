@@ -38,7 +38,7 @@ export interface BattleState {
 export class CombatSystem {
     public state: BattleState; // Public for UI access
     private availableLootIds: string[];
-    private xpMultiplier: number;
+    public xpMultiplier: number; // Public for UI to read results
     public isPvP: boolean; // Public for external logic checks
     private onEmitAction?: (action: any) => void;
     private onBattleEnd?: (result: any) => void;

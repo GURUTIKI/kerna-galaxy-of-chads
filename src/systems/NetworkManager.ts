@@ -145,6 +145,26 @@ export class NetworkManager {
         this.socket?.emit(event, data);
     }
 
+    public unlockAllCharacters(): void {
+        const username = this.username;
+        if (!username) return;
+        // Direct REST call to admin endpoint since it's an HTTP POST in server.js, not a socket event
+        fetch(`${API_URL}/api/admin/give-all-chars`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username })
+        }).then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert(`Unlocked ${data.count} characters! Reloading...`);
+                    window.location.reload();
+                } else {
+                    alert('Failed to unlock characters');
+                }
+            })
+            .catch(err => console.error(err));
+    }
+
     // --- Event System ---
 
     public on(event: string, callback: Function): void {
