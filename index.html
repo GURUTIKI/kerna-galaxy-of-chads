@@ -347,143 +347,119 @@
       <!-- Battle Screen -->
       <div id="battle-screen" class="screen">
         <div class="screen-header">
-          <h2 class="screen-title">Battle Arena</h2>
+          <!-- <h2 class="screen-title">Battle Arena</h2> -->
         </div>
 
         <div class="battle-area-centered">
-          <!-- Top: Info / Turn Indicator -->
-          <div id="turn-indicator" class="glass-panel turn-indicator-centered">
-            Preparing battle...
-          </div>
-          <div id="action-banner" class="action-banner" style="display: none;"></div>
+          <div id="player-battle-grid" class="battle-grid"></div>
+        </div>
 
-          <!-- Auto Battle moved to top cluster -->
-          <!--
-          <button id="btn-auto-battle" class="control-btn auto-btn top-auto-btn">
-            <span class="icon">⚡</span> AUTO
-          </button>
-          -->
+        <!-- VS Divider (Optional visual) -->
+        <div class="board-divider">VS</div>
 
-          <div id="target-selection-msg" class="target-msg-centered" style="display: none;">Select a target to attack!
-          </div>
+        <!-- Enemy Team -->
+        <div class="board-team enemy-team-board">
+          <div id="enemy-battle-grid" class="battle-grid"></div>
+        </div>
 
-          <!-- Middle: The Board -->
-          <div class="battle-board">
+      </div>
 
-            <!-- Your Team (Left side of board, but styled as tiles) -->
-            <div class="board-team player-team-board">
-              <div class="board-team-label">Your Team</div>
-              <div id="player-battle-grid" class="battle-grid"></div>
-            </div>
-
-            <!-- VS Divider (Optional visual) -->
-            <div class="board-divider">VS</div>
-
-            <!-- Enemy Team (Right side of board) -->
-            <div class="board-team enemy-team-board">
-              <div class="board-team-label">Opponent Team</div>
-              <div id="enemy-battle-grid" class="battle-grid"></div>
-            </div>
-
-          </div>
-
-          <!-- Bottom Container for Moves and Auto -->
-          <div class="battle-bottom-container">
-            <!-- Ability Selection Panel -->
-            <div id="ability-panel" class="ability-panel" style="display: none;"></div>
-
-            <!-- Auto Battle (Moved to bottom) -->
-            <div class="auto-btn-container">
-              <button id="btn-auto-battle" class="control-btn auto-btn">
-                <span class="icon">⚡</span> AUTO
-              </button>
-            </div>
-
-            <!-- Forfeit Button -->
-            <div class="auto-btn-container">
-              <button id="btn-back-from-battle" class="control-btn forfeit-btn">
-                <span class="icon">🏳️</span> FORFEIT
-              </button>
-            </div>
-          </div>
+      <!-- Bottom Container for Moves -->
+      <div class="battle-bottom-container">
+        <!-- Ability Selection Panel -->
+        <div id="ability-panel" class="ability-panel" style="display: none;"></div>
+      </div>
 
 
-          <!-- Bottom Controls (Removed Speed) -->
-          <!--
+      <!-- Bottom Controls (Removed Speed) -->
+      <!--
           <div class="battle-controls-bottom">
             <div class="speed-controls">
               <button id="btn-speed-2x" class="speed-btn active">2x Speed</button>
             </div>
           </div>
           -->
-        </div>
-
-        <!-- Ability Tooltip -->
-        <div id="ability-tooltip" class="ability-tooltip" style="display: none;"></div>
-      </div>
-
-      <!-- Results Screen -->
-      <div id="results-screen" class="screen">
-        <div class="results-container">
-          <h2 id="results-title" class="results-title">Victory!</h2>
-          <div id="results-xp" class="results-xp"></div>
-          <div id="results-levelups" class="results-levelups"></div>
-          <div id="results-loot" class="results-loot"></div>
-          <div class="results-buttons">
-            <button id="btn-allocate-stats" class="btn btn-primary">Allocate Stats</button>
-            <button id="btn-back-to-training" class="btn btn-success">Back to Keypad</button>
-            <!-- Context sensitive label update in logic -->
-          </div>
-        </div>
-      </div>
-
-      <!-- Stat Allocation Screen -->
-      <div id="stats-screen" class="screen">
-        <div class="screen-header">
-          <h2 class="screen-title">Allocate Stat Points</h2>
-        </div>
-
-        <div class="stats-area">
-          <div class="character-selector">
-            <h3>Select Character:</h3>
-            <div id="character-selector-list"></div>
-          </div>
-
-          <div id="stat-allocation-panel" class="stat-allocation-panel">
-            <h3 id="selected-char-name">Select a character</h3>
-            <div class="stat-points-available">
-              Available Points: <span id="available-points">0</span>
-            </div>
-            <div id="stat-list" class="stat-list"></div>
-            <button id="btn-confirm-stats" class="btn btn-success"
-              style="margin-top: 1rem; width: 100%; display: none;">Confirm Changes</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Character Management Screen -->
-      <div id="manage-screen" class="screen">
-        <div class="screen-header">
-          <h2 class="screen-title">Characters</h2>
-        </div>
-        <div id="character-manage-grid" class="character-grid"></div>
-      </div>
     </div>
 
-    <!-- FTUE Loot Box Overlay -->
-    <div id="ftue-overlay" class="ftue-overlay" style="display: none;">
-      <div class="loot-box-container">
-        <h2 class="loot-title">Welcome to Kerna: Galaxy of Chads</h2>
-        <p class="loot-subtitle">Open your first sleeping bag to reveal your starter Chad!</p>
-        <div id="loot-box" class="loot-box">
-          <div class="loot-icon">🎒</div>
-          <div class="loot-text">CLICK TO OPEN</div>
-        </div>
-        <div id="loot-reveal" class="loot-reveal" style="display: none;">
-          <!-- Revealed character content -->
-        </div>
+    <!-- Ability Tooltip -->
+    <div id="ability-tooltip" class="ability-tooltip" style="display: none;"></div>
+  </div>
+
+  <!-- Results Screen -->
+  <div id="results-screen" class="screen">
+    <div class="results-container">
+      <h2 id="results-title" class="results-title">Victory!</h2>
+      <div id="results-xp" class="results-xp"></div>
+      <div id="results-levelups" class="results-levelups"></div>
+      <div id="results-loot" class="results-loot"></div>
+      <div class="results-buttons">
+        <button id="btn-allocate-stats" class="btn btn-primary">Allocate Stats</button>
+        <button id="btn-back-to-training" class="btn btn-success">Back to Keypad</button>
       </div>
     </div>
+  </div>
+
+  <!-- Battle Settings Modal -->
+  <div id="battle-settings-modal" class="modal-overlay">
+    <div class="modal-content glass-panel" style="max-width: 300px;">
+      <div class="modal-header">
+        <h3>Battle Menu</h3>
+        <button id="btn-close-battle-settings" class="btn-close-modal">&times;</button>
+      </div>
+      <div class="modal-body" style="display: flex; flex-direction: column; gap: 1rem;">
+        <button id="btn-battle-continue" class="btn btn-primary">Continue Battle</button>
+        <button id="btn-battle-forfeit" class="btn btn-danger">Forfeit Battle</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stat Allocation Screen -->
+  <div id="stats-screen" class="screen">
+    <div class="screen-header">
+      <h2 class="screen-title">Allocate Stat Points</h2>
+    </div>
+
+    <div class="stats-area">
+      <div class="character-selector">
+        <h3>Select Character:</h3>
+        <div id="character-selector-list"></div>
+      </div>
+
+      <div id="stat-allocation-panel" class="stat-allocation-panel">
+        <h3 id="selected-char-name">Select a character</h3>
+        <div class="stat-points-available">
+          Available Points: <span id="available-points">0</span>
+        </div>
+        <div id="stat-list" class="stat-list"></div>
+        <button id="btn-confirm-stats" class="btn btn-success"
+          style="margin-top: 1rem; width: 100%; display: none;">Confirm Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Character Management Screen -->
+  <div id="manage-screen" class="screen">
+    <div class="screen-header">
+      <h2 class="screen-title">Characters</h2>
+    </div>
+    <div id="character-manage-grid" class="character-grid"></div>
+  </div>
+  </div>
+
+  <!-- FTUE Loot Box Overlay -->
+  <div id="ftue-overlay" class="ftue-overlay" style="display: none;">
+    <div class="loot-box-container">
+      <h2 class="loot-title">Welcome to Kerna: Galaxy of Chads</h2>
+      <p class="loot-subtitle">Open your first sleeping bag to reveal your starter Chad!</p>
+      <div id="loot-box" class="loot-box">
+        <div class="loot-icon">🎒</div>
+        <div class="loot-text">CLICK TO OPEN</div>
+      </div>
+      <div id="loot-reveal" class="loot-reveal" style="display: none;">
+        <!-- Revealed character content -->
+      </div>
+    </div>
+  </div>
   </div>
   </div>
 

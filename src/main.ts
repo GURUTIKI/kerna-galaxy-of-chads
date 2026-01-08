@@ -217,11 +217,29 @@ export class Game {
 
 
     document.getElementById('btn-auto-battle')?.addEventListener('click', () => {
-      if (this.autoBattleInterval) {
-        this.stopAutoBattle();
-      } else {
-        this.startAutoBattle();
-      }
+      this.toggleAutoBattle();
+    });
+
+    // Mobile Battle Controls (Overhaul)
+    document.getElementById('btn-battle-auto')?.addEventListener('click', () => {
+      this.toggleAutoBattle();
+    });
+
+    document.getElementById('btn-battle-settings')?.addEventListener('click', () => {
+      document.getElementById('battle-settings-modal')?.classList.add('active');
+    });
+
+    document.getElementById('btn-close-battle-settings')?.addEventListener('click', () => {
+      document.getElementById('battle-settings-modal')?.classList.remove('active');
+    });
+
+    document.getElementById('btn-battle-continue')?.addEventListener('click', () => {
+      document.getElementById('battle-settings-modal')?.classList.remove('active');
+    });
+
+    document.getElementById('btn-battle-forfeit')?.addEventListener('click', () => {
+      document.getElementById('battle-settings-modal')?.classList.remove('active');
+      this.handleForfeit();
     });
 
     // Remove old Next Turn listener if present (cleanup)
@@ -266,39 +284,8 @@ export class Game {
     // Speed buttons removed
 
     document.getElementById('btn-back-from-battle')?.addEventListener('click', () => {
-      // Check if PVP
-      const isPvP = this.combatSystem?.isPvP;
-
-      if (isPvP && !this.combatSystem!.getState().isOver) {
-        // Forfeit immediately for non-intrusive experience
-        if (this.currentRoomId) {
-          this.networkManager.forfeitMatch(this.currentRoomId);
-          // UI update happens on event
-          (document.getElementById('btn-back-from-battle') as HTMLButtonElement).disabled = true;
-          document.getElementById('btn-back-from-battle')!.innerText = 'Forfeiting...';
-        }
-      } else {
-        console.log("Exiting PVE/Training battle (isPvP check failed or false).");
-        // PVE or Training just exit
-        this.stopAutoBattle();
-        this.showScreen('main-menu');
-        this.sceneManager.clearAllCharacters();
-        this.combatSystem = null;
-      }
+      this.handleForfeit();
     });
-
-    // Remove legacy Forfeit button listener if it exists separately
-    /*
-    document.getElementById('btn-forfeit')?.addEventListener('click', () => {
-      // Instant forfeit for single player
-      this.combatSystem = null;
-      this.showScreen('main-menu');
-    });
-    */
-
-    // Handled in updateHealthBars
-
-    this.setupAuthEventListeners();
 
     // Global Home Button
     document.getElementById('btn-home')?.addEventListener('click', () => {
@@ -309,8 +296,60 @@ export class Game {
       if (this.combatSystem) this.combatSystem = null; // Clean up battle if active
 
       // Cancel matchmaking if active
-      document.getElementById('matchmaking-status')!.style.display = 'none';
+      const matchmakingStatus = document.getElementById('matchmaking-status');
+      if (matchmakingStatus) matchmakingStatus.style.display = 'none';
     });
+  }
+
+  private toggleAutoBattle(): void {
+    if (this.autoBattleInterval) {
+      this.stopAutoBattle();
+    } else {
+      this.startAutoBattle();
+    }
+    this.updateBattleUI();
+  }
+
+  private handleForfeit(): void {
+    const isPvP = this.combatSystem?.isPvP;
+
+    if (isPvP && !this.combatSystem!.getState().isOver) {
+      if (this.currentRoomId) {
+        this.networkManager.forfeitMatch(this.currentRoomId);
+      }
+    } else {
+      this.stopAutoBattle();
+      this.showScreen('main-menu');
+      this.sceneManager.clearAllCharacters();
+      this.combatSystem = null;
+    }
+  }
+
+  private renderTurnMeter(): void {
+    const container = document.getElementById('turn-meter-container');
+    if (!container || !this.combatSystem) return;
+
+    container.innerHTML = '';
+    const state = this.combatSystem.getState();
+    const order = state.turnOrder;
+    const currentIndex = state.currentTurnIndex;
+
+    // Show next 5 turns
+    for (let i = 0; i < 5; i++) {
+      const idx = (currentIndex + i) % order.length;
+      const char = order[idx];
+      if (!char || char.stats.currentHealth <= 0) continue;
+
+      const slot = document.createElement('div');
+      const isAlly = this.combatSystem.isPlayerCharacter(char);
+      slot.className = `turn-slot ${isAlly ? 'ally' : 'enemy'}`;
+
+      // First 2 letters of name
+      const initials = char.name.substring(0, 2).toUpperCase();
+      slot.textContent = initials;
+
+      container.appendChild(slot);
+    }
   }
 
   private setDifficulty(diff: 'easy' | 'normal' | 'hard'): void {
@@ -356,6 +395,12 @@ export class Game {
       screen.classList.add('active');
     }
 
+    // Toggle regular HUD - Hide in battle
+    const hud = document.getElementById('hud-container');
+    if (hud) {
+      hud.style.display = screenId === 'battle-screen' ? 'none' : 'flex';
+    }
+
     // Toggle Home Button
     const homeBtn = document.getElementById('btn-home');
     if (homeBtn) {
@@ -372,7 +417,7 @@ export class Game {
     this.showScreen('pvp-arena-screen');
 
     // Fetch leaderboard
-    fetch(`${API_URL}/api/leaderboard`)
+    fetch(`${API_URL} / api / leaderboard`)
       .then(res => res.json())
       .then(data => this.renderLeaderboard(data))
       .catch(err => console.error('Failed to load leaderboard', err));
@@ -391,12 +436,12 @@ export class Game {
       const item = document.createElement('div');
       item.className = 'leaderboard-item';
       item.innerHTML = `
-            <span>#${index + 1}</span>
-            <span>${entry.username}</span>
-            <span>${entry.wins}</span>
-            <span>${entry.winRate}%</span>
-            <span>${entry.avgLevel || '-'}</span>
-          `;
+  < span > #${index + 1} </span>
+    < span > ${entry.username} </span>
+      < span > ${entry.wins} </span>
+        < span > ${entry.winRate}% </span>
+          < span > ${entry.avgLevel || '-'} </span>
+            `;
       list.appendChild(item);
     });
   }
@@ -482,19 +527,19 @@ export class Game {
       // Removed aggressive !important resets asking for trouble
 
       reveal.innerHTML = `
-        <div style="width: 100%; display: flex; justify-content: center; margin: 2rem 0 4rem 0;">
-          <div id="revealed-card-action" class="character-card revealed-card" style="transform: scale(2.0); transform-origin: center center; margin: 0; cursor: pointer;">
-             <div class="character-shape" style="background: ${randomChar.visual.color}"></div>
-             <div class="character-name">${randomChar.name}</div>
-             <div class="character-stats-mini" style="flex-direction: column; align-items: center;">
-               <div>HP: ${randomChar.stats.maxHealth}</div>
-               <div>ATK: ${randomChar.stats.attack}</div>
-               <div>SPD: ${randomChar.stats.speed}</div>
-             </div>
-             <div style="font-size: 0.5rem; margin-top: 0.5rem; opacity: 0.8;">(Click to Claim)</div>
-          </div>
-        </div>
-      `;
+            < div style = "width: 100%; display: flex; justify-content: center; margin: 2rem 0 4rem 0;" >
+              <div id="revealed-card-action" class="character-card revealed-card" style = "transform: scale(2.0); transform-origin: center center; margin: 0; cursor: pointer;" >
+                <div class="character-shape" style = "background: ${randomChar.visual.color}" > </div>
+                  < div class="character-name" > ${randomChar.name} </div>
+                    < div class="character-stats-mini" style = "flex-direction: column; align-items: center;" >
+                      <div>HP: ${randomChar.stats.maxHealth} </div>
+                        < div > ATK: ${randomChar.stats.attack} </div>
+                          < div > SPD: ${randomChar.stats.speed} </div>
+                            </div>
+                            < div style = "font-size: 0.5rem; margin-top: 0.5rem; opacity: 0.8;" > (Click to Claim)</div>
+                              </div>
+                              </div>
+                                `;
 
       const cardAction = document.getElementById('revealed-card-action')!;
       cardAction.onclick = () => {
@@ -546,7 +591,7 @@ export class Game {
 
       if (team === 'your') {
         // Player team: show level and stats
-        levelHtml = `<div class="character-level">Level ${character.level}</div>`;
+        levelHtml = `< div class="character-level" > Level ${character.level} </div>`;
         statsHtml = `
           <div class="character-stats-mini">
             <div>HP: ${character.stats.maxHealth}</div>
@@ -772,8 +817,8 @@ export class Game {
     container.style.display = 'flex';
     container.innerHTML = '';
 
-    // Render each ability as a button
-    attacker!.abilities.forEach(ability => {
+    // Render each ability as an icon button
+    attacker!.abilities.forEach((ability, index) => {
       const cooldown = attacker!.abilityCooldowns.get(ability.id) || 0;
       const isAvailable = cooldown === 0;
       const isBasic = ability.type === 'basic';
@@ -781,40 +826,27 @@ export class Game {
 
       const btn = document.createElement('button');
       btn.className = `ability-btn ${isBasic ? 'basic' : 'special'} ${!isAvailable ? 'on-cooldown' : ''} ${isSelected ? 'selected' : ''}`;
-      // Fix: Don't disable button if selected, so we can click again to confirm
       btn.disabled = !isAvailable && !isSelected;
 
-      // UX: If selected and target is self/all, change text to "Confirm"
-      let btnText = ability.name;
-      if (isSelected) {
-        if (['self', 'all_enemies', 'all_allies'].includes(ability.target)) {
-          btnText += ' (Confirm)';
-          btn.classList.add('confirm-mode');
-        }
-      }
+      // Label logic: B, S1, S2
+      let label = isBasic ? 'B' : `S${index}`;
 
       btn.innerHTML = `
-        <div class="ability-name">${btnText}</div>
+        <div class="ability-name">${label}</div>
         ${!isAvailable ? `<div class="cooldown-badge">${cooldown}</div>` : ''}
       `;
 
-      // Selection and execution logic
+      // Trigger logic (same as before)
       const handleTrigger = (e: Event) => {
-        // Prevent double trigger (click + touch)
-        if (e.type === 'touchend') {
-          e.preventDefault();
-        }
+        if (e.type === 'touchend') e.preventDefault();
 
         if (isSelected) {
-          // ALREADY SELECTED -> CONFIRMATION ACTION
           const targetType = ability.target;
-          if (targetType === 'self' || targetType === 'all_enemies' || targetType === 'all_allies') {
+          if (['self', 'all_enemies', 'all_allies'].includes(targetType)) {
             const validTargets = this.combatSystem?.getAvailableTargets();
             if (validTargets && validTargets.length > 0) {
               let targetId = validTargets[0].instanceId || validTargets[0].id;
-              if (targetType === 'self') {
-                targetId = attacker!.instanceId || attacker!.id;
-              }
+              if (targetType === 'self') targetId = attacker!.instanceId || attacker!.id;
               this.combatSystem?.selectTarget(targetId);
               this.updateBattleUI();
               this.executeNextTurn();
@@ -823,44 +855,37 @@ export class Game {
           }
         }
 
-        // Normal Select Logic
         const turnFinishedByAbility = this.combatSystem?.selectAbility(ability.id);
         this.updateBattleUI();
-
-        if (turnFinishedByAbility) {
-          this.executeNextTurn();
-        }
+        if (turnFinishedByAbility) this.executeNextTurn();
       };
 
       if (isAvailable || isSelected) {
-        btn.addEventListener('click', (e) => handleTrigger(e));
-        btn.addEventListener('touchend', (e) => handleTrigger(e), { passive: false });
+        btn.addEventListener('click', handleTrigger);
+        btn.addEventListener('touchend', handleTrigger, { passive: false });
       }
 
-      // Long-press for tooltip
+      // Tooltip on Hold
       let pressTimer: number | null = null;
-
-      const showTooltip = () => {
-        this.showAbilityTooltip(ability, btn);
-      };
-
-      const hideTooltip = () => {
-        if (pressTimer) clearTimeout(pressTimer);
-        this.hideAbilityTooltip();
-      };
-
-      btn.addEventListener('mousedown', () => {
-        pressTimer = window.setTimeout(showTooltip, 300);
-      });
-
-      btn.addEventListener('mouseup', hideTooltip);
-      btn.addEventListener('mouseleave', hideTooltip);
       btn.addEventListener('touchstart', (e) => {
         e.preventDefault();
-        pressTimer = window.setTimeout(showTooltip, 300);
+        pressTimer = window.setTimeout(() => this.showAbilityTooltip(ability, btn), 200);
+      }, { passive: false });
+      btn.addEventListener('touchend', () => {
+        if (pressTimer) clearTimeout(pressTimer);
+        this.hideAbilityTooltip();
       });
-
-      btn.addEventListener('touchend', hideTooltip);
+      btn.addEventListener('mousedown', () => {
+        pressTimer = window.setTimeout(() => this.showAbilityTooltip(ability, btn), 200);
+      });
+      btn.addEventListener('mouseup', () => {
+        if (pressTimer) clearTimeout(pressTimer);
+        this.hideAbilityTooltip();
+      });
+      btn.addEventListener('mouseleave', () => {
+        if (pressTimer) clearTimeout(pressTimer);
+        this.hideAbilityTooltip();
+      });
 
       container.appendChild(btn);
     });
@@ -870,17 +895,27 @@ export class Game {
     const tooltip = document.getElementById('ability-tooltip');
     if (!tooltip) return;
 
-    tooltip.innerHTML = `
+    let details = `
       <div class="tooltip-title">${ability.name}</div>
       <div class="tooltip-description">${ability.description}</div>
     `;
 
+    if (ability.cooldown > 0) {
+      details += `<div class="tooltip-meta">Cooldown: ${ability.cooldown} turns</div>`;
+    }
+
+    if (ability.damageMultiplier) {
+      details += `<div class="tooltip-meta">Power: ${Math.round(ability.damageMultiplier * 100)}%</div>`;
+    }
+
+    tooltip.innerHTML = details;
     tooltip.style.display = 'block';
+    tooltip.classList.add('active');
 
     // Position tooltip above the button
     const rect = element.getBoundingClientRect();
     tooltip.style.left = `${rect.left + rect.width / 2}px`;
-    tooltip.style.top = `${rect.top - 10}px`;
+    tooltip.style.top = `${rect.top - 15}px`;
     tooltip.style.transform = 'translate(-50%, -100%)';
   }
 
@@ -918,7 +953,7 @@ export class Game {
       const xPos = (index - (state.playerTeam.characters.length - 1) / 2) * 2;
       this.sceneManager.createCharacterModel(char, new THREE.Vector3(xPos, 0, zPos));
     });
-
+  
     // Position enemy team
     state.enemyTeam.characters.forEach((char, index) => {
       const zPos = -2; // Enemy row
@@ -997,32 +1032,15 @@ export class Game {
     const currentChar = this.combatSystem.getCurrentCharacter();
 
     // Hide auto-battle button in PVP mode
-    const autoBattleBtn = document.getElementById('btn-auto-battle');
+    // Update Auto Battle visual state
+    const autoBattleBtn = document.getElementById('btn-battle-auto');
     if (autoBattleBtn) {
-      autoBattleBtn.style.display = 'flex'; // Always show
+      if (this.autoBattleInterval) autoBattleBtn.classList.add('active');
+      else autoBattleBtn.classList.remove('active');
     }
 
-    // Update turn indicator
-    const turnIndicator = document.getElementById('turn-indicator')!;
-    if (state.isOver) {
-      turnIndicator.textContent = state.winner === 'player' ? '🏆 VICTORY!' : '💀 DEFEAT!';
-      turnIndicator.style.background = state.winner === 'player'
-        ? 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)'
-        : 'linear-gradient(135deg, #f5576c 0%, #f093fb 100%)';
-      this.stopAutoBattle();
-      this.showResultsScreen();
-    } else if (state.waitingForTargetSelection) {
-      const ability = state.selectedAbility;
-      const isAttack = ability?.type === 'special' && (ability.target?.includes('enemy') || false) || ability?.type === 'basic';
-      turnIndicator.textContent = isAttack ? 'Select a Target to ATTACK!' : 'Select a Target';
-      turnIndicator.style.background = 'rgba(255, 87, 108, 0.5)'; // Reddish for action
-    } else if (state.waitingForAbilitySelection) {
-      turnIndicator.textContent = `${currentChar?.name}'s Turn - Select an Ability`;
-      turnIndicator.style.background = 'rgba(79, 172, 254, 0.3)';
-    } else if (currentChar) {
-      turnIndicator.textContent = `${currentChar.name}'s Turn`;
-      turnIndicator.style.background = 'rgba(255, 255, 255, 0.1)';
-    }
+    // Render Turn Meter
+    this.renderTurnMeter();
 
     // Render Tiles for both teams
     this.renderBattleGrid('player-battle-grid', state.playerTeam.characters, false);
@@ -1035,10 +1053,10 @@ export class Game {
     const msg = document.getElementById('target-selection-msg')!;
     msg.style.display = state.waitingForTargetSelection ? 'block' : 'none';
 
-    // Update Action Banner if someone is acting and it's not waiting for input
-    const banner = document.getElementById('action-banner')!;
-    if (state.waitingForAbilitySelection || state.waitingForTargetSelection || state.isOver) {
-      banner.style.display = 'none';
+    // Stop auto battle if over
+    if (state.isOver) {
+      this.stopAutoBattle();
+      this.showResultsScreen();
     }
   }
 
