@@ -1049,8 +1049,10 @@ export class Game {
     this.renderAbilityButtons();
 
     // Show target selection message if waiting
-    const msg = document.getElementById('target-selection-msg')!;
-    msg.style.display = state.waitingForTargetSelection ? 'block' : 'none';
+    const msg = document.getElementById('target-selection-msg');
+    if (msg) {
+      msg.style.display = state.waitingForTargetSelection ? 'block' : 'none';
+    }
 
     // Stop auto battle if over
     if (state.isOver) {

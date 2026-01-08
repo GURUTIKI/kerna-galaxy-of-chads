@@ -1,94 +1,38 @@
-import * as THREE from 'three';
-import { ModelFactory } from './ModelFactory';
 import type { Character } from '../types/Character';
 
 /**
  * CHARACTER PREVIEW
  * 
- * Manages a single-character 3D preview in a specific container.
- * Optimized for UI previews.
+ * Displays a simple colored placeholder for characters.
+ * WebGL rendering disabled to prevent context exhaustion (60+ contexts exceeded browser limit).
  */
 export class CharacterPreview {
-    private scene: THREE.Scene;
-    private camera: THREE.PerspectiveCamera;
-    private renderer: THREE.WebGLRenderer;
-    private model: THREE.Group | null = null;
-    private frameId: number | null = null;
+    private placeholder: HTMLDivElement;
 
     constructor(container: HTMLElement, character: Character) {
-        this.scene = new THREE.Scene();
+        // Create a simple colored div placeholder instead of WebGL renderer
+        this.placeholder = document.createElement('div');
+        this.placeholder.style.width = '100%';
+        this.placeholder.style.height = '100%';
+        this.placeholder.style.backgroundColor = character.visual.color;
+        this.placeholder.style.borderRadius = '8px';
+        this.placeholder.style.display = 'flex';
+        this.placeholder.style.alignItems = 'center';
+        this.placeholder.style.justifyContent = 'center';
+        this.placeholder.style.fontSize = '2rem';
+        this.placeholder.style.fontWeight = 'bold';
+        this.placeholder.style.color = 'rgba(255, 255, 255, 0.8)';
+        this.placeholder.style.textShadow = '0 2px 4px rgba(0, 0, 0, 0.5)';
 
-        this.camera = new THREE.PerspectiveCamera(
-            45,
-            container.clientWidth / container.clientHeight,
-            0.1,
-            100
-        );
-        this.camera.position.set(0, 0.8, 3.5);
-        this.camera.lookAt(0, 0.8, 0);
+        // Display first letter of character name
+        this.placeholder.textContent = character.name.charAt(0).toUpperCase();
 
-        this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        this.renderer.setSize(container.clientWidth, container.clientHeight);
-        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        container.appendChild(this.renderer.domElement);
-
-        this.addLights();
-        this.loadModel(character);
-        this.animate();
-    }
-
-    private addLights(): void {
-        const ambient = new THREE.AmbientLight(0xffffff, 1);
-        this.scene.add(ambient);
-
-        const fill = new THREE.DirectionalLight(0xffffff, 0.8);
-        fill.position.set(-2, 2, 2);
-        this.scene.add(fill);
-
-        const rim = new THREE.DirectionalLight(0xffffff, 0.5);
-        rim.position.set(2, 2, -2);
-        this.scene.add(rim);
-    }
-
-    private async loadModel(character: Character): Promise<void> {
-        this.model = await ModelFactory.createModel(
-            character.visual.color,
-            character.visual.modelType,
-            character.visual.modelPath
-        );
-        this.scene.add(this.model);
-    }
-
-    private animate(): void {
-        this.frameId = requestAnimationFrame(() => this.animate());
-
-        if (this.model) {
-            this.model.rotation.y += 0.01;
-            this.model.position.y = Math.sin(Date.now() * 0.002) * 0.05;
-        }
-
-        this.renderer.render(this.scene, this.camera);
+        container.appendChild(this.placeholder);
     }
 
     public dispose(): void {
-        if (this.frameId) cancelAnimationFrame(this.frameId);
-
-        if (this.model) {
-            this.model.traverse((child) => {
-                if (child instanceof THREE.Mesh) {
-                    child.geometry.dispose();
-                    if (Array.isArray(child.material)) {
-                        child.material.forEach(m => m.dispose());
-                    } else {
-                        child.material.dispose();
-                    }
-                }
-            });
-        }
-
-        this.renderer.dispose();
-        if (this.renderer.domElement.parentElement) {
-            this.renderer.domElement.remove();
+        if (this.placeholder && this.placeholder.parentElement) {
+            this.placeholder.remove();
         }
     }
 }
