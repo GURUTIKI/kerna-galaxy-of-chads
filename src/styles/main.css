@@ -1013,16 +1013,19 @@ body {
   backdrop-filter: blur(25px);
   border: 2px solid rgba(255, 255, 255, 0.2);
   border-radius: 24px;
-  padding: 3rem;
-  min-width: 500px;
+  padding: 2.25rem;
+  /* Reduced from 3rem */
+  min-width: 375px;
+  /* Reduced from 500px */
   text-align: center;
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.6);
 }
 
 .results-title {
-  font-size: 3.5rem;
+  font-size: 2.6rem;
+  /* Reduced from 3.5rem */
   font-weight: 800;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .results-xp,
@@ -1684,8 +1687,8 @@ body {
   /* Force full height */
   overflow: hidden;
   padding-bottom: 2rem;
-  background: red !important;
-  /* DEBUG: Should be VERY visible */
+  background: transparent;
+  /* Removed red debug background */
   z-index: 200 !important;
   /* Force above everything */
 }
@@ -2917,6 +2920,7 @@ body {
   font-size: 1rem;
   margin-top: 1rem;
 }
+
 /* =========================================
    DESKTOP BATTLE UI
    ========================================= */

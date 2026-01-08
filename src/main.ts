@@ -544,19 +544,19 @@ export class Game {
       // Removed aggressive !important resets asking for trouble
 
       reveal.innerHTML = `
-            < div style = "width: 100%; display: flex; justify-content: center; margin: 2rem 0 4rem 0;" >
-              <div id="revealed-card-action" class="character-card revealed-card" style = "transform: scale(2.0); transform-origin: center center; margin: 0; cursor: pointer;" >
-                <div class="character-shape" style = "background: ${randomChar.visual.color}" > </div>
-                  < div class="character-name" > ${randomChar.name} </div>
-                    < div class="character-stats-mini" style = "flex-direction: column; align-items: center;" >
-                      <div>HP: ${randomChar.stats.maxHealth} </div>
-                        < div > ATK: ${randomChar.stats.attack} </div>
-                          < div > SPD: ${randomChar.stats.speed} </div>
-                            </div>
-                            < div style = "font-size: 0.5rem; margin-top: 0.5rem; opacity: 0.8;" > (Click to Claim)</div>
-                              </div>
-                              </div>
-                                `;
+            <div style="width: 100%; display: flex; justify-content: center; margin: 2rem 0 4rem 0;">
+              <div id="revealed-card-action" class="character-card revealed-card" style="transform: scale(2.0); transform-origin: center center; margin: 0; cursor: pointer;">
+                <div class="character-shape" style="background: ${randomChar.visual.color}"></div>
+                <div class="character-name">${randomChar.name}</div>
+                <div class="character-stats-mini" style="flex-direction: column; align-items: center;">
+                  <div>HP: ${randomChar.stats.maxHealth}</div>
+                  <div>ATK: ${randomChar.stats.attack}</div>
+                  <div>SPD: ${randomChar.stats.speed}</div>
+                </div>
+                <div style="font-size: 0.5rem; margin-top: 0.5rem; opacity: 0.8;">(Click to Claim)</div>
+              </div>
+            </div>
+      `;
 
       const cardAction = document.getElementById('revealed-card-action')!;
       cardAction.onclick = () => {
