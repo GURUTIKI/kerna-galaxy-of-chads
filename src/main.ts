@@ -6,7 +6,6 @@
 
 import './styles/main.css';
 console.log('🎮 Main.ts loaded!');
-import * as THREE from 'three';
 import { CharacterManager } from './systems/CharacterManager';
 import { AuthManager } from './systems/AuthManager';
 import { CombatSystem } from './systems/CombatSystem';
@@ -956,25 +955,6 @@ export class Game {
     tooltip.style.transform = 'translate(-50%, -100%)';
   }
 
-  private displayBattleIn3D(): void {
-    if (!this.combatSystem) return;
-    this.sceneManager.clearAllCharacters();
-
-    const state = this.combatSystem.getState();
-    // Position player team
-    state.playerTeam.characters.forEach((char, index) => {
-      const zPos = 2; // Front row
-      const xPos = (index - (state.playerTeam.characters.length - 1) / 2) * 2;
-      this.sceneManager.createCharacterModel(char, new THREE.Vector3(xPos, 0, zPos));
-    });
-
-    // Position enemy team
-    state.enemyTeam.characters.forEach((char, index) => {
-      const zPos = -2; // Enemy row
-      const xPos = (index - (state.enemyTeam.characters.length - 1) / 2) * 2;
-      this.sceneManager.createCharacterModel(char, new THREE.Vector3(xPos, 0, zPos));
-    });
-  }
 
   private startAutoBattle(): void {
     if (!this.combatSystem || this.combatSystem.getState().isOver) return;
