@@ -6,6 +6,7 @@
 
 import './styles/main.css';
 console.log('🎮 Main.ts loaded!');
+import * as THREE from 'three';
 import { CharacterManager } from './systems/CharacterManager';
 import { AuthManager } from './systems/AuthManager';
 import { CombatSystem } from './systems/CombatSystem';
@@ -36,6 +37,7 @@ export class Game {
 
   // Auto-battle state
   private autoBattleInterval: number | null = null;
+  private autoBattleActive: boolean = false;
 
   // Transactional Stats State
   private tempAllocatedPoints: Map<string, Array<keyof Character['stats']>> = new Map();
@@ -965,6 +967,8 @@ export class Game {
     // Check interval to avoid double start
     if (this.autoBattleInterval) return;
 
+    this.autoBattleActive = true;
+
     this.autoBattleInterval = window.setInterval(() => {
       if (!this.combatSystem || this.combatSystem.getState().isOver) {
         this.stopAutoBattle();
@@ -990,6 +994,7 @@ export class Game {
       clearInterval(this.autoBattleInterval);
       this.autoBattleInterval = null;
     }
+    this.autoBattleActive = false;
 
     // Update Button UI
     const btn = document.getElementById('btn-auto-battle');
