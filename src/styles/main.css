@@ -2613,15 +2613,16 @@ body {
     height: 18px;
   }
 
-  /* --- MAIN MENU (Request 1: Fit to screen) --- */
+  /* --- MAIN MENU (Galaxy Map) --- */
   .menu-buttons {
     flex-direction: column;
     gap: 0;
-    /* Using space-evenly instead of gap for precision */
-    padding-top: 10px;
-    padding-bottom: 160px;
-    /* Space for elevated HUD */
-    height: 90vh;
+    padding-top: 50px;
+    /* Clear of top notch */
+    padding-bottom: 110px;
+    /* Clear of HUD */
+    height: 100%;
+    /* Fill screen */
     justify-content: space-evenly;
     width: 95%;
     z-index: 40;
@@ -2629,13 +2630,13 @@ body {
 
   .mode-button {
     transform: none;
-    width: 135px;
-    height: 135px;
+    width: 125px;
+    height: 125px;
     flex: none;
     margin: 0 auto;
-    padding: 0.2rem;
-    gap: 5px;
-    /* Precise gap between icon and label */
+    padding: 0;
+    gap: 2px;
+    /* Snug label to planet */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -2647,22 +2648,24 @@ body {
   }
 
   .mode-button.pvp-premium {
-    width: 155px;
-    /* ~15% bigger than 135px */
-    height: 155px;
+    width: 145px;
+    /* ~15% bigger than 125px */
+    height: 145px;
   }
 
   .mode-label {
-    font-size: 0.7rem;
-    /* Normalized size */
+    font-size: 0.65rem;
     margin-top: 0;
     font-weight: 800;
     letter-spacing: 0.05rem;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+    text-align: center;
+    line-height: 1;
   }
 
   .mode-icon {
-    height: 85%;
+    height: 80%;
+    /* Leave room for label */
     width: auto;
     max-width: 100%;
     object-fit: contain;
@@ -2762,7 +2765,8 @@ body {
   }
 
   .battle-grid {
-    gap: 0.2rem;
+    gap: 0.1rem;
+    /* Tighter gap */
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -2771,12 +2775,13 @@ body {
 
   /* Battle Tiles */
   .battle-tile {
-    padding: 0.2rem;
-    /* Compact padding */
+    padding: 0.15rem;
+    /* Minimal padding */
     min-width: 60px;
     flex: 0 1 31%;
     /* 3 per row comfortably */
     box-sizing: border-box;
+    min-height: 75px;
   }
 
   .battle-tile-avatar {
@@ -2789,19 +2794,19 @@ body {
   }
 
   .battle-tile-hp-bar {
-    height: 6px !important;
+    height: 5px !important;
     /* Slimmer bar */
   }
 
   .battle-tile-hp-text {
-    font-size: 0.55rem;
-    margin-top: 1px;
+    font-size: 0.5rem;
+    margin-top: 0;
   }
 
   /* Battle Controls */
   .battle-bottom-container {
-    bottom: 100px;
-    /* Higher to avoid overlap with second character row */
+    bottom: 75px;
+    /* Moved down to clear character tiles */
     width: 98%;
     gap: 0.2rem;
   }
@@ -2816,15 +2821,30 @@ body {
 
   .ability-btn {
     min-width: 55px;
-    font-size: 0.65rem;
-    padding: 0.3rem;
+    font-size: 0.6rem;
+    padding: 0.2rem;
     height: auto;
-    min-height: 32px;
+    min-height: 35px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .ability-name {
+    white-space: normal;
+    word-break: break-word;
+    line-height: 1.1;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-align: center;
   }
 
   .control-btn {
-    padding: 0.3rem 0.6rem;
-    font-size: 0.7rem;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.65rem;
   }
 
   .auto-btn-container {
@@ -2839,10 +2859,11 @@ body {
 
   /* --- VICTORY SCREEN --- */
   .results-container {
-    max-height: 75vh;
+    max-height: 60vh;
+    /* Shorter to fit screen */
     overflow-y: auto;
-    padding: 1.5rem 1rem;
-    margin-top: 1rem;
+    padding: 1rem;
+    margin-top: 0.5rem;
     display: flex;
     flex-direction: column;
   }
