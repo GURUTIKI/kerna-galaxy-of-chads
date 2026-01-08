@@ -781,13 +781,13 @@ export class Game {
 
     this.combatSystem = new CombatSystem(yourTeam, opponentTeam, allCharacterIds, xpMultiplier, false, undefined, undefined, undefined);
     this.combatSystem.setBattleSpeed(2); // Standard is 2x now
-    this.displayBattleIn3D();
     this.updateBattleUI();
 
     // START THE FIRST TURN
     setTimeout(() => {
+      // Explicitly check if first turn is AI and run it if so
       this.executeNextTurn();
-    }, 500);
+    }, 1000); // Slightly longer delay to ensure everything is ready
   }
 
   private renderAbilityButtons(): void {
@@ -836,33 +836,16 @@ export class Game {
         ${!isAvailable ? `<div class="cooldown-badge">${cooldown}</div>` : ''}
       `;
 
-      // Trigger logic (same as before)
-      const handleTrigger = (e: Event) => {
-        if (e.type === 'touchend') e.preventDefault();
-
-        if (isSelected) {
-          const targetType = ability.target;
-          if (['self', 'all_enemies', 'all_allies'].includes(targetType)) {
-            const validTargets = this.combatSystem?.getAvailableTargets();
-            if (validTargets && validTargets.length > 0) {
-              let targetId = validTargets[0].instanceId || validTargets[0].id;
-              if (targetType === 'self') targetId = attacker!.instanceId || attacker!.id;
-              this.combatSystem?.selectTarget(targetId);
-              this.updateBattleUI();
-              this.executeNextTurn();
-              return;
-            }
-          }
-        }
-
-        const turnFinishedByAbility = this.combatSystem?.selectAbility(ability.id);
+      // Trigger logic
+      const handleTrigger = (e?: Event) => {
+        if (e) e.preventDefault();
+        this.combatSystem?.selectAbility(ability.id);
         this.updateBattleUI();
-        if (turnFinishedByAbility) this.executeNextTurn();
       };
 
       if (isAvailable || isSelected) {
-        btn.addEventListener('click', handleTrigger);
-        btn.addEventListener('touchend', handleTrigger, { passive: false });
+        btn.addEventListener('click', () => handleTrigger());
+        btn.addEventListener('touchend', (e) => handleTrigger(e), { passive: false });
       }
 
       // Tooltip on Hold

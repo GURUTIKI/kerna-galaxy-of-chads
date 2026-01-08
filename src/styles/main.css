@@ -2751,8 +2751,8 @@ body {
     flex-direction: column;
     justify-content: space-between;
     padding: 10px;
-    padding-top: 100px;
-    /* Moved down per user request */
+    padding-top: 50px;
+    /* Adjusted from 100px */
     box-sizing: border-box;
   }
 
@@ -2937,10 +2937,14 @@ body {
     z-index: 500;
     /* Increased to ensure visibility */
     position: relative;
-    bottom: 0;
-    left: 0;
-    transform: none;
     width: 100%;
+    background: transparent;
+    /* Ensure no black box */
+    border: none;
+    /* Ensure no blue border */
+    box-shadow: none;
+    pointer-events: none;
+    /* Let clicks pass through to tiles behind if any */
   }
 
   .ability-panel {
@@ -2948,22 +2952,24 @@ body {
     gap: 15px;
     justify-content: center;
     width: 100%;
+    pointer-events: auto;
+    /* Re-enable for buttons themselves */
   }
 
   .ability-btn {
-    width: 65px;
-    height: 65px;
-    background: #2196f3;
-    /* Blue */
-    border: 2px solid #fff;
-    border-radius: 12px;
+    width: 40px;
+    height: 40px;
+    background: #e91e63;
+    /* Pink */
+    border: none;
+    border-radius: 8px;
     color: #fff;
     font-weight: 800;
-    font-size: 1.2rem;
+    font-size: 0.8rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
     cursor: pointer;
   }
 
