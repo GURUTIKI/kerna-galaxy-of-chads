@@ -413,10 +413,10 @@ export class Game {
       console.error('Screen not found:', screenId);
     }
 
-    // Toggle regular HUD - Hide in battle
+    // Toggle regular HUD - Hide in battle, login, and boot screens
     const hud = document.getElementById('hud-container');
     if (hud) {
-      hud.style.display = screenId === 'battle-screen' ? 'none' : 'flex';
+      hud.style.display = (screenId === 'battle-screen' || screenId === 'login-screen' || screenId === 'boot-screen' || screenId === 'register-screen') ? 'none' : 'flex';
     }
 
     // Toggle Home Button
@@ -1063,11 +1063,13 @@ export class Game {
     // Render ability buttons
     this.renderAbilityButtons();
 
-    // Show target selection message if waiting
+    // Show target selection message if waiting - DISABLED per request
+    /*
     const msg = document.getElementById('target-selection-msg');
     if (msg) {
       msg.style.display = state.waitingForTargetSelection ? 'block' : 'none';
     }
+    */
 
     // Stop auto battle if over
     if (state.isOver) {
