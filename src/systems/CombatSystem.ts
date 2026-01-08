@@ -60,20 +60,24 @@ export class CombatSystem {
         this.onEmitAction = onEmitAction;
         this.onBattleEnd = onBattleEnd;
         this.opponentUsername = opponentUsername;
+
+        // Clone teams to ensure unique character objects (crucial for mirroring and identification)
+        const clonedPlayerTeam = this.cloneTeam(playerTeam);
+        const clonedEnemyTeam = this.cloneTeam(enemyTeam);
+
         // Reset all character health before battle and assign instanceId
-        [...playerTeam.characters, ...enemyTeam.characters].forEach(char => {
-            if (!char.instanceId) {
-                // Generate a simple unique ID for battle
-                char.instanceId = `${char.id}_${Math.random().toString(36).substring(2, 9)}`;
-            }
+        [...clonedPlayerTeam.characters, ...clonedEnemyTeam.characters].forEach(char => {
+            // Force unique instance ID for this battle
+            char.instanceId = `${char.id}_${Math.random().toString(36).substring(2, 9)}`;
+
             resetHealth(char);
             char.statusEffects = []; // Clear any residual status effects
             initializeAbilityCooldowns(char);
         });
 
         this.state = {
-            playerTeam,
-            enemyTeam,
+            playerTeam: clonedPlayerTeam,
+            enemyTeam: clonedEnemyTeam,
             turnOrder: [],
             currentTurnIndex: 0,
             battleLog: ['Battle started!'],
@@ -86,6 +90,29 @@ export class CombatSystem {
         };
 
         this.calculateTurnOrder();
+    }
+
+    private cloneTeam(team: Team): Team {
+        return {
+            ...team,
+            characters: team.characters.map(char => this.cloneCharacter(char))
+        };
+    }
+
+    private cloneCharacter(char: Character): Character {
+        // Deep clone character but handle Map and nested objects manually
+        const clonedChar = {
+            ...char,
+            stats: { ...char.stats },
+            visual: { ...char.visual },
+            abilities: char.abilities.map(a => ({
+                ...a,
+                effects: a.effects.map(e => ({ ...e }))
+            })),
+            statusEffects: [], // Start fresh in battle
+            abilityCooldowns: new Map(char.abilityCooldowns)
+        };
+        return clonedChar;
     }
 
     private battleSpeed: number = 1; // 1x, 2x, or 4x

@@ -16,15 +16,7 @@
   justify-content: center;
 }
 
-/* Ability Panel Override for Layout */
-.ability-panel {
-  position: static;
-  /* Let flexbox handle layout */
-  transform: none;
-  bottom: auto;
-  left: auto;
-  margin: 0;
-}
+
 
 /* Auto Button Container */
 .auto-btn-container {
@@ -2121,54 +2113,6 @@ body {
 
 /* ===== ABILITY SYSTEM STYLES ===== */
 
-.ability-panel {
-  position: absolute;
-  bottom: 120px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 1rem;
-  padding: 1.5rem;
-  background: rgba(20, 20, 30, 0.95);
-  border-radius: 20px;
-  border: 2px solid rgba(79, 172, 254, 0.3);
-  backdrop-filter: blur(15px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-  z-index: 100;
-}
-
-.ability-btn {
-  position: relative;
-  min-width: 140px;
-  padding: 1rem 1.2rem;
-  background: transparent;
-  border: 2px solid #ffd700;
-  color: #ffd700;
-  border-radius: 12px;
-  font-weight: 800;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.3rem;
-  text-transform: uppercase;
-  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.1);
-}
-
-.ability-btn:hover:not(:disabled) {
-  background: rgba(255, 215, 0, 0.1);
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.3);
-}
-
-.ability-btn.on-cooldown {
-  border-color: rgba(255, 215, 0, 0.2);
-  color: rgba(255, 215, 0, 0.3);
-  opacity: 0.6;
-}
-
 .ability-btn.selected {
   border-color: #ffd700;
   box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
@@ -2957,8 +2901,10 @@ body {
   }
 
   .ability-btn {
-    width: 40px;
-    height: 40px;
+    width: 40px !important;
+    height: 40px !important;
+    flex: 0 0 40px !important;
+    /* Force fixed size */
     background: #e91e63;
     /* Pink */
     border: none;
@@ -2971,6 +2917,8 @@ body {
     justify-content: center;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
     cursor: pointer;
+    padding: 0;
+    /* Remove padding that could cause width increase */
   }
 
   .ability-btn.selected {

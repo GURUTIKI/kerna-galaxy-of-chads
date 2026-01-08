@@ -732,7 +732,14 @@ export class Game {
       const teamSize = this.yourTeamIds.length;
       for (let i = 0; i < teamSize; i++) {
         const randomChar = allChars[Math.floor(Math.random() * allChars.length)];
-        opponentTeamChars.push(this.characterManager.getCharacterForBattle(randomChar.id)!);
+        const baseChar = this.characterManager.getCharacterForBattle(randomChar.id)!;
+        // Deep clone the base character so modifications in PVE don't affect player's collection
+        const clonedChar = JSON.parse(JSON.stringify(baseChar));
+        // Restore Map if it was lost in stringify (although getCharacterForBattle usually returns fresh objects, this is safer)
+        if (baseChar.abilityCooldowns) clonedChar.abilityCooldowns = new Map(baseChar.abilityCooldowns);
+        else clonedChar.abilityCooldowns = new Map();
+
+        opponentTeamChars.push(clonedChar);
       }
     }
 
