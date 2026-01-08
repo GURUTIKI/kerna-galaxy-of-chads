@@ -1029,7 +1029,6 @@ export class Game {
     if (!this.combatSystem) return;
 
     const state = this.combatSystem.getState();
-    const currentChar = this.combatSystem.getCurrentCharacter();
 
     // Hide auto-battle button in PVP mode
     // Update Auto Battle visual state
