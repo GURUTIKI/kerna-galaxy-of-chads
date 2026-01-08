@@ -2751,6 +2751,8 @@ body {
     flex-direction: column;
     justify-content: space-between;
     padding: 10px;
+    padding-top: 100px;
+    /* Moved down per user request */
     box-sizing: border-box;
   }
 
@@ -2818,13 +2820,15 @@ body {
   }
 
   .turn-slot.ally {
-    border: 3px solid #4caf50;
-    /* Green */
+    background: #2196f3;
+    /* Blue */
+    border: none;
   }
 
   .turn-slot.enemy {
-    border: 3px solid #f44336;
+    background: #f44336;
     /* Red */
+    border: none;
   }
 
   /* Grids & Hexagonal Layout */
@@ -2868,8 +2872,8 @@ body {
   }
 
   .player-tile {
-    border-color: rgba(76, 175, 80, 0.4);
-    /* Green tint */
+    border-color: rgba(33, 150, 243, 0.4);
+    /* Blue tint */
   }
 
   .enemy-tile {
@@ -2930,7 +2934,8 @@ body {
     align-items: center;
     justify-content: center;
     padding-bottom: 20px;
-    z-index: 100;
+    z-index: 500;
+    /* Increased to ensure visibility */
     position: relative;
     bottom: 0;
     left: 0;
@@ -3027,5 +3032,4 @@ body {
   padding: 0.8rem 1.5rem;
   font-size: 1rem;
   margin-top: 1rem;
-}
 }

@@ -805,9 +805,9 @@ export class Game {
     // - If waitingForTargetSelection: Show all avail, highlight selected.
 
     // User Request: "i only want to see my moves" -> implies only show when player is acting.
-    // Combined logic: Show if player is acting AND (waiting for ability OR waiting for target).
     const isPlayerTurn = attacker && this.combatSystem?.isPlayerCharacter(attacker);
-    const showPanel = isPlayerTurn && (state?.waitingForAbilitySelection || state?.waitingForTargetSelection);
+    // Show panel if it's the player's turn and the battle isn't over
+    const showPanel = !!isPlayerTurn && !state?.isOver;
 
     if (!showPanel) {
       container.style.display = 'none';
