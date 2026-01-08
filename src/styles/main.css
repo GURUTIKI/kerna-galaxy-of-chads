@@ -202,6 +202,9 @@ body {
   width: 100%;
   height: 100%;
   padding: 2rem;
+  position: relative;
+  z-index: 100;
+  /* Above scene-container (z-index: 1) */
 }
 
 /* --- BATTLE BOARD UI --- */
@@ -1681,6 +1684,10 @@ body {
   /* Force full height */
   overflow: hidden;
   padding-bottom: 2rem;
+  background: red !important;
+  /* DEBUG: Should be VERY visible */
+  z-index: 200 !important;
+  /* Force above everything */
 }
 
 #character-manage-grid {
@@ -2909,4 +2916,109 @@ body {
   padding: 0.8rem 1.5rem;
   font-size: 1rem;
   margin-top: 1rem;
+}
+/* =========================================
+   DESKTOP BATTLE UI
+   ========================================= */
+
+/* Battle Status Bar - visible on all screen sizes */
+#battle-status-bar {
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 60px;
+  z-index: 200;
+  padding: 0 1rem;
+}
+
+.battle-controls-left {
+  display: flex;
+  gap: 8px;
+}
+
+.battle-icon-btn {
+  width: 45px;
+  height: 45px;
+  background: #000;
+  border: 1px solid #333;
+  border-radius: 8px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  transition: all 0.2s ease;
+}
+
+.battle-icon-btn:hover {
+  background: #222;
+  transform: translateY(-2px);
+}
+
+.battle-icon-btn.active {
+  border-color: #ffd700;
+  color: #ffd700;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+}
+
+.battle-svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* Turn Meter Container */
+#turn-meter-container {
+  display: flex;
+  gap: 6px;
+  padding: 5px;
+}
+
+.turn-slot {
+  width: 40px;
+  height: 40px;
+  background: #e91e63;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.8rem;
+  color: white;
+  box-sizing: border-box;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  transition: all 0.2s ease;
+}
+
+.turn-slot.ally {
+  background: #2196f3;
+  border: none;
+}
+
+.turn-slot.enemy {
+  background: #f44336;
+  border: none;
+}
+
+/* Battle Tile Health Bars - Desktop */
+.battle-tile-hp-bar {
+  width: 100% !important;
+  height: 8px !important;
+  background: rgba(0, 0, 0, 0.5) !important;
+  border-radius: 4px !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  margin-top: 4px !important;
+}
+
+.battle-tile-hp-fill {
+  height: 100% !important;
+  background: linear-gradient(90deg, #4caf50, #8bc34a) !important;
+  transition: width 0.3s ease !important;
+  border-radius: 3px !important;
+}
+
+.battle-tile-hp-fill.critical {
+  background: linear-gradient(90deg, #f44336, #ff5722) !important;
 }

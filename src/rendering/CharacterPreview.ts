@@ -27,6 +27,13 @@ export class CharacterPreview {
         // Display first letter of character name
         this.placeholder.textContent = character.name.charAt(0).toUpperCase();
 
+        console.log('CharacterPreview created:', {
+            name: character.name,
+            color: character.visual.color,
+            container: container,
+            placeholder: this.placeholder
+        });
+
         container.appendChild(this.placeholder);
     }
 

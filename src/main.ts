@@ -347,9 +347,9 @@ export class Game {
       const isAlly = this.combatSystem.isPlayerCharacter(char);
       slot.className = `turn-slot ${isAlly ? 'ally' : 'enemy'}`;
 
-      // First 2 letters of name
       const initials = char.name.substring(0, 2).toUpperCase();
       slot.textContent = initials;
+      // First 2 letters of name
 
       container.appendChild(slot);
     }
@@ -386,6 +386,18 @@ export class Game {
   } */
 
   private showScreen(screenId: string): void {
+    console.log('showScreen called with:', screenId);
+
+    // Show/hide scene container based on screen
+    const sceneContainer = document.getElementById('scene-container');
+    if (sceneContainer) {
+      if (screenId === 'manage-screen') {
+        sceneContainer.style.display = 'none';
+      } else {
+        sceneContainer.style.display = 'block';
+      }
+    }
+
     document.querySelectorAll('.screen').forEach(screen => {
       screen.classList.remove('active');
     });
@@ -396,6 +408,9 @@ export class Game {
     const screen = document.getElementById(screenId);
     if (screen) {
       screen.classList.add('active');
+      console.log('Screen activated:', screenId, 'classList:', screen.classList.toString());
+    } else {
+      console.error('Screen not found:', screenId);
     }
 
     // Toggle regular HUD - Hide in battle
@@ -799,7 +814,7 @@ export class Game {
     this.combatSystem = new CombatSystem(yourTeam, opponentTeam, allCharacterIds, xpMultiplier, false, undefined, undefined, undefined);
     this.combatSystem.setBattleSpeed(2); // Standard is 2x now
     this.updateBattleUI();
-    this.displayBattleIn3D();
+    // this.displayBattleIn3D(); // DISABLED: User doesn't want 3D character models
 
     // START THE FIRST TURN
     setTimeout(() => {
@@ -1410,6 +1425,15 @@ export class Game {
   }
 
   private showManageScreen(): void {
+    console.log('showManageScreen called');
+
+    // Hide the 3D scene container to prevent it from covering the screen
+    const sceneContainer = document.getElementById('scene-container');
+    if (sceneContainer) {
+      sceneContainer.style.display = 'none';
+      console.log('Scene container hidden');
+    }
+
     this.showScreen('manage-screen');
     this.renderManageGrid();
   }
@@ -1423,6 +1447,7 @@ export class Game {
     grid.className = 'character-manage-grid';
 
     const allCharacters = this.characterManager.getAllCharacters();
+    console.log('renderManageGrid called, characters:', allCharacters.length);
 
     // Sort: Owned first
     allCharacters.sort((a, b) => {
@@ -2273,7 +2298,7 @@ export class Game {
       },
       data.opponent  // Pass opponent username for leaderboard tracking
     );
-    this.displayBattleIn3D();
+    //     this.displayBattleIn3D();
     this.updateBattleUI();
 
     // Start the battle system (calculates turn order and executes first turn once)
