@@ -62,8 +62,8 @@ export class CombatSystem {
         this.opponentUsername = opponentUsername;
 
         // Clone teams to ensure unique character objects (crucial for mirroring and identification)
-        const clonedPlayerTeam = this.cloneTeam(playerTeam);
-        const clonedEnemyTeam = this.cloneTeam(enemyTeam);
+        const clonedPlayerTeam = this.cloneTeam(playerTeam, 'player');
+        const clonedEnemyTeam = this.cloneTeam(enemyTeam, 'enemy');
 
         // Reset all character health before battle and assign instanceId
         [...clonedPlayerTeam.characters, ...clonedEnemyTeam.characters].forEach(char => {
@@ -92,17 +92,18 @@ export class CombatSystem {
         this.calculateTurnOrder();
     }
 
-    private cloneTeam(team: Team): Team {
+    private cloneTeam(team: Team, side: 'player' | 'enemy'): Team {
         return {
             ...team,
-            characters: team.characters.map(char => this.cloneCharacter(char))
+            characters: team.characters.map(char => this.cloneCharacter(char, side))
         };
     }
 
-    private cloneCharacter(char: Character): Character {
+    private cloneCharacter(char: Character, side: 'player' | 'enemy'): Character {
         // Deep clone character but handle Map and nested objects manually
-        const clonedChar = {
+        const clonedChar: any = {
             ...char,
+            side: side, // Track team side directly on character instance
             stats: { ...char.stats },
             visual: { ...char.visual },
             abilities: char.abilities.map(a => ({
@@ -171,7 +172,13 @@ export class CombatSystem {
      * Check if a character belongs to player (Reference check for unique identity)
      */
     public isPlayerCharacter(character: Character): boolean {
-        return this.state.playerTeam.characters.includes(character);
+        if (!character) return false;
+        // Check side flag first (added during cloning)
+        if ((character as any).side) {
+            return (character as any).side === 'player';
+        }
+        // Fallback to reference check
+        return this.state.playerTeam.characters.some(c => c.instanceId === character.instanceId);
     }
 
     /**

@@ -14,6 +14,7 @@ import { SceneManager } from './rendering/SceneManager';
 import type { Character } from './types/Character';
 import { NetworkManager } from './systems/NetworkManager';
 import { API_URL } from './config';
+import { CharacterPreview } from './rendering/CharacterPreview';
 
 
 /**
@@ -591,7 +592,7 @@ export class Game {
 
       if (team === 'your') {
         // Player team: show level and stats
-        levelHtml = `< div class="character-level" > Level ${character.level} </div>`;
+        levelHtml = `<div class="character-level">Level ${character.level}</div>`;
         statsHtml = `
           <div class="character-stats-mini">
             <div>HP: ${character.stats.maxHealth}</div>
@@ -628,12 +629,19 @@ export class Game {
         `;
       }
 
-      card.innerHTML = `
-        <div class="character-shape" style="background: ${character.visual.color}; width: 100%; height: 120px; margin-bottom: 0.5rem; border-radius: 8px;"></div>
+      const previewContainer = document.createElement('div');
+      previewContainer.className = 'character-preview-3d';
+      card.appendChild(previewContainer);
+
+      new CharacterPreview(previewContainer, character);
+
+      const infoContainer = document.createElement('div');
+      infoContainer.innerHTML = `
         <div class="character-name">${character.name}</div>
         ${levelHtml}
         ${statsHtml}
       `;
+      card.appendChild(infoContainer);
 
       card.addEventListener('click', () => {
         this.toggleCharacterSelection(character.id, team);
@@ -1491,7 +1499,15 @@ export class Game {
          `;
       }
 
-      card.innerHTML = content;
+      const previewContainer = document.createElement('div');
+      previewContainer.className = 'character-preview-3d';
+      card.appendChild(previewContainer);
+
+      new CharacterPreview(previewContainer, character);
+
+      const contentDiv = document.createElement('div');
+      contentDiv.innerHTML = content;
+      card.appendChild(contentDiv);
 
       // Add listener for Upgrade button
       const upgradeBtn = card.querySelector('.btn-manage-upgrade');
