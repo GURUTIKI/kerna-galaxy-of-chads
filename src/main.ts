@@ -1086,10 +1086,7 @@ export class Game {
       tile.className = `battle-tile ${isEnemy ? 'enemy-tile' : 'player-tile'} ${isDead ? 'dead' : ''} ${isTargetable ? 'targetable' : ''} ${isActing ? 'acting' : ''}`;
       tile.setAttribute('data-character-id', uniqueId);
 
-      // HP Bar Color class
-      let hpClass = 'hp-high';
-      if (healthPercent <= 25) hpClass = 'hp-low';
-      else if (healthPercent <= 50) hpClass = 'hp-medium';
+
 
       // Avatar/Visual removed per request
       /*
@@ -1106,7 +1103,7 @@ export class Game {
         <div class="battle-tile-info">
           <div class="battle-tile-name">${character.name}</div>
           <div class="battle-tile-hp-bar">
-             <div class="hp-fill ${hpClass}" style="width: ${Math.max(0, healthPercent)}%"></div>
+             <div class="battle-tile-hp-fill ${character.stats.currentHealth / character.stats.maxHealth < 0.25 ? 'critical' : ''}" style="width: ${Math.max(0, healthPercent)}%"></div>
           </div>
           <div class="status-effect-bar" style="margin-top: 5px; font-size: 1.2rem; display: flex; gap: 4px; height: 1.5rem; justify-content: center;">
             ${character.statusEffects.map(e => {
@@ -1139,9 +1136,7 @@ export class Game {
               </span>`;
       }).join('')}
           </div>
-          <div class="battle-tile-hp-text" style="font-weight: 800; color: white; margin-top: 2px;">${Math.floor(character.stats.currentHealth)}/${character.stats.maxHealth}</div>
         </div>
-        ${isActing ? '<div class="turn-marker" style="position: absolute; top: -10px; background: #ffd700; color: black; font-size: 0.7rem; font-weight: 900; padding: 0.2rem 0.5rem; border-radius: 4px;">TURN</div>' : ''}
       `;
 
       // Add tooltip listeners to status icons

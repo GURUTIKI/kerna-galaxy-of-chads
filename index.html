@@ -346,28 +346,40 @@
 
       <!-- Battle Screen -->
       <div id="battle-screen" class="screen">
-        <div class="screen-header">
-          <!-- <h2 class="screen-title">Battle Arena</h2> -->
-        </div>
-
         <div class="battle-area-centered">
-          <div id="player-battle-grid" class="battle-grid"></div>
+          <!-- New Top Status Bar -->
+          <div id="battle-status-bar">
+            <div class="battle-controls-left">
+              <div id="btn-battle-settings" class="battle-icon-btn">
+                <svg class="battle-svg" viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.81,11.69,4.81,12c0,0.31,0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.5c-1.93,0-3.5-1.57-3.5-3.5 s1.57-3.5,3.5-3.5s3.5,1.57,3.5,3.5S13.93,15.5,12,15.5z" />
+                </svg>
+              </div>
+              <div id="btn-battle-auto" class="battle-icon-btn">
+                <svg class="battle-svg" viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M12,6V2.5l4.5,4.5L12,11.5V8c-3.31,0-6,2.69-6,6c0,1.01,0.25,1.97,0.7,2.8l-1.46,1.46C4.47,17.15,4,15.63,4,14 C4,9.58,7.58,6,12,6z M16.76,5.74L15.3,7.2C16.03,8.12,16.5,9.29,16.5,10.56c0,2.48-1.51,4.6-3.64,5.47l1.04,1.04 C16.51,16,18.5,13.51,18.5,10.56C18.5,8.71,17.84,7,16.76,5.74z M12,20v-3.5L7.5,12l4.5-4.5V11c3.31,0,6-2.69,6-6 c0-1.01-0.25-1.97-0.7-2.8l1.46-1.46C19.53,6.85,20,8.37,20,10C20,14.42,16.42,18,12,18z" />
+                </svg>
+              </div>
+            </div>
+            <div id="turn-meter-container"></div>
+          </div>
+
+          <!-- Battle Board (Grids) -->
+          <div class="battle-board">
+            <!-- Enemy Team at top -->
+            <div id="enemy-battle-grid" class="battle-grid"></div>
+
+            <!-- Player Team at bottom -->
+            <div id="player-battle-grid" class="battle-grid"></div>
+          </div>
+
+          <!-- Ability Panel -->
+          <div class="battle-bottom-container">
+            <div id="ability-panel" class="ability-panel"></div>
+          </div>
         </div>
-
-        <!-- VS Divider (Optional visual) -->
-        <div class="board-divider">VS</div>
-
-        <!-- Enemy Team -->
-        <div class="board-team enemy-team-board">
-          <div id="enemy-battle-grid" class="battle-grid"></div>
-        </div>
-
-      </div>
-
-      <!-- Bottom Container for Moves -->
-      <div class="battle-bottom-container">
-        <!-- Ability Selection Panel -->
-        <div id="ability-panel" class="ability-panel" style="display: none;"></div>
       </div>
 
 
