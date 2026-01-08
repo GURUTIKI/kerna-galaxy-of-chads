@@ -797,6 +797,7 @@ export class Game {
     this.combatSystem = new CombatSystem(yourTeam, opponentTeam, allCharacterIds, xpMultiplier, false, undefined, undefined, undefined);
     this.combatSystem.setBattleSpeed(2); // Standard is 2x now
     this.updateBattleUI();
+    this.displayBattleIn3D();
 
     // START THE FIRST TURN
     setTimeout(() => {
@@ -942,8 +943,6 @@ export class Game {
     if (!this.combatSystem) return;
     this.sceneManager.clearAllCharacters();
 
-    // 3D Model rendering disabled per user request to remove floating objects
-    /*
     const state = this.combatSystem.getState();
     // Position player team
     state.playerTeam.characters.forEach((char, index) => {
@@ -951,14 +950,13 @@ export class Game {
       const xPos = (index - (state.playerTeam.characters.length - 1) / 2) * 2;
       this.sceneManager.createCharacterModel(char, new THREE.Vector3(xPos, 0, zPos));
     });
-  
+
     // Position enemy team
     state.enemyTeam.characters.forEach((char, index) => {
       const zPos = -2; // Enemy row
       const xPos = (index - (state.enemyTeam.characters.length - 1) / 2) * 2;
       this.sceneManager.createCharacterModel(char, new THREE.Vector3(xPos, 0, zPos));
     });
-    */
   }
 
   private startAutoBattle(): void {
@@ -1009,14 +1007,13 @@ export class Game {
       return; // Battle over
     }
 
-    // Try to execute. If it returns false, it means it's waiting for player input.
-    // isAuto=false for normal manual flow
-    const turnComplete = this.combatSystem.executeTurn(false);
+    const turnComplete = this.combatSystem.executeTurn(this.autoBattleActive);
 
     if (turnComplete) {
       this.updateBattleUI();
       // If turn completed (e.g. skip turn, or AI turn), automatically trigger next
-      setTimeout(() => this.executeNextTurn(), 1000); // Delay for visual pacing
+      const delay = 1000 / this.combatSystem.getBattleSpeed();
+      setTimeout(() => this.executeNextTurn(), delay);
     } else {
       // Waiting for player. Update UI to show skills.
       this.updateBattleUI();
@@ -1095,7 +1092,7 @@ export class Game {
       */
 
       // Sync 3D model state
-      this.sceneManager.setCharacterState(character.id, isDead);
+      this.sceneManager.setCharacterState(uniqueId, isDead);
 
       tile.innerHTML = `
         <div class="battle-tile-info">
@@ -2287,5 +2284,5 @@ export class Game {
 
 // Initialize the game when page loads
 window.addEventListener('DOMContentLoaded', () => {
-  new Game();
+  (window as any).game = new Game();
 });

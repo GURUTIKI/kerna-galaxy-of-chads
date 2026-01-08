@@ -8,18 +8,18 @@
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  align-items: stretch;
-  /* Match height */
+  align-items: center;
   gap: 1.5rem;
   width: auto;
   justify-content: center;
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
+  z-index: 1000;
+  pointer-events: none;
 }
 
-.ability-panel,
-#ability-panel {
+.ability-panel {
   display: flex !important;
   gap: 15px !important;
   justify-content: center !important;
@@ -29,6 +29,7 @@
   box-shadow: none !important;
   padding: 0 !important;
   margin: 0 !important;
+  pointer-events: auto;
 }
 
 .ability-btn {
@@ -36,6 +37,7 @@
   height: 40px !important;
   flex: 0 0 40px !important;
   background: #e91e63 !important;
+  /* Kerna Pink */
   border: none !important;
   border-radius: 8px !important;
   color: #fff !important;
@@ -47,6 +49,8 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
   cursor: pointer !important;
   padding: 0 !important;
+  margin: 0 !important;
+  position: relative !important;
 }
 
 
@@ -2849,72 +2853,9 @@ body {
     /* User wants minimal text */
   }
 
-  /* Ability Panel */
-  .battle-bottom-container {
-    height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-bottom: 20px;
-    z-index: 500;
-    /* Increased to ensure visibility */
-    position: relative;
-    width: 100%;
-    background: transparent;
-    /* Ensure no black box */
-    border: none;
-    /* Ensure no blue border */
-    box-shadow: none;
-    pointer-events: none;
-    /* Let clicks pass through to tiles behind if any */
-  }
+  /* Removed redundant battle-bottom-container definition override */
 
-  .ability-panel {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    width: 100%;
-    pointer-events: auto;
-    /* Re-enable for buttons themselves */
-  }
-
-  .ability-btn {
-    width: 40px !important;
-    height: 40px !important;
-    flex: 0 0 40px !important;
-    /* Force fixed size */
-    background: #e91e63;
-    /* Pink */
-    border: none;
-    border-radius: 8px;
-    color: #fff;
-    font-weight: 800;
-    font-size: 0.8rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-    cursor: pointer;
-    padding: 0;
-    /* Remove padding that could cause width increase */
-  }
-
-  .ability-btn.selected {
-    border-color: #ffd700;
-    box-shadow: 0 0 15px #ffd700;
-    transform: scale(1.1);
-  }
-
-  .ability-btn.on-cooldown {
-    background: #444;
-    border-color: #666;
-    opacity: 0.7;
-  }
-
-  .ability-name {
-    display: block;
-    /* We'll set this to B, S1, S2 in JS */
-  }
+  /* Removed redundant ability-panel and ability-btn definition overrides to use top-level ones */
 
   /* Results Screen */
   .results-container {

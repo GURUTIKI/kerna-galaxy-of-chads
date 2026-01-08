@@ -8,6 +8,7 @@
  */
 
 import * as THREE from 'three';
+import { ModelFactory } from './ModelFactory';
 import type { Character } from '../types/Character';
 
 export class SceneManager {
@@ -68,8 +69,20 @@ export class SceneManager {
     /**
      * Create a 3D model for a character
      */
-    public createCharacterModel(_character: Character, _position: THREE.Vector3): void {
-        // Character models disabled for Alpha Build 2.1 (PVP Visual Effects focus)
+    public async createCharacterModel(character: Character, position: THREE.Vector3): Promise<void> {
+        try {
+            const model = await ModelFactory.createModel(
+                character.visual.color,
+                character.visual.modelType,
+                character.visual.modelPath
+            );
+
+            model.position.copy(position);
+            this.scene.add(model);
+            this.characterModels.set(character.instanceId || character.id, model);
+        } catch (error) {
+            console.error(`Failed to create character model for ${character.name}:`, error);
+        }
     }
 
     /**

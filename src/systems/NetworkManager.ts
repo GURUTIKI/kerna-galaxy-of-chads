@@ -32,7 +32,7 @@ export class NetworkManager {
         // Assuming server is on same host or proxied, but per file structure server is on 3001
         // Vite proxy usually handles /socket.io, but if not we might need explicit URL http://localhost:3001
         this.socket = io(API_URL, {
-            transports: ['websocket'],
+            transports: ['polling', 'websocket'], // Allow polling as fallback
             autoConnect: true
         });
 
