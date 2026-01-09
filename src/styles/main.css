@@ -2574,7 +2574,13 @@ body {
     background: transparent;
     z-index: 1001;
     z-index: 1001;
+    z-index: 1001;
     text-align: center !important;
+    transform: none !important;
+    /* CRITICAL FIX: Reset transform to prevent shifting */
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
   }
 
   /* Force ability panel inner centering */
