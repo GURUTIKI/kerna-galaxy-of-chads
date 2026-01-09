@@ -2520,11 +2520,26 @@ body {
     flex-direction: column;
   }
 
-  /* Lift ability panel higher on mobile to avoid browser nav bars */
+  /* Battle Board - "Black Box" */
+  .battle-board {
+    background: rgba(0, 0, 0, 0.1);
+    /* 10% opacity black box */
+    border-radius: 20px;
+    margin-bottom: 150px !important;
+    /* Create 150px gap at bottom */
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  /* Lift ability panel into the empty space */
   .battle-bottom-container {
-    bottom: calc(80px + env(safe-area-inset-bottom)) !important;
-    width: 95%;
-    gap: 0.5rem;
+    bottom: 0 !important;
+    height: 150px;
+    width: 100%;
+    align-items: center;
+    padding-bottom: env(safe-area-inset-bottom);
+    background: transparent;
+    z-index: 1001;
   }
 
   /* Removed orphaned properties caused by previous edit */
