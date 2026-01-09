@@ -672,14 +672,13 @@ export class CombatSystem {
         });
 
         // Loot Roll (25% drop rate on win)
-        if (isPlayerWinner && this.availableLootIds.length > 0) {
-            if (Math.random() < 0.25) {
-                const randomId = this.availableLootIds[Math.floor(Math.random() * this.availableLootIds.length)];
-                this.state.loot = { characterId: randomId };
-                this.addToLog(`🎁 You found a Sleeping Bag for ${randomId}!`);
-            }
+        if (Math.random() < 0.5) {
+            const randomId = this.availableLootIds[Math.floor(Math.random() * this.availableLootIds.length)];
+            this.state.loot = { characterId: randomId };
+            this.addToLog(`🎁 You found a Sleeping Bag for ${randomId}!`);
         }
     }
+
 
     /**
      * Add a message to the battle log

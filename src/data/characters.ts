@@ -394,6 +394,25 @@ export const ALL_CHARACTERS: Character[] = [
             modelPath: '/Assets/nexus_armor.glb'
         },
         isOwned: false
+    }),
+    createCharacter({
+        id: 'char_phil',
+        name: 'Fresh Farmer Phil',
+        description: 'Honest worker.',
+        abilities: getAbilitiesForCharacter('char_phil'),
+        stats: {
+            maxHealth: 55,
+            attack: 14,
+            defense: 8,
+            speed: 10,
+            healthSteal: 0,
+            evasion: 5,
+            accuracy: 95,
+            critChance: 10,
+            critDamage: 50
+        },
+        visual: { color: '#daa520', modelType: 'cylinder' },
+        isOwned: false
     })
 ];
 

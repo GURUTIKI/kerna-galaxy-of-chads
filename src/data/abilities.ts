@@ -639,6 +639,37 @@ export const NEXUS_ABILITIES: Ability[] = [
     }
 ];
 
+// ===== FRESH FARMER PHIL =====
+export const PHIL_ABILITIES: Ability[] = [
+    {
+        id: 'phil_basic',
+        name: 'Pitchfork Poke',
+        description: 'A sturdy poke with a trusty tool.',
+        type: 'basic',
+        cooldown: 0,
+        target: 'single_enemy',
+        effects: [{ type: 'damage' }]
+    },
+    {
+        id: 'phil_special1',
+        name: 'Crop Rotation',
+        description: 'Grants Regen to all allies. A healthy harvest keeps everyone going.',
+        type: 'special',
+        cooldown: 2,
+        target: 'all_allies',
+        effects: [{ type: 'apply_status', statusType: 'regen', duration: 4, value: 15 }]
+    },
+    {
+        id: 'phil_special2',
+        name: 'Tractor Run',
+        description: 'Applies Stun to an enemy. Nothing stops the tractor!',
+        type: 'special',
+        cooldown: 5,
+        target: 'single_enemy',
+        effects: [{ type: 'apply_status', statusType: 'stun', duration: 2 }]
+    }
+];
+
 // Ability lookup by character ID
 export function getAbilitiesForCharacter(characterId: string): Ability[] {
     const abilityMap: Record<string, Ability[]> = {
@@ -661,7 +692,8 @@ export function getAbilitiesForCharacter(characterId: string): Ability[] {
         'char_elk': ELK_ABILITIES,
         'char_zez': ZEZ_ABILITIES,
         'char_daf': DAFRAN_ABILITIES,
-        'char_nexus': NEXUS_ABILITIES
+        'char_nexus': NEXUS_ABILITIES,
+        'char_phil': PHIL_ABILITIES
     };
 
     return abilityMap[characterId] || [];
