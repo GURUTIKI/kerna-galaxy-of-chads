@@ -176,7 +176,7 @@ export class Game {
       this.showInbox();
     });
     this.bindButton('btn-close-inbox', () => {
-      document.getElementById('inbox-modal')?.classList.remove('active');
+      this.closeInbox();
     });
 
     // Friends
@@ -327,18 +327,7 @@ export class Game {
     });
 
     this.bindButton('btn-burger-account', () => {
-      document.getElementById('account-modal')?.classList.add('active'); // Account modal logic from HTML onclick? 
-      // Wait, where is account modal logic? It wasn't in setupEventListeners in the snippet I saw.
-      // Let's check if btn-account has a listener.
-    });
-
-    document.getElementById('btn-account')?.addEventListener('click', () => {
-      document.getElementById('account-modal')?.classList.add('active');
-    });
-
-    // Bind burger account to same
-    this.bindButton('btn-burger-account', () => {
-      document.getElementById('account-modal')?.classList.add('active');
+      this.openAccountModal();
     });
 
     this.bindButton('btn-burger-inbox', () => {
@@ -1733,7 +1722,7 @@ export class Game {
       this.openAccountModal();
     });
 
-    closeAccountBtn?.addEventListener('click', () => {
+    this.bindButton('btn-close-account', () => {
       accountModal?.classList.remove('active');
     });
 
@@ -1764,6 +1753,18 @@ export class Game {
         accountModal.classList.remove('active');
       }
     });
+
+    // Also for Inbox
+    const inboxModal = document.getElementById('inbox-modal');
+    inboxModal?.addEventListener('click', (e) => {
+      if (e.target === inboxModal) {
+        this.closeInbox();
+      }
+    });
+
+    // Ensure they have cursor: pointer for iOS click detection
+    if (accountModal) accountModal.style.cursor = 'pointer';
+    if (inboxModal) inboxModal.style.cursor = 'pointer';
   }
 
   private openAccountModal(): void {
@@ -1903,7 +1904,9 @@ export class Game {
     });
 
     this.networkManager.on('inbox_update', (data: any) => {
-      this.renderInbox(data.friendRequests || []);
+      const requests = data.friendRequests || [];
+      this.renderInbox(requests);
+      this.updateInboxBadge(requests.length > 0);
     });
 
     this.networkManager.on('challenge_received', (data: any) => {
@@ -2045,14 +2048,28 @@ export class Game {
   }
 
   private updateInboxBadge(show: boolean): void {
-    const badge = document.getElementById('inbox-badge')!;
-    badge.style.display = show ? 'flex' : 'none';
-    if (show) badge.textContent = '!';
+    const ids = ['inbox-badge', 'burger-inbox-badge'];
+    ids.forEach(id => {
+      const badge = document.getElementById(id);
+      if (badge) {
+        badge.style.display = show ? 'flex' : 'none';
+        if (show) badge.textContent = '!';
+      }
+    });
   }
 
   private showInbox(): void {
-    document.getElementById('inbox-modal')?.classList.add('active');
-    this.networkManager.getInbox();
+    const modal = document.getElementById('inbox-modal');
+    if (modal?.classList.contains('active')) {
+      this.closeInbox();
+    } else {
+      modal?.classList.add('active');
+      this.networkManager.getInbox();
+    }
+  }
+
+  private closeInbox(): void {
+    document.getElementById('inbox-modal')?.classList.remove('active');
   }
 
   private renderInbox(requests: any[]): void {
