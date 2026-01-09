@@ -2505,8 +2505,12 @@ body {
     padding: 0.5rem;
     /* Tighter padding */
     height: 100vh;
+    /* Tighter padding */
+    height: 100vh;
     overflow: hidden;
     /* Prevent body scroll */
+    overflow-y: auto;
+    /* Allow vertical scroll if needed (e.g. login) */
     display: none;
     /* Changed from flex to allow hiding */
     flex-direction: column;
@@ -2532,246 +2536,480 @@ body {
   /* 2. Top Status Bar: float above content */
   #battle-status-bar {
     position: absolute !important;
-    top: 0;
-    left: 0;
-    width: 100%;
-    margin-bottom: 0 !important;
-    flex: 0 0 auto;
-    padding: 0 10px;
+
+    #battle-status-bar {
+      position: absolute !important;
+      top: 40px !important;
+      /* Avoid notch */
+      left: 0;
+      width: 100%;
+      margin-bottom: 0 !important;
+      flex: 0 0 auto;
+      padding: 0 10px;
+    }
+
+    /* 3. Battle Board: Dynamic height, fitting content */
+    /* 3. Battle Board: Dynamic height, fitting content */
+    .battle-board {
+      display: flex !important;
+      flex-direction: column !important;
+      /* Stack grids vertically */
+      flex: 0 1 auto !important;
+      /* Allow shrinking, don't force grow */
+      height: auto !important;
+      min-height: 100px;
+      /* Reduced min-height for tighter fit */
+      margin-bottom: 25px !important;
+      /* 25px Gap between box and buttons */
+      background: rgba(0, 0, 0, 0.1);
+      /* 10% opacity black box */
+      border-radius: 20px;
+      padding: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* 4. Ability Buttons: Part of the flow */
+    .battle-bottom-container {
+      display: flex !important;
+      /* Force flex to enable centering */
+      position: static !important;
+      height: auto !important;
+      width: 100%;
+      margin-top: 0 !important;
+      justify-content: center !important;
+      /* Center horizontal */
+      align-items: center !important;
+      background: transparent;
+      z-index: 1001;
+      z-index: 1001;
+      z-index: 1001;
+      text-align: center !important;
+      transform: none !important;
+      /* CRITICAL FIX: Reset transform to prevent shifting */
+      left: auto !important;
+      right: auto !important;
+      bottom: auto !important;
+    }
+
+    /* Force ability panel inner centering */
+    .ability-panel {
+      justify-content: center !important;
+      width: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    /* Continued mobile overrides */
+
+    /* --- HUD --- */
+    #hud-container {
+      top: auto;
+      bottom: 65px;
+      /* Elevated for maximum clearance */
+      right: 50%;
+      transform: translateX(50%);
+      flex-direction: row;
+      gap: 1rem;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      width: auto;
+      max-width: 90%;
+      box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+    }
+
+    .btn-icon-circular {
+      width: 35px;
+      height: 35px;
+    }
+
+    .hud-svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* --- MAIN MENU (Galaxy Map) --- */
+    .menu-buttons {
+      flex-direction: column;
+      gap: 0;
+      padding-top: 50px;
+      /* Clear of top notch */
+      padding-bottom: 110px;
+      /* Clear of HUD */
+      height: 100%;
+      /* Fill screen */
+      justify-content: space-evenly;
+      width: 95%;
+      z-index: 40;
+    }
+
+    .mode-button {
+      transform: none;
+      width: 125px;
+      height: 125px;
+      flex: none;
+      margin: 0 auto;
+      padding: 0;
+      gap: 2px;
+      /* Snug label to planet */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      pointer-events: auto;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .mode-button.pvp-premium {
+      width: 145px;
+      /* ~15% bigger than 125px */
+      height: 145px;
+    }
+
+    .mode-label {
+      font-size: 0.65rem;
+      margin-top: 0;
+      font-weight: 800;
+      letter-spacing: 0.05rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+      text-align: center;
+      line-height: 1;
+    }
+
+    .mode-icon {
+      height: 80%;
+      /* Leave room for label */
+      width: auto;
+      max-width: 100%;
+      object-fit: contain;
+    }
+
+    /* --- FRIENDS & PVP (Request 4 & 5: Stack & Scroll) --- */
+    .friends-container,
+    .pvp-layout {
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 100px);
+      /* Full height minus header */
+      overflow-y: auto;
+      /* Enable scrolling */
+      padding-bottom: 120px;
+      /* Clear HUD */
+      gap: 1rem;
+      width: 100%;
+    }
+
+    .friends-search-box,
+    .friends-list-box,
+    .pvp-actions,
+    .leaderboard-panel {
+      flex: none;
+      /* Don't shrink */
+      width: 100%;
+      margin-bottom: 0;
+    }
+
+    /* --- TRAINING / CHARACTER SELECTION (Request 2 & 3) --- */
+    .selection-area {
+      flex-direction: column;
+      gap: 1rem;
+      overflow-y: auto;
+      /* Request 2: Enable scrolling */
+      flex: 1;
+      padding-bottom: 20px;
+    }
+
+    #btn-start-battle {
+      margin-bottom: 100px;
+      /* Sit above menu bar */
+      flex: none;
+      z-index: 10;
+    }
+
+    .difficulty-controls {
+      display: flex;
+      gap: 0.2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      flex: none;
+    }
+
+    .difficulty-controls .btn {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.8rem;
+    }
+
+    /* --- CHARACTER GRIDS --- */
+    .character-grid {
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      /* 3 columns */
+      gap: 0.5rem;
+      padding: 0.5rem;
+    }
+
+    .character-card {
+      padding: 0.4rem;
+      min-height: 90px;
+    }
+
+    /* --- MOBILE BATTLE OVERHAUL (v6) --- */
+    #battle-screen {
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .battle-area-centered {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 10px;
+      padding-top: 50px;
+      /* Adjusted from 100px */
+      box-sizing: border-box;
+    }
+
+    /* Top Status Bar */
+    #battle-status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      height: 60px;
+      z-index: 200;
+    }
+
+    .battle-controls-left {
+      display: flex;
+      gap: 8px;
+    }
+
+    .battle-icon-btn {
+      width: 45px;
+      height: 45px;
+      background: #000;
+      border: 1px solid #333;
+      border-radius: 8px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .battle-icon-btn.active {
+      border-color: #ffd700;
+      color: #ffd700;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+    }
+
+    .battle-svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    /* Turn Meter */
+    #turn-meter-container {
+      display: flex;
+      gap: 6px;
+      padding: 5px;
+    }
+
+    .turn-slot {
+      width: 40px;
+      height: 40px;
+      background: #e91e63;
+      /* Pink */
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.8rem;
+      color: white;
+      box-sizing: border-box;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    .turn-slot.ally {
+      background: #2196f3;
+      /* Blue */
+      border: none;
+    }
+
+    .turn-slot.enemy {
+      background: #f44336;
+      /* Red */
+      border: none;
+    }
+
+    /* Grids & Hexagonal Layout */
+    .battle-board {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 15px;
+      padding: 0;
+      margin: 0;
+    }
+
+    .battle-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-content: center;
+      width: 100%;
+      gap: 12px;
+      padding: 10px 0;
+    }
+
+    /* 3+2 formation logic */
+    .battle-tile {
+      width: 90px;
+      height: 90px;
+      flex: 0 0 90px;
+      /* Force fixed size to maintain grid */
+      background: rgba(0, 0, 0, 0.6);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-sizing: border-box;
+      position: relative;
+    }
+
+    .player-tile {
+      border-color: rgba(33, 150, 243, 0.4);
+      /* Blue tint */
+    }
+
+    .enemy-tile {
+      border-color: rgba(244, 67, 54, 0.4);
+      /* Red tint */
+    }
+
+    .battle-tile.targetable {
+      border-color: #ffd700;
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+    }
+
+    .battle-tile.active {
+      border-color: #00e5ff;
+      background: rgba(0, 229, 255, 0.1);
+    }
+
+    .battle-tile-avatar {
+      font-size: 1.4rem;
+      margin-bottom: 2px;
+    }
+
+    .battle-tile-name {
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-align: center;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin-bottom: 4px;
+    }
+
+    .battle-tile-hp-bar {
+      width: 100%;
+      height: 6px;
+      background: #333;
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: auto;
+    }
+
+    .battle-tile-hp-fill {
+      height: 100%;
+      background: #00ff88;
+      transition: width 0.3s ease;
+    }
+
+    .battle-tile-hp-text {
+      display: none;
+      /* User wants minimal text */
+    }
+
+    /* Removed redundant battle-bottom-container definition override */
+
+    /* Removed redundant ability-panel and ability-btn definition overrides to use top-level ones */
+
+    /* Results Screen */
+    .results-container {
+      max-height: 80vh;
+      padding: 20px;
+    }
+
+    /* Settings Modal */
+    #battle-settings-modal .modal-content {
+      background: rgba(0, 0, 0, 0.9);
+      border: 1px solid #444;
+    }
   }
 
-  /* 3. Battle Board: Dynamic height, fitting content */
-  /* 3. Battle Board: Dynamic height, fitting content */
-  .battle-board {
-    display: flex !important;
-    flex-direction: column !important;
-    /* Stack grids vertically */
-    flex: 0 1 auto !important;
-    /* Allow shrinking, don't force grow */
-    height: auto !important;
-    min-height: 100px;
-    /* Reduced min-height for tighter fit */
-    margin-bottom: 25px !important;
-    /* 25px Gap between box and buttons */
-    background: rgba(0, 0, 0, 0.1);
-    /* 10% opacity black box */
-    border-radius: 20px;
-    padding: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-  }
-
-  /* 4. Ability Buttons: Part of the flow */
-  .battle-bottom-container {
-    display: flex !important;
-    /* Force flex to enable centering */
-    position: static !important;
-    height: auto !important;
-    width: 100%;
-    margin-top: 0 !important;
-    justify-content: center !important;
-    /* Center horizontal */
-    align-items: center !important;
-    background: transparent;
-    z-index: 1001;
-    z-index: 1001;
-    z-index: 1001;
-    text-align: center !important;
-    transform: none !important;
-    /* CRITICAL FIX: Reset transform to prevent shifting */
-    left: auto !important;
-    right: auto !important;
-    bottom: auto !important;
-  }
-
-  /* Force ability panel inner centering */
-  .ability-panel {
-    justify-content: center !important;
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  /* Continued mobile overrides */
-
-  /* --- HUD --- */
-  #hud-container {
-    top: auto;
-    bottom: 65px;
-    /* Elevated for maximum clearance */
-    right: 50%;
-    transform: translateX(50%);
-    flex-direction: row;
+  /* --- STAT ALLOCATION --- */
+  .stats-area {
+    display: flex;
+    flex-direction: column;
     gap: 1rem;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    backdrop-filter: blur(10px);
-    width: auto;
-    max-width: 90%;
-    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-  }
-
-  .btn-icon-circular {
-    width: 35px;
-    height: 35px;
-  }
-
-  .hud-svg {
-    width: 18px;
-    height: 18px;
-  }
-
-  /* --- MAIN MENU (Galaxy Map) --- */
-  .menu-buttons {
-    flex-direction: column;
-    gap: 0;
-    padding-top: 50px;
-    /* Clear of top notch */
-    padding-bottom: 110px;
-    /* Clear of HUD */
-    height: 100%;
-    /* Fill screen */
-    justify-content: space-evenly;
-    width: 95%;
-    z-index: 40;
-  }
-
-  .mode-button {
-    transform: none;
-    width: 125px;
-    height: 125px;
-    flex: none;
-    margin: 0 auto;
-    padding: 0;
-    gap: 2px;
-    /* Snug label to planet */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 50;
-    pointer-events: auto;
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  .mode-button.pvp-premium {
-    width: 145px;
-    /* ~15% bigger than 125px */
-    height: 145px;
-  }
-
-  .mode-label {
-    font-size: 0.65rem;
-    margin-top: 0;
-    font-weight: 800;
-    letter-spacing: 0.05rem;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
-    text-align: center;
-    line-height: 1;
-  }
-
-  .mode-icon {
-    height: 80%;
-    /* Leave room for label */
-    width: auto;
-    max-width: 100%;
-    object-fit: contain;
-  }
-
-  /* --- FRIENDS & PVP (Request 4 & 5: Stack & Scroll) --- */
-  .friends-container,
-  .pvp-layout {
-    display: flex;
-    flex-direction: column;
-    height: calc(100vh - 100px);
-    /* Full height minus header */
     overflow-y: auto;
-    /* Enable scrolling */
-    padding-bottom: 120px;
-    /* Clear HUD */
-    gap: 1rem;
-    width: 100%;
+    height: calc(100vh - 150px);
+    padding-bottom: 100px;
   }
 
-  .friends-search-box,
-  .friends-list-box,
-  .pvp-actions,
-  .leaderboard-panel {
-    flex: none;
-    /* Don't shrink */
+  .character-selector {
     width: 100%;
     margin-bottom: 0;
   }
 
-  /* --- TRAINING / CHARACTER SELECTION (Request 2 & 3) --- */
-  .selection-area {
-    flex-direction: column;
-    gap: 1rem;
-    overflow-y: auto;
-    /* Request 2: Enable scrolling */
-    flex: 1;
-    padding-bottom: 20px;
+  .stat-allocation-panel {
+    width: 100%;
+    margin-top: 0;
   }
 
-  #btn-start-battle {
-    margin-bottom: 100px;
-    /* Sit above menu bar */
-    flex: none;
-    z-index: 10;
+  /* --- MODALS --- */
+  .modal-content {
+    width: 95%;
+    padding: 1rem;
   }
 
-  .difficulty-controls {
-    display: flex;
-    gap: 0.2rem;
-    justify-content: center;
-    flex-wrap: wrap;
-    flex: none;
+  .btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
   }
 
-  .difficulty-controls .btn {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.8rem;
+  .btn-large {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    margin-top: 1rem;
   }
 
-  /* --- CHARACTER GRIDS --- */
-  .character-grid {
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    /* 3 columns */
-    gap: 0.5rem;
-    padding: 0.5rem;
-  }
+  /* =========================================
+   DESKTOP BATTLE UI
+   ========================================= */
 
-  .character-card {
-    padding: 0.4rem;
-    min-height: 90px;
-  }
-
-  /* --- MOBILE BATTLE OVERHAUL (v6) --- */
-  #battle-screen {
-    padding: 0;
-    overflow: hidden;
-  }
-
-  .battle-area-centered {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 10px;
-    padding-top: 50px;
-    /* Adjusted from 100px */
-    box-sizing: border-box;
-  }
-
-  /* Top Status Bar */
+  /* Battle Status Bar - visible on all screen sizes */
   #battle-status-bar {
-    display: flex;
+    display: flex !important;
     justify-content: space-between;
     align-items: center;
     width: 100%;
     height: 60px;
     z-index: 200;
+    padding: 0 1rem;
   }
 
   .battle-controls-left {
@@ -2791,6 +3029,12 @@ body {
     justify-content: center;
     cursor: pointer;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    transition: all 0.2s ease;
+  }
+
+  .battle-icon-btn:hover {
+    background: #222;
+    transform: translateY(-2px);
   }
 
   .battle-icon-btn.active {
@@ -2804,7 +3048,7 @@ body {
     height: 24px;
   }
 
-  /* Turn Meter */
+  /* Turn Meter Container */
   #turn-meter-container {
     display: flex;
     gap: 6px;
@@ -2815,7 +3059,6 @@ body {
     width: 40px;
     height: 40px;
     background: #e91e63;
-    /* Pink */
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -2825,272 +3068,37 @@ body {
     color: white;
     box-sizing: border-box;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    transition: all 0.2s ease;
   }
 
   .turn-slot.ally {
     background: #2196f3;
-    /* Blue */
     border: none;
   }
 
   .turn-slot.enemy {
     background: #f44336;
-    /* Red */
     border: none;
   }
 
-  /* Grids & Hexagonal Layout */
-  .battle-board {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 15px;
-    padding: 0;
-    margin: 0;
-  }
-
-  .battle-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-content: center;
-    width: 100%;
-    gap: 12px;
-    padding: 10px 0;
-  }
-
-  /* 3+2 formation logic */
-  .battle-tile {
-    width: 90px;
-    height: 90px;
-    flex: 0 0 90px;
-    /* Force fixed size to maintain grid */
-    background: rgba(0, 0, 0, 0.6);
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    border-radius: 12px;
-    padding: 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-sizing: border-box;
-    position: relative;
-  }
-
-  .player-tile {
-    border-color: rgba(33, 150, 243, 0.4);
-    /* Blue tint */
-  }
-
-  .enemy-tile {
-    border-color: rgba(244, 67, 54, 0.4);
-    /* Red tint */
-  }
-
-  .battle-tile.targetable {
-    border-color: #ffd700;
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
-  }
-
-  .battle-tile.active {
-    border-color: #00e5ff;
-    background: rgba(0, 229, 255, 0.1);
-  }
-
-  .battle-tile-avatar {
-    font-size: 1.4rem;
-    margin-bottom: 2px;
-  }
-
-  .battle-tile-name {
-    font-size: 0.6rem;
-    font-weight: 700;
-    text-align: center;
-    width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    margin-bottom: 4px;
-  }
-
+  /* Battle Tile Health Bars - Desktop */
   .battle-tile-hp-bar {
-    width: 100%;
-    height: 6px;
-    background: #333;
-    border-radius: 3px;
-    overflow: hidden;
-    margin-top: auto;
+    width: 100% !important;
+    height: 8px !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+    border-radius: 4px !important;
+    overflow: hidden !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    margin-top: 4px !important;
   }
 
   .battle-tile-hp-fill {
-    height: 100%;
-    background: #00ff88;
-    transition: width 0.3s ease;
+    height: 100% !important;
+    background: linear-gradient(90deg, #4caf50, #8bc34a) !important;
+    transition: width 0.3s ease !important;
+    border-radius: 3px !important;
   }
 
-  .battle-tile-hp-text {
-    display: none;
-    /* User wants minimal text */
+  .battle-tile-hp-fill.critical {
+    background: linear-gradient(90deg, #f44336, #ff5722) !important;
   }
-
-  /* Removed redundant battle-bottom-container definition override */
-
-  /* Removed redundant ability-panel and ability-btn definition overrides to use top-level ones */
-
-  /* Results Screen */
-  .results-container {
-    max-height: 80vh;
-    padding: 20px;
-  }
-
-  /* Settings Modal */
-  #battle-settings-modal .modal-content {
-    background: rgba(0, 0, 0, 0.9);
-    border: 1px solid #444;
-  }
-}
-
-/* --- STAT ALLOCATION --- */
-.stats-area {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  overflow-y: auto;
-  height: calc(100vh - 150px);
-  padding-bottom: 100px;
-}
-
-.character-selector {
-  width: 100%;
-  margin-bottom: 0;
-}
-
-.stat-allocation-panel {
-  width: 100%;
-  margin-top: 0;
-}
-
-/* --- MODALS --- */
-.modal-content {
-  width: 95%;
-  padding: 1rem;
-}
-
-.btn {
-  padding: 0.6rem 1.2rem;
-  font-size: 0.9rem;
-}
-
-.btn-large {
-  padding: 0.8rem 1.5rem;
-  font-size: 1rem;
-  margin-top: 1rem;
-}
-
-/* =========================================
-   DESKTOP BATTLE UI
-   ========================================= */
-
-/* Battle Status Bar - visible on all screen sizes */
-#battle-status-bar {
-  display: flex !important;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  height: 60px;
-  z-index: 200;
-  padding: 0 1rem;
-}
-
-.battle-controls-left {
-  display: flex;
-  gap: 8px;
-}
-
-.battle-icon-btn {
-  width: 45px;
-  height: 45px;
-  background: #000;
-  border: 1px solid #333;
-  border-radius: 8px;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-  transition: all 0.2s ease;
-}
-
-.battle-icon-btn:hover {
-  background: #222;
-  transform: translateY(-2px);
-}
-
-.battle-icon-btn.active {
-  border-color: #ffd700;
-  color: #ffd700;
-  box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
-}
-
-.battle-svg {
-  width: 24px;
-  height: 24px;
-}
-
-/* Turn Meter Container */
-#turn-meter-container {
-  display: flex;
-  gap: 6px;
-  padding: 5px;
-}
-
-.turn-slot {
-  width: 40px;
-  height: 40px;
-  background: #e91e63;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  font-size: 0.8rem;
-  color: white;
-  box-sizing: border-box;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-  transition: all 0.2s ease;
-}
-
-.turn-slot.ally {
-  background: #2196f3;
-  border: none;
-}
-
-.turn-slot.enemy {
-  background: #f44336;
-  border: none;
-}
-
-/* Battle Tile Health Bars - Desktop */
-.battle-tile-hp-bar {
-  width: 100% !important;
-  height: 8px !important;
-  background: rgba(0, 0, 0, 0.5) !important;
-  border-radius: 4px !important;
-  overflow: hidden !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  margin-top: 4px !important;
-}
-
-.battle-tile-hp-fill {
-  height: 100% !important;
-  background: linear-gradient(90deg, #4caf50, #8bc34a) !important;
-  transition: width 0.3s ease !important;
-  border-radius: 3px !important;
-}
-
-.battle-tile-hp-fill.critical {
-  background: linear-gradient(90deg, #f44336, #ff5722) !important;
-}
