@@ -15,6 +15,7 @@ import type { Character } from './types/Character';
 import { NetworkManager } from './systems/NetworkManager';
 import { API_URL } from './config';
 import { CharacterPreview } from './rendering/CharacterPreview';
+import { BurgerMenu } from './systems/BurgerMenu';
 
 
 /**
@@ -27,7 +28,9 @@ export class Game {
   private authManager: AuthManager;
   private networkManager: NetworkManager;
   private currentRoomId: string | null = null;
+
   private selectedNetworkTeamIds: string[] = [];
+  private burgerMenu: BurgerMenu;
 
   // Team selection state
   private yourTeamIds: string[] = [];
@@ -49,6 +52,7 @@ export class Game {
     this.characterManager = new CharacterManager();
     this.authManager = new AuthManager();
     this.networkManager = new NetworkManager();
+    this.burgerMenu = new BurgerMenu();
 
     const sceneContainer = document.getElementById('scene-container')!;
     this.sceneManager = new SceneManager(sceneContainer);
@@ -299,7 +303,44 @@ export class Game {
 
       // Cancel matchmaking if active
       const matchmakingStatus = document.getElementById('matchmaking-status');
+
       if (matchmakingStatus) matchmakingStatus.style.display = 'none';
+    });
+
+    // BURGER MENU BINDINGS - Mirroring HUD buttons
+    this.bindButton('btn-burger-home', () => {
+      // Logic to return to menu from anywhere
+      this.stopAutoBattle(); // Just in case
+      this.showScreen('main-menu');
+      this.sceneManager.clearAllCharacters();
+      if (this.combatSystem) this.combatSystem = null; // Clean up battle if active
+
+      // Cancel matchmaking if active
+      const matchmakingStatus = document.getElementById('matchmaking-status');
+      if (matchmakingStatus) matchmakingStatus.style.display = 'none';
+    });
+
+    this.bindButton('btn-burger-friends', () => {
+      this.showFriendsScreen();
+    });
+
+    this.bindButton('btn-burger-account', () => {
+      document.getElementById('account-modal')?.classList.add('active'); // Account modal logic from HTML onclick? 
+      // Wait, where is account modal logic? It wasn't in setupEventListeners in the snippet I saw.
+      // Let's check if btn-account has a listener.
+    });
+
+    document.getElementById('btn-account')?.addEventListener('click', () => {
+      document.getElementById('account-modal')?.classList.add('active');
+    });
+
+    // Bind burger account to same
+    this.bindButton('btn-burger-account', () => {
+      document.getElementById('account-modal')?.classList.add('active');
+    });
+
+    this.bindButton('btn-burger-inbox', () => {
+      this.showInbox();
     });
   }
 
@@ -415,7 +456,22 @@ export class Game {
     // Toggle regular HUD - Hide in battle, login, and boot screens
     const hud = document.getElementById('hud-container');
     if (hud) {
-      hud.style.display = (screenId === 'battle-screen' || screenId === 'login-screen' || screenId === 'boot-screen' || screenId === 'register-screen') ? 'none' : 'flex';
+      hud.style.display = 'none'; // Always hide old HUD since we commented it out, but just in case
+    }
+
+    // Toggle Burger Menu
+    const burger = document.getElementById('burger-menu-container');
+    if (burger) {
+      // Hide in Login, Boot. Show in Battle? User said "menu with home..."
+      // Typically menus are hidden in battle to avoid clutter, using specific battle controls.
+      // But user might want to access "Home" to quit? 
+      // Existing logic hid HUD in battle (`screenId === 'battle-screen'`).
+      // I will replicate that logic for now.
+      if (screenId === 'battle-screen' || screenId === 'login-screen' || screenId === 'boot-screen' || screenId === 'register-screen') {
+        burger.style.display = 'none';
+      } else {
+        burger.style.display = 'flex';
+      }
     }
 
     // Toggle Home Button

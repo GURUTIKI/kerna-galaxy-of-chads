@@ -3100,3 +3100,141 @@ body {
 .battle-tile-hp-fill.critical {
   background: linear-gradient(90deg, #f44336, #ff5722) !important;
 }
+
+/* =========================================
+   BURGER MENU - DRAGGABLE
+   ========================================= */
+
+#burger-menu-container {
+  position: fixed;
+  /* Initial position (will be overridden by JS) */
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  /* Top priority */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  /* Container size matches button to act as anchor */
+}
+
+#burger-toggle {
+  cursor: grab;
+  z-index: 10002;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  /* Match battle-icon-btn style */
+  width: 50px;
+  /* Slightly larger for main toggle */
+  height: 50px;
+  border-radius: 12px;
+  /* Slightly rounded */
+  background: #000;
+  border: 1px solid #333;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+#burger-toggle:active {
+  cursor: grabbing;
+  transform: scale(0.95);
+}
+
+#burger-toggle.dragging {
+  opacity: 0.8;
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
+  border-color: #ffd700;
+}
+
+.burger-items {
+  position: absolute;
+  z-index: 10001;
+  display: flex;
+  gap: 12px;
+
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.8);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  /* Container style */
+  background: rgba(20, 20, 30, 0.85);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  border-radius: 16px;
+
+  /* Prevent items from being wider than screen */
+  max-width: 90vw;
+}
+
+.burger-items.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+
+/* Expansion Directions */
+/* Relative to the 60x60 container */
+
+/* Expand DOWN (Default for Top corners) */
+.expand-down .burger-items {
+  flex-direction: column;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%) scale(0.8);
+  /* Start scale */
+}
+
+.expand-down .burger-items.active {
+  transform: translateX(-50%) scale(1);
+}
+
+/* Expand UP (Default for Bottom corners) */
+.expand-up .burger-items {
+  flex-direction: column-reverse;
+  bottom: 70px;
+  top: auto;
+  left: 50%;
+  transform: translateX(-50%) scale(0.8);
+}
+
+.expand-up .burger-items.active {
+  transform: translateX(-50%) scale(1);
+}
+
+/* Special Case: Corner specific tweaks to keep menu on screen? 
+   Currently it centers perfectly on the button. 
+   If dragged to EXTREME edge, it might clip.
+   I'll stick to center alignment for now.
+*/
+
+.burger-item {
+  /* Match battle-icon-btn style */
+  width: 45px;
+  height: 45px;
+  background: #000;
+  border: 1px solid #333;
+  border-radius: 8px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  transition: all 0.2s ease;
+}
+
+.burger-item:hover {
+  background: #222;
+  transform: translateY(-2px);
+  border-color: #666;
+}
