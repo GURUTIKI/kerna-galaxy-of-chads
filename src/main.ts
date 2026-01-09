@@ -847,6 +847,9 @@ export class Game {
     }
 
     container.style.display = 'flex';
+    // Force centering via JS to override any persistent CSS issues on mobile
+    container.style.justifyContent = 'center';
+    container.style.width = '100%';
     container.innerHTML = '';
 
     // Render each ability as an icon button
