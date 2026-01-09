@@ -434,7 +434,7 @@ export class Game {
     this.showScreen('pvp-arena-screen');
 
     // Fetch leaderboard
-    fetch(`${API_URL} / api / leaderboard`)
+    fetch(`${API_URL}/api/leaderboard`)
       .then(res => res.json())
       .then(data => this.renderLeaderboard(data))
       .catch(err => console.error('Failed to load leaderboard', err));
