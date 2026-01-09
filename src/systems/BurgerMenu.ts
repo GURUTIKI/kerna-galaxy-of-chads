@@ -20,7 +20,7 @@ export class BurgerMenu {
     private hasMoved: boolean = false; // To distinguish click from drag
 
     // Config
-    private readonly SNAP_THRESHOLD = 100; // Distance to edge to snap (not used if snapping to nearest corner always)
+    // Config
     private readonly MARGIN = 20;
 
     constructor() {
@@ -134,7 +134,7 @@ export class BurgerMenu {
     }
 
     private setupToggle(): void {
-        const toggleHandler = (e: Event) => {
+        const toggleHandler = () => {
             // If we dragged, don't toggle
             if (this.hasMoved) return;
 

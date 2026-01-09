@@ -30,11 +30,13 @@ export class Game {
   private currentRoomId: string | null = null;
 
   private selectedNetworkTeamIds: string[] = [];
-  private burgerMenu: BurgerMenu;
 
   // Team selection state
   private yourTeamIds: string[] = [];
   private opponentTeamIds: string[] = [];
+  // burgerMenu instantiated in constructor for side effects
+
+  // Auto-battle state
   private difficulty: 'easy' | 'normal' | 'hard' = 'normal';
 
   // Auto-battle state
@@ -52,7 +54,7 @@ export class Game {
     this.characterManager = new CharacterManager();
     this.authManager = new AuthManager();
     this.networkManager = new NetworkManager();
-    this.burgerMenu = new BurgerMenu();
+    new BurgerMenu();
 
     const sceneContainer = document.getElementById('scene-container')!;
     this.sceneManager = new SceneManager(sceneContainer);
