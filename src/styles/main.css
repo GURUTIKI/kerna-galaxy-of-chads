@@ -2573,7 +2573,16 @@ body {
     align-items: center !important;
     background: transparent;
     z-index: 1001;
+    z-index: 1001;
     text-align: center !important;
+  }
+
+  /* Force ability panel inner centering */
+  .ability-panel {
+    justify-content: center !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
   /* Continued mobile overrides */
