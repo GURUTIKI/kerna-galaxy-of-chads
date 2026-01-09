@@ -685,10 +685,13 @@ body {
   transform: scale(1.25);
 }
 
-.mode-button.pvp-premium .mode-icon {
-  animation: logo-drift 10s ease-in-out infinite;
-  /* Slower drift for big planet */
+.mode-button.pvp-premium:hover:not(:disabled) {
+  transform: translateY(-15px) scale(1.35);
 }
+
+/* .mode-button.pvp-premium .mode-icon {
+  animation: logo-drift 10s ease-in-out infinite;
+} */
 
 .coming-soon-badge {
   position: absolute;
@@ -711,7 +714,6 @@ body {
   width: 250px;
   height: auto;
   filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.5));
-  animation: idle-float 8s ease-in-out infinite;
 }
 
 .mode-label {
@@ -2630,31 +2632,40 @@ body {
   /* --- MAIN MENU (Galaxy Map) --- */
   .menu-buttons {
     flex-direction: column;
-    gap: 0;
+    gap: 15px;
+    /* Equal padding between all modes */
     padding-top: 50px;
     /* Clear of top notch */
     padding-bottom: 110px;
     /* Clear of HUD */
-    height: 100%;
+    height: auto;
+    /* Fit to content with gap */
     /* Fill screen */
-    justify-content: space-evenly;
+    justify-content: center;
+    /* Center the group with fixed gaps */
     width: 95%;
     z-index: 40;
   }
 
-  .mode-button {
-    transform: none;
-    width: 125px;
-    height: 125px;
-    flex: none;
+  .mode-button,
+  .mode-button.pvp-premium {
+    transform: none !important;
+    width: 125px !important;
+    height: 125px !important;
+    max-width: 125px !important;
+    max-height: 125px !important;
+    flex: none !important;
     margin: 0 auto;
     padding: 0;
+    box-sizing: border-box;
     gap: 2px;
     /* Snug label to planet */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    overflow: visible;
+    /* Allow "Coming Soon" badge to float if needed, but contain image */
     z-index: 50;
     pointer-events: auto;
     touch-action: manipulation;
