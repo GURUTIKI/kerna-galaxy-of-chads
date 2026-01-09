@@ -2521,15 +2521,23 @@ body {
   }
 
   /* 1. Main Container: Stack items vertically with safe bottom padding */
+  /* 1. Main Container: Center items vertically */
   .battle-area-centered {
-    justify-content: flex-start !important;
-    padding-bottom: calc(40px + env(safe-area-inset-bottom)) !important;
+    justify-content: center !important;
+    padding-bottom: 0 !important;
+    padding-top: 60px !important;
+    /* Space for absolute header */
   }
 
-  /* 2. Top Status Bar: Push everything else to the bottom */
+  /* 2. Top Status Bar: float above content */
   #battle-status-bar {
-    margin-bottom: auto !important;
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    margin-bottom: 0 !important;
     flex: 0 0 auto;
+    padding: 0 10px;
   }
 
   /* 3. Battle Board: Dynamic height, fitting content */
