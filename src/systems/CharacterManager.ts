@@ -70,6 +70,15 @@ export class CharacterManager {
             }
             return cloneCharacter(char as Character);
         });
+
+        // Merge in any new characters from ALL_CHARACTERS that weren't in the save data
+        ALL_CHARACTERS.forEach(masterChar => {
+            if (!this.characters.some(c => c.id === masterChar.id)) {
+                console.log(`Adding new character to roster: ${masterChar.name}`);
+                this.characters.push(cloneCharacter(masterChar));
+            }
+        });
+
         this.saveToStorage();
     }
 

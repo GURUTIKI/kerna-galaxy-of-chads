@@ -174,7 +174,8 @@ app.post('/api/admin/give-all-chars', async (req, res) => {
         'char_bru', 'char_jatt', 'char_pure', 'char_zdb', 'char_kappy',
         'char_fazoid', 'char_mercy', 'char_papa', 'char_guru', 'char_jb',
         'char_kappa', 'char_suze', 'char_toxo', 'char_cuber', 'char_jdog',
-        'char_thor', 'char_elk', 'char_zez', 'char_daf', 'char_nexus'
+        'char_thor', 'char_elk', 'char_zez', 'char_daf', 'char_nexus',
+        'char_phil'
     ];
 
     try {
