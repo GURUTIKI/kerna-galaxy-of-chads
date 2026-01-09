@@ -34,7 +34,6 @@ export class BurgerMenu {
         }
 
         this.setupDrag();
-        this.setupToggle();
 
         // Initial positioning: Top Right
         // We set it via JS to ensure it's absolute/fixed logic is consistent
@@ -47,8 +46,6 @@ export class BurgerMenu {
 
     private setupDrag(): void {
         const handleStart = (clientX: number, clientY: number) => {
-            if (this.isMenuOpen) this.closeMenu(); // Close if starting to drag
-
             this.isDragging = true;
             this.hasMoved = false;
             this.toggleBtn.classList.add('dragging');
@@ -69,7 +66,11 @@ export class BurgerMenu {
 
             // Threshold to consider it a drag and not a sloppy click
             if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
-                this.hasMoved = true;
+                if (!this.hasMoved) {
+                    this.hasMoved = true;
+                    // Close menu if it was open as soon as we start actually dragging
+                    if (this.isMenuOpen) this.closeMenu();
+                }
             }
 
             let newLeft = this.initialLeft + dx;
@@ -98,6 +99,9 @@ export class BurgerMenu {
 
             if (this.hasMoved) {
                 this.snapToCorner();
+            } else {
+                // If we didn't move, treat it as a tap/click
+                this.toggleMenu();
             }
         };
 
@@ -133,34 +137,7 @@ export class BurgerMenu {
         });
     }
 
-    private setupToggle(): void {
-        const toggleHandler = () => {
-            // If we dragged, don't toggle
-            if (this.hasMoved) return;
-
-            this.toggleMenu();
-        };
-
-        // We use click for logic, dragging is handled separately.
-        // However, 'click' might fire after mouseup. 
-        // We need to ensure we don't double fire or fire on drag end.
-
-        this.toggleBtn.addEventListener('click', toggleHandler);
-        // Note: touch interfaces often fire click after touchend if not prevented. 
-        // Our touchstart prevents default, so click might not fire on touch devices?
-        // Actually we preventDefault on touchstart to stop scrolling, which usually kills the click event too.
-        // So we need to handle "tap" within touchend if we want it to work on mobile specifically via that path,
-        // OR we don't preventDefault on touchstart unless we start moving.
-
-        // Better approach: Handle "Tap" manually in handleEnd if no movement occurred?
-        // But for Mouse, 'click' works fine. 
-        // Let's rely on the fact that if 'hasMoved' is false in handleEnd, we could manually trigger click logic if needed,
-        // OR just ensure 'click' event fires.
-        // Since I prevented default on touchstart, 'click' won't fire on Mobile. I need to handle it.
-
-        // I'll add a manual trigger in handleEnd for taps if needed, but let's stick to simple "click" for mouse
-        // and add a manual call for touch.
-    }
+    // Removed separate setupToggle - functionality merged into handleEnd
 
     // Explicit toggle function that can be called from TouchEnd if it was a Tap
     // Actually, let's keep it simple: simpler is better. 
