@@ -2533,11 +2533,16 @@ body {
   }
 
   /* 3. Battle Board: Dynamic height, fitting content */
+  /* 3. Battle Board: Dynamic height, fitting content */
   .battle-board {
+    display: flex !important;
+    flex-direction: column !important;
+    /* Stack grids vertically */
     flex: 0 1 auto !important;
     /* Allow shrinking, don't force grow */
     height: auto !important;
-    min-height: 150px;
+    min-height: 100px;
+    /* Reduced min-height for tighter fit */
     margin-bottom: 25px !important;
     /* 25px Gap between box and buttons */
     background: rgba(0, 0, 0, 0.1);
@@ -2549,13 +2554,15 @@ body {
 
   /* 4. Ability Buttons: Part of the flow */
   .battle-bottom-container {
+    display: flex !important;
+    /* Force flex to enable centering */
     position: static !important;
-    /* No longer absolute */
     height: auto !important;
     width: 100%;
     margin-top: 0 !important;
-    justify-content: center;
-    align-items: center;
+    justify-content: center !important;
+    /* Center horizontal */
+    align-items: center !important;
     background: transparent;
     padding-bottom: 0;
     z-index: 1001;
