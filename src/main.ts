@@ -172,10 +172,10 @@ export class Game {
     });
 
     // Inbox
-    document.getElementById('btn-inbox')?.addEventListener('click', () => {
+    this.bindButton('btn-inbox', () => {
       this.showInbox();
     });
-    document.getElementById('btn-close-inbox')?.addEventListener('click', () => {
+    this.bindButton('btn-close-inbox', () => {
       document.getElementById('inbox-modal')?.classList.remove('active');
     });
 
