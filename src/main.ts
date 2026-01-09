@@ -1698,8 +1698,6 @@ export class Game {
   }
 
   private setupAccountEventListeners(): void {
-    const accountBtn = document.getElementById('btn-account');
-    const closeAccountBtn = document.getElementById('btn-close-account');
     const accountModal = document.getElementById('account-modal');
     const logoutBtn = document.getElementById('btn-logout');
     const savePasswordBtn = document.getElementById('btn-save-password');
@@ -1718,7 +1716,7 @@ export class Game {
       });
     });
 
-    accountBtn?.addEventListener('click', () => {
+    this.bindButton('btn-account', () => {
       this.openAccountModal();
     });
 
