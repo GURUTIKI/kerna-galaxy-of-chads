@@ -453,12 +453,12 @@ export class Game {
       const item = document.createElement('div');
       item.className = 'leaderboard-item';
       item.innerHTML = `
-  < span > #${index + 1} </span>
-    < span > ${entry.username} </span>
-      < span > ${entry.wins} </span>
-        < span > ${entry.winRate}% </span>
-          < span > ${entry.avgLevel || '-'} </span>
-            `;
+        <span>#${index + 1}</span>
+        <span>${entry.username}</span>
+        <span>${entry.wins}</span>
+        <span>${entry.winRate}%</span>
+        <span>${entry.avgLevel || '-'}</span>
+      `;
       list.appendChild(item);
     });
   }
