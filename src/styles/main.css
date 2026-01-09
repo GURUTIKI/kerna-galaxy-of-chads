@@ -2520,26 +2520,44 @@ body {
     flex-direction: column;
   }
 
-  /* Battle Board - "Black Box" */
+  /* 1. Main Container: Stack items vertically with safe bottom padding */
+  .battle-area-centered {
+    justify-content: flex-start !important;
+    padding-bottom: calc(40px + env(safe-area-inset-bottom)) !important;
+  }
+
+  /* 2. Top Status Bar: Push everything else to the bottom */
+  #battle-status-bar {
+    margin-bottom: auto !important;
+    flex: 0 0 auto;
+  }
+
+  /* 3. Battle Board: Dynamic height, fitting content */
   .battle-board {
+    flex: 0 1 auto !important;
+    /* Allow shrinking, don't force grow */
+    height: auto !important;
+    min-height: 150px;
+    margin-bottom: 25px !important;
+    /* 25px Gap between box and buttons */
     background: rgba(0, 0, 0, 0.1);
     /* 10% opacity black box */
     border-radius: 20px;
-    margin-bottom: 150px !important;
-    /* Create 150px gap at bottom */
     padding: 10px;
     border: 1px solid rgba(255, 255, 255, 0.05);
   }
 
-  /* Lift ability panel into the empty space */
+  /* 4. Ability Buttons: Part of the flow */
   .battle-bottom-container {
-    bottom: 85px !important;
-    /* 150px (box gap) - 25px (spacing) - 40px (btn height) = 85px from bottom */
-    height: auto;
+    position: static !important;
+    /* No longer absolute */
+    height: auto !important;
     width: 100%;
-    align-items: flex-start;
-    padding-bottom: 0;
+    margin-top: 0 !important;
+    justify-content: center;
+    align-items: center;
     background: transparent;
+    padding-bottom: 0;
     z-index: 1001;
   }
 
