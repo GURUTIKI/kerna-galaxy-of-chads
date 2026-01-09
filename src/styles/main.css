@@ -2533,11 +2533,12 @@ body {
 
   /* Lift ability panel into the empty space */
   .battle-bottom-container {
-    bottom: 0 !important;
-    height: 150px;
+    bottom: 85px !important;
+    /* 150px (box gap) - 25px (spacing) - 40px (btn height) = 85px from bottom */
+    height: auto;
     width: 100%;
-    align-items: center;
-    padding-bottom: env(safe-area-inset-bottom);
+    align-items: flex-start;
+    padding-bottom: 0;
     background: transparent;
     z-index: 1001;
   }
